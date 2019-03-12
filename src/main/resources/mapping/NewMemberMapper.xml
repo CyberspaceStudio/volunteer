@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.volunteer.volunteer.mapper.NewMemberMapper" >
+  <resultMap id="BaseResultMap" type="com.volunteer.volunteer.model.NewMember" >
+    <id column="enroll_id" property="enrollId" jdbcType="INTEGER" />
+    <result column="wechat_id" property="wechatId" jdbcType="INTEGER" />
+    <result column="introduction" property="introduction" jdbcType="VARCHAR" />
+    <result column="enroll_name" property="enrollName" jdbcType="VARCHAR" />
+    <result column="first_choice" property="firstChoice" jdbcType="VARCHAR" />
+    <result column="second_choice" property="secondChoice" jdbcType="VARCHAR" />
+    <result column="third_choice" property="thirdChoice" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="first_interview_score" property="firstInterviewScore" jdbcType="CHAR" />
+    <result column="first_interview_impression" property="firstInterviewImpression" jdbcType="VARCHAR" />
+    <result column="second_interview_or" property="secondInterviewOr" jdbcType="CHAR" />
+    <result column="second_interview_sign" property="secondInterviewSign" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    enroll_id, wechat_id, introduction, enroll_name, first_choice, second_choice, third_choice, 
+    status, first_interview_score, first_interview_impression, second_interview_or, second_interview_sign
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from enroll
+    where enroll_id = #{enrollId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from enroll
+    where enroll_id = #{enrollId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.volunteer.volunteer.model.NewMember" >
+    insert into enroll (enroll_id, wechat_id, introduction, 
+      enroll_name, first_choice, second_choice, 
+      third_choice, status, first_interview_score, 
+      first_interview_impression, second_interview_or, 
+      second_interview_sign)
+    values (#{enrollId,jdbcType=INTEGER}, #{wechatId,jdbcType=INTEGER}, #{introduction,jdbcType=VARCHAR}, 
+      #{enrollName,jdbcType=VARCHAR}, #{firstChoice,jdbcType=VARCHAR}, #{secondChoice,jdbcType=VARCHAR}, 
+      #{thirdChoice,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{firstInterviewScore,jdbcType=CHAR}, 
+      #{firstInterviewImpression,jdbcType=VARCHAR}, #{secondInterviewOr,jdbcType=CHAR}, 
+      #{secondInterviewSign,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.volunteer.volunteer.model.NewMember" >
+    insert into enroll
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="enrollId != null" >
+        enroll_id,
+      </if>
+      <if test="wechatId != null" >
+        wechat_id,
+      </if>
+      <if test="introduction != null" >
+        introduction,
+      </if>
+      <if test="enrollName != null" >
+        enroll_name,
+      </if>
+      <if test="firstChoice != null" >
+        first_choice,
+      </if>
+      <if test="secondChoice != null" >
+        second_choice,
+      </if>
+      <if test="thirdChoice != null" >
+        third_choice,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="firstInterviewScore != null" >
+        first_interview_score,
+      </if>
+      <if test="firstInterviewImpression != null" >
+        first_interview_impression,
+      </if>
+      <if test="secondInterviewOr != null" >
+        second_interview_or,
+      </if>
+      <if test="secondInterviewSign != null" >
+        second_interview_sign,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="enrollId != null" >
+        #{enrollId,jdbcType=INTEGER},
+      </if>
+      <if test="wechatId != null" >
+        #{wechatId,jdbcType=INTEGER},
+      </if>
+      <if test="introduction != null" >
+        #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="enrollName != null" >
+        #{enrollName,jdbcType=VARCHAR},
+      </if>
+      <if test="firstChoice != null" >
+        #{firstChoice,jdbcType=VARCHAR},
+      </if>
+      <if test="secondChoice != null" >
+        #{secondChoice,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdChoice != null" >
+        #{thirdChoice,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="firstInterviewScore != null" >
+        #{firstInterviewScore,jdbcType=CHAR},
+      </if>
+      <if test="firstInterviewImpression != null" >
+        #{firstInterviewImpression,jdbcType=VARCHAR},
+      </if>
+      <if test="secondInterviewOr != null" >
+        #{secondInterviewOr,jdbcType=CHAR},
+      </if>
+      <if test="secondInterviewSign != null" >
+        #{secondInterviewSign,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.volunteer.volunteer.model.NewMember" >
+    update enroll
+    <set >
+      <if test="wechatId != null" >
+        wechat_id = #{wechatId,jdbcType=INTEGER},
+      </if>
+      <if test="introduction != null" >
+        introduction = #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="enrollName != null" >
+        enroll_name = #{enrollName,jdbcType=VARCHAR},
+      </if>
+      <if test="firstChoice != null" >
+        first_choice = #{firstChoice,jdbcType=VARCHAR},
+      </if>
+      <if test="secondChoice != null" >
+        second_choice = #{secondChoice,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdChoice != null" >
+        third_choice = #{thirdChoice,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="firstInterviewScore != null" >
+        first_interview_score = #{firstInterviewScore,jdbcType=CHAR},
+      </if>
+      <if test="firstInterviewImpression != null" >
+        first_interview_impression = #{firstInterviewImpression,jdbcType=VARCHAR},
+      </if>
+      <if test="secondInterviewOr != null" >
+        second_interview_or = #{secondInterviewOr,jdbcType=CHAR},
+      </if>
+      <if test="secondInterviewSign != null" >
+        second_interview_sign = #{secondInterviewSign,jdbcType=CHAR},
+      </if>
+    </set>
+    where enroll_id = #{enrollId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.volunteer.volunteer.model.NewMember" >
+    update enroll
+    set wechat_id = #{wechatId,jdbcType=INTEGER},
+      introduction = #{introduction,jdbcType=VARCHAR},
+      enroll_name = #{enrollName,jdbcType=VARCHAR},
+      first_choice = #{firstChoice,jdbcType=VARCHAR},
+      second_choice = #{secondChoice,jdbcType=VARCHAR},
+      third_choice = #{thirdChoice,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      first_interview_score = #{firstInterviewScore,jdbcType=CHAR},
+      first_interview_impression = #{firstInterviewImpression,jdbcType=VARCHAR},
+      second_interview_or = #{secondInterviewOr,jdbcType=CHAR},
+      second_interview_sign = #{secondInterviewSign,jdbcType=CHAR}
+    where enroll_id = #{enrollId,jdbcType=INTEGER}
+  </update>
+</mapper>
