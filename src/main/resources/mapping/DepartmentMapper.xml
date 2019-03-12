@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.volunteer.volunteer.mapper.DepartmentMapper" >
+  <resultMap id="BaseResultMap" type="com.volunteer.volunteer.model.Department" >
+    <id column="department_id" property="departmentId" jdbcType="INTEGER" />
+    <result column="wechat_id" property="wechatId" jdbcType="INTEGER" />
+    <result column="department_name" property="departmentName" jdbcType="VARCHAR" />
+    <result column="organization" property="organization" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    department_id, wechat_id, department_name, organization
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from department_table
+    where department_id = #{departmentId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from department_table
+    where department_id = #{departmentId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.volunteer.volunteer.model.Department" >
+    insert into department_table (department_id, wechat_id, department_name, 
+      organization)
+    values (#{departmentId,jdbcType=INTEGER}, #{wechatId,jdbcType=INTEGER}, #{departmentName,jdbcType=VARCHAR}, 
+      #{organization,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.volunteer.volunteer.model.Department" >
+    insert into department_table
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="departmentId != null" >
+        department_id,
+      </if>
+      <if test="wechatId != null" >
+        wechat_id,
+      </if>
+      <if test="departmentName != null" >
+        department_name,
+      </if>
+      <if test="organization != null" >
+        organization,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="departmentId != null" >
+        #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="wechatId != null" >
+        #{wechatId,jdbcType=INTEGER},
+      </if>
+      <if test="departmentName != null" >
+        #{departmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="organization != null" >
+        #{organization,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.volunteer.volunteer.model.Department" >
+    update department_table
+    <set >
+      <if test="wechatId != null" >
+        wechat_id = #{wechatId,jdbcType=INTEGER},
+      </if>
+      <if test="departmentName != null" >
+        department_name = #{departmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="organization != null" >
+        organization = #{organization,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where department_id = #{departmentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.volunteer.volunteer.model.Department" >
+    update department_table
+    set wechat_id = #{wechatId,jdbcType=INTEGER},
+      department_name = #{departmentName,jdbcType=VARCHAR},
+      organization = #{organization,jdbcType=VARCHAR}
+    where department_id = #{departmentId,jdbcType=INTEGER}
+  </update>
+</mapper>
