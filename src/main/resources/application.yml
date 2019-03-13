@@ -1,0 +1,23 @@
+server:
+  port: 8080
+spring:
+  profiles:
+    active: dev
+
+mybatis:
+  type-aliases-package: com/volunteer/volunteer/model
+  mapper-locations: classpath:mapping/*.xml
+
+wx:
+  appid:
+  secret:
+  url:
+
+---
+spring:
+  profiles: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/volunteer_test?serverTimezone=GMT
+    username: root
+    password: 168168
