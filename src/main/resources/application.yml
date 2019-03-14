@@ -21,3 +21,7 @@ spring:
     url: jdbc:mysql://localhost:3306/volunteer_test?serverTimezone=GMT
     username: root
     password: 168168
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
