@@ -3,9 +3,11 @@ package com.volunteer.volunteer.service.impl;
 import com.volunteer.volunteer.mapper.SuperManagerMapper;
 import com.volunteer.volunteer.model.SuperManager;
 import com.volunteer.volunteer.service.SuperManagerService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
+@Service
 public class SuperManagerImpl implements SuperManagerService {
     @Resource
     private SuperManagerMapper superManagerMapper;

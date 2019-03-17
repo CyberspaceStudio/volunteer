@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.volunteer.volunteer.mapper.InvitationCodeMapper" >
+  <resultMap id="BaseResultMap" type="com.volunteer.volunteer.model.InvitationCode" >
+    <id column="code_id" property="codeId" jdbcType="INTEGER" />
+    <result column="code_contain" property="codeContain" jdbcType="VARCHAR" />
+    <result column="code_position" property="codePosition" jdbcType="INTEGER" />
+    <result column="code_school" property="codeSchool" jdbcType="VARCHAR" />
+    <result column="organziation" property="organziation" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    code_id, code_contain, code_position, code_school, organziation
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from invitation_code
+    where code_id = #{codeId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByCode" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from invitation_code
+    where code_contain = #{codeContain,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from invitation_code
+    where code_id = #{codeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.volunteer.volunteer.model.InvitationCode" >
+    insert into invitation_code (code_id, code_contain, code_position, 
+      code_school, organziation)
+    values (#{codeId,jdbcType=INTEGER}, #{codeContain,jdbcType=VARCHAR}, #{codePosition,jdbcType=INTEGER}, 
+      #{codeSchool,jdbcType=VARCHAR}, #{organziation,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.volunteer.volunteer.model.InvitationCode" >
+    insert into invitation_code
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="codeId != null" >
+        code_id,
+      </if>
+      <if test="codeContain != null" >
+        code_contain,
+      </if>
+      <if test="codePosition != null" >
+        code_position,
+      </if>
+      <if test="codeSchool != null" >
+        code_school,
+      </if>
+      <if test="organziation != null" >
+        organziation,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="codeId != null" >
+        #{codeId,jdbcType=INTEGER},
+      </if>
+      <if test="codeContain != null" >
+        #{codeContain,jdbcType=VARCHAR},
+      </if>
+      <if test="codePosition != null" >
+        #{codePosition,jdbcType=INTEGER},
+      </if>
+      <if test="codeSchool != null" >
+        #{codeSchool,jdbcType=VARCHAR},
+      </if>
+      <if test="organziation != null" >
+        #{organziation,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.volunteer.volunteer.model.InvitationCode" >
+    update invitation_code
+    <set >
+      <if test="codeContain != null" >
+        code_contain = #{codeContain,jdbcType=VARCHAR},
+      </if>
+      <if test="codePosition != null" >
+        code_position = #{codePosition,jdbcType=INTEGER},
+      </if>
+      <if test="codeSchool != null" >
+        code_school = #{codeSchool,jdbcType=VARCHAR},
+      </if>
+      <if test="organziation != null" >
+        organziation = #{organziation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where code_id = #{codeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.volunteer.volunteer.model.InvitationCode" >
+    update invitation_code
+    set code_contain = #{codeContain,jdbcType=VARCHAR},
+      code_position = #{codePosition,jdbcType=INTEGER},
+      code_school = #{codeSchool,jdbcType=VARCHAR},
+      organziation = #{organziation,jdbcType=VARCHAR}
+    where code_id = #{codeId,jdbcType=INTEGER}
+  </update>
+</mapper>

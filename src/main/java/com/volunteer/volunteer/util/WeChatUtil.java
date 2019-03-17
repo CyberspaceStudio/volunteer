@@ -8,6 +8,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URLEncoder;
 
+/**
+ * Used to solve the weChat open_id and getting session_key
+ */
 public class WeChatUtil {
     @Value("${wx.url}")
     private static String WECHAT_OPENID_URL;

@@ -10,11 +10,20 @@
   <sql id="Base_Column_List" >
     manager_id, manager_name, manager_password, manager_position
   </sql>
+  <sql id="Login_List">
+    manager_name, manager_password, manager_position
+  </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from manager
     where manager_id = #{managerId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Login_List"/>
+    from manager
+    where manager_name = #{managerName,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from manager

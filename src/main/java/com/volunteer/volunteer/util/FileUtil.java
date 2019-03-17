@@ -24,8 +24,8 @@ public class FileUtil {
             }
             //Please replace the file path in you particular project.
             String path = "E:/temptest/";
-            Picture temp = new Picture();
-            temp.setPictureUrl(path);
+            //Picture temp = new Picture();
+            //temp.setPictureUrl(path);
             // TODO: 2019/3/14 here may need to construct a Picture object to help insert into database
             java.io.File ttep = new java.io.File(path);
             if(!ttep.getParentFile().exists()){
@@ -36,7 +36,7 @@ public class FileUtil {
                 Path paths = Paths.get(path + file.getOriginalFilename());
                 Files.write(paths, bytes);
                 //Call the service to insert file url into database
-                this.pictureService.insertFilePath(temp);
+             //   this.pictureService.insertFilePath(temp);
             }catch (IOException e){
                 e.printStackTrace();
             }
