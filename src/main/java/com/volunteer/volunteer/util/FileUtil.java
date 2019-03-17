@@ -1,10 +1,9 @@
 package com.volunteer.volunteer.util;
 
-import com.volunteer.volunteer.model.Picture;
-import com.volunteer.volunteer.service.PictureService;
+
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,8 +15,7 @@ import java.nio.file.Paths;
  * @Param file It is the file upload from front page.
  */
 public class FileUtil {
-    @Resource
-    private PictureService pictureService;
+
 
     public boolean upload(MultipartFile file){
         try{

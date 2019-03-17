@@ -2,57 +2,81 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.volunteer.volunteer.mapper.ManagerMapper" >
   <resultMap id="BaseResultMap" type="com.volunteer.volunteer.model.Manager" >
-    <id column="manage_id" property="manageId" jdbcType="INTEGER" />
-    <result column="manage_pwd" property="managePwd" jdbcType="VARCHAR" />
+    <id column="manager_id" property="managerId" jdbcType="INTEGER" />
+    <result column="manager_name" property="managerName" jdbcType="VARCHAR" />
+    <result column="manager_password" property="managerPassword" jdbcType="VARCHAR" />
+    <result column="manager_position" property="managerPosition" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    manage_id, manage_pwd
+    manager_id, manager_name, manager_password, manager_position
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from manage
-    where manage_id = #{manageId,jdbcType=INTEGER}
+    from manager
+    where manager_id = #{managerId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from manage
-    where manage_id = #{manageId,jdbcType=INTEGER}
+    delete from manager
+    where manager_id = #{managerId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.volunteer.volunteer.model.Manager" >
-    insert into manage (manage_id, manage_pwd)
-    values (#{manageId,jdbcType=INTEGER}, #{managePwd,jdbcType=VARCHAR})
+    insert into manager (manager_id, manager_name, manager_password, 
+      manager_position)
+    values (#{managerId,jdbcType=INTEGER}, #{managerName,jdbcType=VARCHAR}, #{managerPassword,jdbcType=VARCHAR}, 
+      #{managerPosition,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.volunteer.volunteer.model.Manager" >
-    insert into manage
+    insert into manager
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="manageId != null" >
-        manage_id,
+      <if test="managerId != null" >
+        manager_id,
       </if>
-      <if test="managePwd != null" >
-        manage_pwd,
+      <if test="managerName != null" >
+        manager_name,
+      </if>
+      <if test="managerPassword != null" >
+        manager_password,
+      </if>
+      <if test="managerPosition != null" >
+        manager_position,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="manageId != null" >
-        #{manageId,jdbcType=INTEGER},
+      <if test="managerId != null" >
+        #{managerId,jdbcType=INTEGER},
       </if>
-      <if test="managePwd != null" >
-        #{managePwd,jdbcType=VARCHAR},
+      <if test="managerName != null" >
+        #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="managerPassword != null" >
+        #{managerPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="managerPosition != null" >
+        #{managerPosition,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.volunteer.volunteer.model.Manager" >
-    update manage
+    update manager
     <set >
-      <if test="managePwd != null" >
-        manage_pwd = #{managePwd,jdbcType=VARCHAR},
+      <if test="managerName != null" >
+        manager_name = #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="managerPassword != null" >
+        manager_password = #{managerPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="managerPosition != null" >
+        manager_position = #{managerPosition,jdbcType=INTEGER},
       </if>
     </set>
-    where manage_id = #{manageId,jdbcType=INTEGER}
+    where manager_id = #{managerId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.volunteer.volunteer.model.Manager" >
-    update manage
-    set manage_pwd = #{managePwd,jdbcType=VARCHAR}
-    where manage_id = #{manageId,jdbcType=INTEGER}
+    update manager
+    set manager_name = #{managerName,jdbcType=VARCHAR},
+      manager_password = #{managerPassword,jdbcType=VARCHAR},
+      manager_position = #{managerPosition,jdbcType=INTEGER}
+    where manager_id = #{managerId,jdbcType=INTEGER}
   </update>
 </mapper>

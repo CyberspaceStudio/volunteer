@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.volunteer.volunteer.mapper.SuperManagerMapper" >
+  <resultMap id="BaseResultMap" type="com.volunteer.volunteer.model.SuperManager" >
+    <id column="super_id" property="superId" jdbcType="INTEGER" />
+    <result column="super_name" property="superName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="super_password" property="superPassword" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    super_id, super_name, status, super_password
+  </sql>
+  <sql id="Login_List">
+    super_name, super_password
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from super_manager
+    where super_id = #{superId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Login_List"/>
+    from super_manager
+    where super_name = #{superName,jdbcType=VARCHAR} and status = 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from super_manager
+    where super_id = #{superId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.volunteer.volunteer.model.SuperManager" >
+    insert into super_manager (super_id, super_name, status, 
+      super_password)
+    values (#{superId,jdbcType=INTEGER}, #{superName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{superPassword,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.volunteer.volunteer.model.SuperManager" >
+    insert into super_manager
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="superId != null" >
+        super_id,
+      </if>
+      <if test="superName != null" >
+        super_name,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="superPassword != null" >
+        super_password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="superId != null" >
+        #{superId,jdbcType=INTEGER},
+      </if>
+      <if test="superName != null" >
+        #{superName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="superPassword != null" >
+        #{superPassword,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.volunteer.volunteer.model.SuperManager" >
+    update super_manager
+    <set >
+      <if test="superName != null" >
+        super_name = #{superName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="superPassword != null" >
+        super_password = #{superPassword,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where super_id = #{superId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.volunteer.volunteer.model.SuperManager" >
+    update super_manager
+    set super_name = #{superName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      super_password = #{superPassword,jdbcType=VARCHAR}
+    where super_id = #{superId,jdbcType=INTEGER}
+  </update>
+</mapper>

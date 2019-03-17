@@ -1,23 +1,43 @@
 package com.volunteer.volunteer.model;
 
 public class Manager {
-    private Integer manageId;
+    private Integer managerId;
 
-    private String managePwd;
+    private String managerName;
 
-    public Integer getManageId() {
-        return manageId;
+    private String managerPassword;
+
+    private Integer managerPosition;
+
+    public Integer getManagerId() {
+        return managerId;
     }
 
-    public void setManageId(Integer manageId) {
-        this.manageId = manageId;
+    public void setManagerId(Integer managerId) {
+        this.managerId = managerId;
     }
 
-    public String getManagePwd() {
-        return managePwd;
+    public String getManagerName() {
+        return managerName;
     }
 
-    public void setManagePwd(String managePwd) {
-        this.managePwd = managePwd == null ? null : managePwd.trim();
+    public void setManagerName(String managerName) {
+        this.managerName = managerName == null ? null : managerName.trim();
+    }
+
+    public String getManagerPassword() {
+        return managerPassword;
+    }
+
+    public void setManagerPassword(String managerPassword) {
+        this.managerPassword = managerPassword == null ? null : managerPassword.trim();
+    }
+
+    public Integer getManagerPosition() {
+        return managerPosition;
+    }
+
+    public void setManagerPosition(Integer managerPosition) {
+        this.managerPosition = managerPosition;
     }
 }

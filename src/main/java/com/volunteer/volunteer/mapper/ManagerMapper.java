@@ -3,13 +3,13 @@ package com.volunteer.volunteer.mapper;
 import com.volunteer.volunteer.model.Manager;
 
 public interface ManagerMapper {
-    int deleteByPrimaryKey(Integer manageId);
+    int deleteByPrimaryKey(Integer managerId);
 
     int insert(Manager record);
 
     int insertSelective(Manager record);
 
-    Manager selectByPrimaryKey(Integer manageId);
+    Manager selectByPrimaryKey(Integer managerId);
 
     int updateByPrimaryKeySelective(Manager record);
 
