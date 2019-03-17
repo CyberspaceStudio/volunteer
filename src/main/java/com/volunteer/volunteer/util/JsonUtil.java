@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
+/**
+ * 用于处理json数据和对象之间的转换工具，使用Mapper工具实在是太强了
+ */
 public class JsonUtil {
     public static<T> String objectToJson(T object)throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();

@@ -27,6 +27,11 @@ public class InvitationCodeServiceImpl implements InvitationCodeService {
         return flag;
     }
 
+    /**
+     * 该方法用于检查数据库中是否存在该邀请码
+     * @param code 传入前端输入的邀请码
+     * @return 返回一个存有邀请码注册人信息的对象，如果不存在就返回null
+     */
     @Override
     public InvitationCode checkInvitationCode(String code) {
         InvitationCode temp = this.invitationCodeMapper.selectByCode(code);
@@ -36,6 +41,10 @@ public class InvitationCodeServiceImpl implements InvitationCodeService {
         return null;
     }
 
+    /**
+     * 本方法用于通过时间戳，转化其为十六进制的八位伪不重复随机码
+     * @return 返回一个八位伪不重复随机码
+     */
     @Override
     public String generateInvitationCode() {
         return Integer.toHexString((int)new Date().getTime());

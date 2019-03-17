@@ -1,5 +1,8 @@
 package com.volunteer.volunteer.util.ToolSupport;
 
+/**
+ * 为了解决微信返回的数据问题，从通过该辅助对象来构造openid的获取机制
+ */
 public class ResponseBodySovler {
     private String openid;
     private String session_key;

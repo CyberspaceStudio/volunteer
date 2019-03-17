@@ -1,5 +1,9 @@
 package com.volunteer.volunteer.util.ToolSupport;
 
+/**
+ * 目的为了解决返回的请求体结构问题而构造的辅助对象
+ * @param <T> 该变量是各种返回的data数据，如果没有返回的data数据就为null值
+ */
 public class UniversalResponseBody<T> {
     private int errCode;
 
