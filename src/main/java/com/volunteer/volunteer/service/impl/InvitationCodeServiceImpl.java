@@ -3,10 +3,12 @@ package com.volunteer.volunteer.service.impl;
 import com.volunteer.volunteer.mapper.InvitationCodeMapper;
 import com.volunteer.volunteer.model.InvitationCode;
 import com.volunteer.volunteer.service.InvitationCodeService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
 
+@Service
 public class InvitationCodeServiceImpl implements InvitationCodeService {
     @Resource
     private InvitationCodeMapper invitationCodeMapper;

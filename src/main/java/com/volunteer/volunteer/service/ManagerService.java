@@ -1,9 +1,10 @@
 package com.volunteer.volunteer.service;
 
 import com.volunteer.volunteer.model.Manager;
+import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 
 public interface ManagerService {
     boolean insertManager(Manager manager);
 
-     Manager findManagerByName(String name);
+    UniversalResponseBody findManagerByName(String name);
 }

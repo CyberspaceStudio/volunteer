@@ -3,6 +3,7 @@ package com.volunteer.volunteer.service.impl;
 import com.volunteer.volunteer.mapper.ManagerMapper;
 import com.volunteer.volunteer.model.Manager;
 import com.volunteer.volunteer.service.ManagerService;
+import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,7 +26,7 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public Manager findManagerByName(String name) {
-        return managerMapper.selectByName(name);
+    public UniversalResponseBody findManagerByName(String name) {
+        return new UniversalResponseBody(0,"成功",managerMapper.selectByName(name));
     }
 }
