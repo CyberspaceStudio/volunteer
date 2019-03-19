@@ -7,6 +7,7 @@ import com.volunteer.volunteer.service.SuperManagerService;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -15,6 +16,7 @@ import javax.annotation.Resource;
  * 该控制器用于控制多种注册方法，通过mapping重载的方式来使用同类型方法处理不同的注册方式
  */
 @RestController
+@RequestMapping("register")
 public class RegisterController {
     @Resource
     ManagerService managerService;
@@ -28,7 +30,7 @@ public class RegisterController {
      * @param superManager 用于注册管理员的辅助对象，通过前端传参来实现，必须和对象字段相同
      * @return 返回一个通用请求体
      */
-    @PostMapping("/register/superadmin")
+    @PostMapping("/superadmin")
     public UniversalResponseBody register(SuperManager superManager){
         if (superManagerService.insertSManager(superManager)){
             return new UniversalResponseBody(0,"成功");
@@ -42,7 +44,7 @@ public class RegisterController {
      * @param manager 用于管理员注册的辅助对象，前端字段必须和对象属性相同
      * @return 返回一个通用请求体
      */
-    @GetMapping("/register/admin")
+    @GetMapping("/admin")
     public UniversalResponseBody register(Manager manager){
         if(managerService.insertManager(manager))
             return new UniversalResponseBody(0,"成功");

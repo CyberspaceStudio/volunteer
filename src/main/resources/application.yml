@@ -1,5 +1,8 @@
 server:
   port: 8080
+  servlet:
+    session:
+      timeout: 1800s
 spring:
   profiles:
     active: dev
@@ -7,6 +10,7 @@ spring:
 mybatis:
   type-aliases-package: com/volunteer/volunteer/model
   mapper-locations: classpath:mapping/*.xml
+
 
 wx:
   appid:
@@ -25,3 +29,9 @@ spring:
     multipart:
       enabled: true
       max-file-size: 5MB
+  session:
+    store-type: redis
+  redis:
+    port: 6379
+    host: 127.0.0.1
+

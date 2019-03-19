@@ -14,17 +14,17 @@ public class InvitationCodeServiceImpl implements InvitationCodeService {
     private InvitationCodeMapper invitationCodeMapper;
 
     @Override
-    public boolean insertInvitationCode(InvitationCode invitationCode) {
-        boolean flag = false;
+    public String insertInvitationCode(InvitationCode invitationCode) {
+
         String code = generateInvitationCode();
         invitationCode.setCodeContain(code);
         try {
             invitationCodeMapper.insert(invitationCode);
-            flag = true;
         }catch (Exception e){
             e.printStackTrace();
+            code = "error";
         }
-        return flag;
+        return code;
     }
 
     /**
