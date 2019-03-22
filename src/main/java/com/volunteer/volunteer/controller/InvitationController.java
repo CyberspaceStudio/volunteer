@@ -3,7 +3,6 @@ package com.volunteer.volunteer.controller;
 import com.volunteer.volunteer.model.InvitationCode;
 import com.volunteer.volunteer.service.InvitationCodeService;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -8,7 +8,9 @@ public class InvitationCode {
     private Integer codePosition;
 
     private String codeSchool;
-
+    /**
+     * 本单词拼错了，写代码的人注意一下，影响到mybatis文件的管理所以我们就不改了
+     */
     private String organziation;
 
     public Integer getCodeId() {
