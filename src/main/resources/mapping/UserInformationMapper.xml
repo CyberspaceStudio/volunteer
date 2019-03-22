@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.volunteer.volunteer.mapper.UserInformationMapper" >
+  <resultMap id="BaseResultMap" type="com.volunteer.volunteer.model.UserInformation" >
+    <id column="main_id" property="mainId" jdbcType="INTEGER" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="false_name" property="falseName" jdbcType="VARCHAR" />
+    <result column="head_picture_url" property="headPictureUrl" jdbcType="VARCHAR" />
+    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="CHAR" />
+    <result column="tel_no" property="telNo" jdbcType="INTEGER" />
+    <result column="wechat" property="wechat" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="school" property="school" jdbcType="VARCHAR" />
+    <result column="organization" property="organization" jdbcType="VARCHAR" />
+    <result column="regist_time" property="registTime" jdbcType="TIMESTAMP" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    main_id, open_id, false_name, head_picture_url, real_name, sex, tel_no, wechat, department, 
+    school, organization, regist_time, position
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from information
+    where main_id = #{mainId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from information
+    where main_id = #{mainId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.volunteer.volunteer.model.UserInformation" >
+    insert into information (main_id, open_id, false_name, 
+      head_picture_url, real_name, sex, 
+      tel_no, wechat, department, 
+      school, organization, regist_time, 
+      position)
+    values (#{mainId,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{falseName,jdbcType=VARCHAR}, 
+      #{headPictureUrl,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, 
+      #{telNo,jdbcType=INTEGER}, #{wechat,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, 
+      #{school,jdbcType=VARCHAR}, #{organization,jdbcType=VARCHAR}, #{registTime,jdbcType=TIMESTAMP}, 
+      #{position,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.volunteer.volunteer.model.UserInformation" >
+    insert into information
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mainId != null" >
+        main_id,
+      </if>
+      <if test="openId != null" >
+        open_id,
+      </if>
+      <if test="falseName != null" >
+        false_name,
+      </if>
+      <if test="headPictureUrl != null" >
+        head_picture_url,
+      </if>
+      <if test="realName != null" >
+        real_name,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="telNo != null" >
+        tel_no,
+      </if>
+      <if test="wechat != null" >
+        wechat,
+      </if>
+      <if test="department != null" >
+        department,
+      </if>
+      <if test="school != null" >
+        school,
+      </if>
+      <if test="organization != null" >
+        organization,
+      </if>
+      <if test="registTime != null" >
+        regist_time,
+      </if>
+      <if test="position != null" >
+        position,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mainId != null" >
+        #{mainId,jdbcType=INTEGER},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="falseName != null" >
+        #{falseName,jdbcType=VARCHAR},
+      </if>
+      <if test="headPictureUrl != null" >
+        #{headPictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="telNo != null" >
+        #{telNo,jdbcType=INTEGER},
+      </if>
+      <if test="wechat != null" >
+        #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null" >
+        #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="organization != null" >
+        #{organization,jdbcType=VARCHAR},
+      </if>
+      <if test="registTime != null" >
+        #{registTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="position != null" >
+        #{position,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.volunteer.volunteer.model.UserInformation" >
+    update information
+    <set >
+      <if test="openId != null" >
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="falseName != null" >
+        false_name = #{falseName,jdbcType=VARCHAR},
+      </if>
+      <if test="headPictureUrl != null" >
+        head_picture_url = #{headPictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="telNo != null" >
+        tel_no = #{telNo,jdbcType=INTEGER},
+      </if>
+      <if test="wechat != null" >
+        wechat = #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null" >
+        school = #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="organization != null" >
+        organization = #{organization,jdbcType=VARCHAR},
+      </if>
+      <if test="registTime != null" >
+        regist_time = #{registTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="position != null" >
+        position = #{position,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where main_id = #{mainId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.volunteer.volunteer.model.UserInformation" >
+    update information
+    set open_id = #{openId,jdbcType=VARCHAR},
+      false_name = #{falseName,jdbcType=VARCHAR},
+      head_picture_url = #{headPictureUrl,jdbcType=VARCHAR},
+      real_name = #{realName,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=CHAR},
+      tel_no = #{telNo,jdbcType=INTEGER},
+      wechat = #{wechat,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      school = #{school,jdbcType=VARCHAR},
+      organization = #{organization,jdbcType=VARCHAR},
+      regist_time = #{registTime,jdbcType=TIMESTAMP},
+      position = #{position,jdbcType=VARCHAR}
+    where main_id = #{mainId,jdbcType=INTEGER}
+  </update>
+</mapper>
