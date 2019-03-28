@@ -26,9 +26,19 @@
     from information
     where main_id = #{mainId,jdbcType=INTEGER}
   </select>
+  <select id="selectByOpenId" resultType="com.volunteer.volunteer.model.UserInformation">
+    select
+    <include refid="Base_Column_List" />
+    from information
+    where open_id = #{openId,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from information
     where main_id = #{mainId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByOpenId" parameterType="java.lang.Integer">
+    delete from information
+    where open_id = #{openId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.volunteer.volunteer.model.UserInformation" >
     insert into information (main_id, open_id, false_name, 

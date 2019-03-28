@@ -1,5 +1,6 @@
 package com.volunteer.volunteer.model;
 
+
 public class Department {
     private Integer departmentId;
 
