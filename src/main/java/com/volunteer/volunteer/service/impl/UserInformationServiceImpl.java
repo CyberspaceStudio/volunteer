@@ -6,8 +6,11 @@ import com.volunteer.volunteer.model.UserInformation;
 import com.volunteer.volunteer.service.UserInformationService;
 import com.volunteer.volunteer.util.RandomUtil;
 import com.volunteer.volunteer.util.WeChatUtil;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
+
 import javax.annotation.Resource;
 
 /**
@@ -28,10 +31,11 @@ public class UserInformationServiceImpl implements UserInformationService {
      * 用户如果未曾使用过，则进行注册
      */
     @Override
+    @Cacheable(value = "userCache", key = "#result.mainId + ''")
     public UserInformation userLoginWechat(WxInfo loginData) throws Exception {
         String openId = WeChatUtil.getOpenId(loginData.getCode());
-        UserInformation result = userInformationMapper.selectByOpenId(openId);
-        if (result == null) {
+        UserInformation findResult = userInformationMapper.selectByOpenId(openId);
+        if (findResult == null) {
             UserInformation res = new UserInformation();
             int mainId = RandomUtil.getUniqueKey();
             while (true) {
@@ -47,15 +51,20 @@ public class UserInformationServiceImpl implements UserInformationService {
             res.setOpenId(openId);
             res.setFalseName(loginData.getFalseName());
             res.setHeadPictureUrl(loginData.getHeadPictureUrl());
-            return res;
+            if (userInformationMapper.insert(res) != 0) {
+                return res;
+            } else {
+                log.error("【数据库操作】失败！");
+                return null;
+            }
         }
-        return result;
+        return findResult;
     }
 
     /**
      * PC端登录，还未实现
      * 可用SpringSecurity实现登录验证
-    */
+     */
     @Override
     public UserInformation userLogin(UserInformation user) {
         return null;

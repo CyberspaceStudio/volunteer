@@ -2,6 +2,7 @@ package com.volunteer.volunteer.service;
 
 import com.volunteer.volunteer.dto.WxInfo;
 import com.volunteer.volunteer.model.UserInformation;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  * @Author: MaoLin
