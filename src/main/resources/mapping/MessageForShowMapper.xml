@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.volunteer.volunteer.mapper.MessageForShowMapper" >
+  <resultMap id="BaseResultMap" type="com.volunteer.volunteer.model.MessageForShow" >
+    <id column="activity_id" property="activityId" jdbcType="INTEGER" />
+    <result column="information_name" property="informationName" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="activity_time" property="activityTime" jdbcType="TIMESTAMP" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="reading_volume" property="readingVolume" jdbcType="INTEGER" />
+    <result column="main_id" property="mainId" jdbcType="INTEGER" />
+    <result column="portrait_url" property="portraitUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    activity_id, information_name, department, activity_time, content, reading_volume, 
+    main_id, portrait_url
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from volunteer_activity
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from volunteer_activity
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.volunteer.volunteer.model.MessageForShow" >
+    insert into volunteer_activity (activity_id, information_name, department, 
+      activity_time, content, reading_volume, 
+      main_id, portrait_url)
+    values (#{activityId,jdbcType=INTEGER}, #{informationName,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, 
+      #{activityTime,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR}, #{readingVolume,jdbcType=INTEGER}, 
+      #{mainId,jdbcType=INTEGER}, #{portraitUrl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.volunteer.volunteer.model.MessageForShow" >
+    insert into volunteer_activity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="activityId != null" >
+        activity_id,
+      </if>
+      <if test="informationName != null" >
+        information_name,
+      </if>
+      <if test="department != null" >
+        department,
+      </if>
+      <if test="activityTime != null" >
+        activity_time,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="readingVolume != null" >
+        reading_volume,
+      </if>
+      <if test="mainId != null" >
+        main_id,
+      </if>
+      <if test="portraitUrl != null" >
+        portrait_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="activityId != null" >
+        #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="informationName != null" >
+        #{informationName,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="activityTime != null" >
+        #{activityTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="readingVolume != null" >
+        #{readingVolume,jdbcType=INTEGER},
+      </if>
+      <if test="mainId != null" >
+        #{mainId,jdbcType=INTEGER},
+      </if>
+      <if test="portraitUrl != null" >
+        #{portraitUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.volunteer.volunteer.model.MessageForShow" >
+    update volunteer_activity
+    <set >
+      <if test="informationName != null" >
+        information_name = #{informationName,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="activityTime != null" >
+        activity_time = #{activityTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="readingVolume != null" >
+        reading_volume = #{readingVolume,jdbcType=INTEGER},
+      </if>
+      <if test="mainId != null" >
+        main_id = #{mainId,jdbcType=INTEGER},
+      </if>
+      <if test="portraitUrl != null" >
+        portrait_url = #{portraitUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.volunteer.volunteer.model.MessageForShow" >
+    update volunteer_activity
+    set information_name = #{informationName,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      activity_time = #{activityTime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=VARCHAR},
+      reading_volume = #{readingVolume,jdbcType=INTEGER},
+      main_id = #{mainId,jdbcType=INTEGER},
+      portrait_url = #{portraitUrl,jdbcType=VARCHAR}
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </update>
+</mapper>
