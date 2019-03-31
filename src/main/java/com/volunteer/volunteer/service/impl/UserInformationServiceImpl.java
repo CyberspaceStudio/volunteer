@@ -6,18 +6,16 @@ import com.volunteer.volunteer.model.UserInformation;
 import com.volunteer.volunteer.service.UserInformationService;
 import com.volunteer.volunteer.util.RandomUtil;
 import com.volunteer.volunteer.util.WeChatUtil;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
-
 import javax.annotation.Resource;
 
 /**
  * @Author: MaoLin
  * @Date: 2019/3/24 11:15
  * @Version 1.0
- * @Attention：PC端登录还未实现
+ * @Attention PC端登录还未实现
  */
 
 @Service
@@ -54,7 +52,7 @@ public class UserInformationServiceImpl implements UserInformationService {
             if (userInformationMapper.insert(res) != 0) {
                 return res;
             } else {
-                log.error("【数据库操作】失败！");
+                log.error("【数据库操作】插入失败！");
                 return null;
             }
         }
