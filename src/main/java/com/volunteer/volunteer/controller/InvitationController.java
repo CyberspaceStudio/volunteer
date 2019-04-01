@@ -29,7 +29,7 @@ public class InvitationController {
         if(code.equals("error")){
             return new UniversalResponseBody(1,"失败");
         }else {
-            return new UniversalResponseBody(0,"成功",code);
+            return new UniversalResponseBody<>(0,"成功",code);
         }
     }
 }
