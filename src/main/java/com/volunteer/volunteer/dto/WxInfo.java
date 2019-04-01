@@ -44,4 +44,13 @@ public class WxInfo implements Serializable {
     public void setFalseName(String falseName) {
         this.falseName = falseName;
     }
+
+    @Override
+    public String toString() {
+        return "WxInfo{" +
+                "code='" + code + '\'' +
+                ", headPictureUrl='" + headPictureUrl + '\'' +
+                ", falseName='" + falseName + '\'' +
+                '}';
+    }
 }

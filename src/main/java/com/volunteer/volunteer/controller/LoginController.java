@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -25,13 +26,12 @@ public class LoginController {
     @Resource
     private UserInformationService userInformationService;
 
-
     @PostMapping("login/admin")
-    public UniversalResponseBody login(@NotNull @RequestBody WxInfo loginData) {
+    public UniversalResponseBody login(@NotNull WxInfo loginData) {
         try {
             UserInformation user = userInformationService.userLoginWechat(loginData);
-            return new UniversalResponseBody<UserInformation>(0,"登陆成功",user);
-        } catch (Exception  e) {
+            return new UniversalResponseBody<UserInformation>(0, "登陆成功", user);
+        } catch (Exception e) {
             log.error("【微信登录】登录失败，e={}", e);
             e.printStackTrace();
             return new UniversalResponseBody(-1, "登录失败");
