@@ -1,21 +1,26 @@
 package com.volunteer.volunteer.controller;
 
+import com.volunteer.volunteer.model.Picture;
+import com.volunteer.volunteer.service.PictureService;
 import com.volunteer.volunteer.util.FileUtil;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
+@RequestMapping("/picture")
 public class PictureController {
     @Resource
     private FileUtil fileUtil;
 
-    @PostMapping("/picture/upload")
+    @Resource
+    private PictureService pictureService;
+
+    @PostMapping("/upload")
     public UniversalResponseBody uploadFiles(@RequestParam("file") MultipartFile[] file,@RequestParam("id")int id){
         if(fileUtil.uploadHelper(file,id)){
             return new UniversalResponseBody<>(0,"成功");
@@ -23,5 +28,13 @@ public class PictureController {
             return new UniversalResponseBody<>(1,"失败");
         }
     }
-
+    @GetMapping("/show")
+    public UniversalResponseBody getPictureURL(@RequestParam("activityId")int activityId){
+        List<Picture> temp = pictureService.getPictureByActivityId(activityId);
+        List<String> res = new ArrayList<>();
+        for (Picture row: temp) {
+            res.add(row.getPictureUrl());
+        }
+        return new UniversalResponseBody<>(0,"成功",res);
+    }
 }

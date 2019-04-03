@@ -2,10 +2,14 @@ package com.volunteer.volunteer.mapper;
 
 import com.volunteer.volunteer.model.Picture;
 
+import java.util.List;
+
 public interface PictureMapper {
     int deleteByPrimaryKey(Integer pictureId);
 
     int insert(Picture record);
+
+    List<Picture> selectByActivityId(Integer activityId);
 
     int insertSelective(Picture record);
 

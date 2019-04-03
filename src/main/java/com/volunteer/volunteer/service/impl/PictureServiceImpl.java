@@ -25,8 +25,7 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public List<Picture> getPictureByActivityId(int ActivityId) {
-        // TODO: 2019/3/31 应该有一个按照活动id查找的方法
-        return null;
+    public List<Picture> getPictureByActivityId(int activityId) {
+        return pictureMapper.selectByActivityId(activityId);
     }
 }

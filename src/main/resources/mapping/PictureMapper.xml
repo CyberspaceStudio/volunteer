@@ -15,6 +15,13 @@
     from picture
     where picture_id = #{pictureId,jdbcType=INTEGER}
   </select>
+  <select id="selectByActivityId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+           picture_url
+    from picture
+    where activity_id = #{activityId,jdbcType=INTEGER}
+    LIMIT 9
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from picture
     where picture_id = #{pictureId,jdbcType=INTEGER}

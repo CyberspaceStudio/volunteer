@@ -5,9 +5,11 @@ import com.volunteer.volunteer.service.DepartmentService;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -16,8 +18,14 @@ public class DepartmentController {
     DepartmentService departmentService;
 
     @GetMapping("/organization/info")
-    public List<Department> getDepartmentByOrganization(String organization){
-        return departmentService.findDepartmentByOrganization(organization);
+    public UniversalResponseBody getDepartmentByOrganization(@RequestParam("organization") String organization){
+        List<Department> temp = departmentService.findDepartmentByOrganization(organization);
+        List<String> res = new ArrayList<>();
+        for (Department row : temp
+             ) {
+            res.add(row.getDepartmentName());
+        }
+        return new UniversalResponseBody<>(0,"成功",res);
     }
 
 
