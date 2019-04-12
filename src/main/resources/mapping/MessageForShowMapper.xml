@@ -21,6 +21,21 @@
     from volunteer_activity
     where activity_id = #{activityId,jdbcType=INTEGER}
   </select>
+  <select id="selectLastId" resultType="java.lang.Integer" >
+    select LAST_INSERT_ID()
+  </select>
+  <select id="selectByMainId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List"/>
+    from volunteer_activity
+    where main_id = #{mainId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByDepartment" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List"/>
+    from volunteer_activity
+    where department = #{department,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from volunteer_activity
     where activity_id = #{activityId,jdbcType=INTEGER}

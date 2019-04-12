@@ -11,6 +11,8 @@ mybatis:
   type-aliases-package: com/volunteer/volunteer/model
   mapper-locations: classpath:mapping/*.xml
 
+pagehelper:
+  dialect: mysql
 
 wx:
   appid:
