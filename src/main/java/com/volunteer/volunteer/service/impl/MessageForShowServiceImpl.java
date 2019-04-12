@@ -3,10 +3,11 @@ package com.volunteer.volunteer.service.impl;
 import com.volunteer.volunteer.mapper.MessageForShowMapper;
 import com.volunteer.volunteer.model.MessageForShow;
 import com.volunteer.volunteer.service.MessageForShowService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-
+@Service
 public class MessageForShowServiceImpl implements MessageForShowService {
     @Resource
     private MessageForShowMapper messageForShowMapper;
