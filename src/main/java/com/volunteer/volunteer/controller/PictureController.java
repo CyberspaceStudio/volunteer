@@ -6,7 +6,6 @@ import com.volunteer.volunteer.util.FileUtil;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +18,7 @@ public class PictureController {
 
     @Resource
     private PictureService pictureService;
+
 
     @PostMapping("/upload")
     public UniversalResponseBody uploadFiles(@RequestParam("file") MultipartFile[] file,@RequestParam("id")int id){

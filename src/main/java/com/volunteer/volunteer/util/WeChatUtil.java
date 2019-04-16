@@ -10,6 +10,7 @@ import java.net.URLEncoder;
 
 /**
  * Used to solve the weChat open_id and getting session_key
+ * 方法更改为返回整个对象getOpenId -->
  */
 public class WeChatUtil {
     @Value("${wx.url}")
@@ -17,13 +18,15 @@ public class WeChatUtil {
 
     private static RestTemplate restTemplate = new RestTemplate();
 
-    public static String getOpenId(String code)throws Exception{
+    public static ResponseBodySovler getWechatResponseBody(String code) throws Exception{
         String url = WECHAT_OPENID_URL + URLEncoder.encode(code,"UTF-8");
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(url,String.class);
         if(responseEntity.getStatusCodeValue() != 200){
             throw new NoAuthenticationException("connect wechat failed");
         }
+
         ResponseBodySovler responseBodySovler = JsonUtil.jsonToObject(responseEntity.getBody(),ResponseBodySovler.class);
-        return responseBodySovler.getOpenid();
+        return responseBodySovler;
     }
+
 }

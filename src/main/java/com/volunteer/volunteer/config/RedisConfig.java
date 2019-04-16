@@ -60,6 +60,7 @@ public class RedisConfig implements Serializable {
 
     /**
      * 最新版，设置redis缓存过期时间
+     * 注意：redis 过期时间必须保证和session_key 保持一致或稍微长一点点，才能保证数据同步
      */
 
     @Bean

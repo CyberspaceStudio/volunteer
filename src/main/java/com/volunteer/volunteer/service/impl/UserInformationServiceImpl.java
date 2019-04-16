@@ -5,6 +5,9 @@ import com.volunteer.volunteer.mapper.UserInformationMapper;
 import com.volunteer.volunteer.model.UserInformation;
 import com.volunteer.volunteer.service.UserInformationService;
 import com.volunteer.volunteer.util.RandomUtil;
+import com.volunteer.volunteer.util.ToolSupport.CacheResponseBody;
+import com.volunteer.volunteer.util.ToolSupport.ResponseBodySovler;
+import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import com.volunteer.volunteer.util.WeChatUtil;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -27,12 +30,13 @@ public class UserInformationServiceImpl implements UserInformationService {
 
     /**
      * 用户如果未曾使用过，则进行注册
+     * 注：由于session_key再次请求会更新实效，所以将响应体写在了服务层
      */
     @Override
-    @Cacheable(value = "userCache", key = "#result.mainId + ''")
-    public UserInformation userLoginWechat(WxInfo loginData) throws Exception {
-        String openId = WeChatUtil.getOpenId(loginData.getCode());
-        UserInformation findResult = userInformationMapper.selectByOpenId(openId);
+    @Cacheable(value = "userCache", key = "#result.key")
+    public CacheResponseBody<UserInformation> userLoginWechat(WxInfo loginData) throws Exception {
+        ResponseBodySovler wechatResponseBody = WeChatUtil.getWechatResponseBody(loginData.getCode());
+        UserInformation findResult = userInformationMapper.selectByOpenId(wechatResponseBody.getOpenid());
         if (findResult == null) {
             UserInformation res = new UserInformation();
             int mainId = RandomUtil.getUniqueKey();
@@ -46,17 +50,17 @@ public class UserInformationServiceImpl implements UserInformationService {
                     mainId = RandomUtil.getUniqueKey();
                 }
             }
-            res.setOpenId(openId);
+            res.setOpenId(wechatResponseBody.getOpenid());
             res.setFalseName(loginData.getFalseName());
             res.setHeadPictureUrl(loginData.getHeadPictureUrl());
             if (userInformationMapper.insert(res) != 0) {
-                return res;
+                return new CacheResponseBody<>(0,wechatResponseBody.getSession_key(),res);
             } else {
                 log.error("【数据库操作】插入失败！");
-                return null;
+                return new CacheResponseBody<>(1,wechatResponseBody.getSession_key(),null);
             }
         }
-        return findResult;
+        return new CacheResponseBody<>(0,wechatResponseBody.getSession_key(),findResult);
     }
 
     /**

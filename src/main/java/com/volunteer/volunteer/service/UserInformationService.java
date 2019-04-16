@@ -2,6 +2,7 @@ package com.volunteer.volunteer.service;
 
 import com.volunteer.volunteer.dto.WxInfo;
 import com.volunteer.volunteer.model.UserInformation;
+import com.volunteer.volunteer.util.ToolSupport.CacheResponseBody;
 import org.springframework.cache.annotation.Cacheable;
 
 /**
@@ -11,7 +12,7 @@ import org.springframework.cache.annotation.Cacheable;
  */
 public interface UserInformationService {
 
-    UserInformation userLoginWechat(WxInfo loginData) throws Exception;
+    CacheResponseBody<UserInformation> userLoginWechat(WxInfo loginData) throws Exception;
 
     UserInformation userLogin(UserInformation user);
 
