@@ -6,5 +6,7 @@ import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 public interface ManagerService {
     boolean insertManager(Manager manager);
 
-    UniversalResponseBody findManagerByName(String name);
+    //UniversalResponseBody findManagerByName(String name);
+
+    Manager findManagerByName(String name);
 }

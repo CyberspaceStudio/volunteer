@@ -25,8 +25,16 @@ public class ManagerServiceImpl implements ManagerService {
         return flag;
     }
 
+    /**
+    *
     @Override
     public UniversalResponseBody findManagerByName(String name) {
-        return new UniversalResponseBody(0,"成功",managerMapper.selectByName(name));
+    return new UniversalResponseBody(0,"成功",managerMapper.selectByName(name));
+    }
+     */
+
+    @Override
+    public Manager findManagerByName(String name){
+        return managerMapper.selectByName(name);
     }
 }

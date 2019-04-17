@@ -8,14 +8,16 @@ import com.volunteer.volunteer.util.ToolSupport.CacheResponseBody;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 
 /**
  * 本控制器用于控制用户登录的多种行为，通过重载方法来区分用户身份
  * 注:1.可能要序列化接口
- *    2.由于session_key再次请求会更新失效，所以将响应体写在了服务层
+ * 2.由于session_key再次请求会更新失效，所以将响应体写在了服务层
  */
 @RestController
 @Slf4j
@@ -28,20 +30,38 @@ public class LoginController {
     private ManagerService managerService;
 
 
-    @RequestMapping(value = "/login/user",method = RequestMethod.POST)
+    @RequestMapping(value = "/login/user", method = RequestMethod.POST)
     public CacheResponseBody login(@NotNull WxInfo loginData) {
         try {
             return userInformationService.userLoginWechat(loginData);
         } catch (Exception e) {
-            log.error(" 【微信登录】登录失败",e);
+            log.error(" 【微信登录】登录失败", e);
             e.printStackTrace();
             return null;
         }
     }
 
-    @RequestMapping(value = "/login/manager",method = RequestMethod.POST)
-    public UniversalResponseBody pcLogin(Manager manager, HttpServletResponse response){
-        //Manager loginManager = managerService.findManagerByName(manager.getManagerName());
-        return null;
+    /**
+     * @Description: pc端登陆
+     * @Param: [loginManager, request]
+     * @return: UniversalResponseBody
+     */
+    @RequestMapping(value = "/login/manager", method = RequestMethod.POST)
+    public UniversalResponseBody pcLogin(Manager loginManager, HttpServletRequest request) {
+        try {
+            Manager manager = managerService.findManagerByName(loginManager.getManagerName());
+            if (manager == null) {
+                return new UniversalResponseBody(0, "用户不存在!");
+            } else if (!manager.getManagerPassword().equals(loginManager.getManagerPassword())) {
+                return new UniversalResponseBody(1, "密码错误！");
+            }else {
+                request.getSession().setAttribute("managerName",manager.getManagerName());
+                return new UniversalResponseBody(0,"成功！",manager);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("【PC端登陆】登陆失败", e);
+            return new UniversalResponseBody(1, "登陆异常！");
+        }
     }
 }
