@@ -1,28 +1,34 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.volunteer.volunteer.mapper.UserLikeMapper" >
-  <resultMap id="BaseResultMap" type="com.volunteer.volunteer.model.UserLike" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="user_id" property="userId" jdbcType="INTEGER" />
-    <result column="activity_id" property="activityId" jdbcType="INTEGER" />
-    <result column="like_status" property="likeStatus" jdbcType="INTEGER" />
-    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.volunteer.volunteer.mapper.UserLikeMapper">
+  <resultMap id="BaseResultMap" type="com.volunteer.volunteer.model.UserLike">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="activity_id" jdbcType="INTEGER" property="activityId" />
+    <result column="like_status" jdbcType="INTEGER" property="likeStatus" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, user_id, activity_id, like_status, is_delete, create_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from user_like
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <select id="getIdCounter" resultType="java.lang.Integer">
+    select
+    count(activity_id)
+    FROM user_like
+    WHERE activity_id = #{activityId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user_like
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.volunteer.volunteer.model.UserLike" >
+  <insert id="insert" parameterType="com.volunteer.volunteer.model.UserLike">
     insert into user_like (id, user_id, activity_id, 
       like_status, is_delete, create_time
       )
@@ -30,71 +36,71 @@
       #{likeStatus,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.volunteer.volunteer.model.UserLike" >
+  <insert id="insertSelective" parameterType="com.volunteer.volunteer.model.UserLike">
     insert into user_like
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         id,
       </if>
-      <if test="userId != null" >
+      <if test="userId != null">
         user_id,
       </if>
-      <if test="activityId != null" >
+      <if test="activityId != null">
         activity_id,
       </if>
-      <if test="likeStatus != null" >
+      <if test="likeStatus != null">
         like_status,
       </if>
-      <if test="isDelete != null" >
+      <if test="isDelete != null">
         is_delete,
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         create_time,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="userId != null" >
+      <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
-      <if test="activityId != null" >
+      <if test="activityId != null">
         #{activityId,jdbcType=INTEGER},
       </if>
-      <if test="likeStatus != null" >
+      <if test="likeStatus != null">
         #{likeStatus,jdbcType=INTEGER},
       </if>
-      <if test="isDelete != null" >
+      <if test="isDelete != null">
         #{isDelete,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.volunteer.volunteer.model.UserLike" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.volunteer.volunteer.model.UserLike">
     update user_like
-    <set >
-      <if test="userId != null" >
+    <set>
+      <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="activityId != null" >
+      <if test="activityId != null">
         activity_id = #{activityId,jdbcType=INTEGER},
       </if>
-      <if test="likeStatus != null" >
+      <if test="likeStatus != null">
         like_status = #{likeStatus,jdbcType=INTEGER},
       </if>
-      <if test="isDelete != null" >
+      <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.volunteer.volunteer.model.UserLike" >
+  <update id="updateByPrimaryKey" parameterType="com.volunteer.volunteer.model.UserLike">
     update user_like
     set user_id = #{userId,jdbcType=INTEGER},
       activity_id = #{activityId,jdbcType=INTEGER},

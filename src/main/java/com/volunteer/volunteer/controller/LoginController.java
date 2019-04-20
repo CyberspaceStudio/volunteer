@@ -56,7 +56,7 @@ public class LoginController {
                 return new UniversalResponseBody(1, "密码错误！");
             }else {
                 request.getSession().setAttribute("managerName",manager.getManagerName());
-                return new UniversalResponseBody(0,"成功！",manager);
+                return new UniversalResponseBody<>(0,"成功！",manager);
             }
         } catch (Exception e) {
             e.printStackTrace();

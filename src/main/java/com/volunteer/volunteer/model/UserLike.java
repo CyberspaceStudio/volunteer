@@ -13,7 +13,7 @@ public class UserLike {
 
     private Integer isDelete;
 
-    private Date createTime;
+    private String createTime;
 
     public Integer getId() {
         return id;
@@ -55,11 +55,11 @@ public class UserLike {
         this.isDelete = isDelete;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 }

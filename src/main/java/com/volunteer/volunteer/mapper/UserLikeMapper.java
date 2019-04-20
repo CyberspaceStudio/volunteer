@@ -11,6 +11,8 @@ public interface UserLikeMapper {
 
     UserLike selectByPrimaryKey(Integer id);
 
+    int getIdCounter(Integer activityId);
+
     int updateByPrimaryKeySelective(UserLike record);
 
     int updateByPrimaryKey(UserLike record);

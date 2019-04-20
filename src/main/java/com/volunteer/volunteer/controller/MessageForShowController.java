@@ -27,6 +27,7 @@ public class MessageForShowController {
      */
     @PostMapping("/new")
     public UniversalResponseBody addNewMessage(MessageForShow record){
+        record.setActivityTime(null);
         int res = messageForShowService.addNewMessage(record);
         if(res != -1){
             return new UniversalResponseBody<>(0,"成功",res);

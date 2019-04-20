@@ -9,7 +9,7 @@ public class MessageForShow {
 
     private String department;
 
-    private Date activityTime;
+    private String activityTime;
 
     private String content;
 
@@ -43,11 +43,11 @@ public class MessageForShow {
         this.department = department == null ? null : department.trim();
     }
 
-    public Date getActivityTime() {
+    public String getActivityTime() {
         return activityTime;
     }
 
-    public void setActivityTime(Date activityTime) {
+    public void setActivityTime(String activityTime) {
         this.activityTime = activityTime;
     }
 

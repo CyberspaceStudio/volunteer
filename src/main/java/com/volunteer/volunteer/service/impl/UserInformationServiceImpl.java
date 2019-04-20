@@ -50,6 +50,7 @@ public class UserInformationServiceImpl implements UserInformationService {
                     mainId = RandomUtil.getUniqueKey();
                 }
             }
+            res.setRegistTime(null);
             res.setOpenId(wechatResponseBody.getOpenid());
             res.setFalseName(loginData.getFalseName());
             res.setHeadPictureUrl(loginData.getHeadPictureUrl());

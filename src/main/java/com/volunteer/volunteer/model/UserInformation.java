@@ -25,7 +25,7 @@ public class UserInformation {
 
     private String organization;
 
-    private Date registTime;
+    private String registTime;
 
     private String position;
 
@@ -117,11 +117,11 @@ public class UserInformation {
         this.organization = organization == null ? null : organization.trim();
     }
 
-    public Date getRegistTime() {
+    public String getRegistTime() {
         return registTime;
     }
 
-    public void setRegistTime(Date registTime) {
+    public void setRegistTime(String registTime) {
         this.registTime = registTime;
     }
 
