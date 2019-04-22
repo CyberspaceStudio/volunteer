@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import javax.annotation.Resource;
 
+
 /**
  * @Author: MaoLin
  * @Date: 2019/3/24 11:15
@@ -31,11 +32,13 @@ public class UserInformationServiceImpl implements UserInformationService {
     /**
      * 用户如果未曾使用过，则进行注册
      * 注：由于session_key再次请求会更新实效，所以将响应体写在了服务层
+     * bug:selectByOpenId 查出数据为null，通过测试openId 已经获取。
      */
     @Override
-    @Cacheable(value = "userCache", key = "#result.key")
+    //@Cacheable(value = "userCache", key = "#result.key")
     public CacheResponseBody<UserInformation> userLoginWechat(WxInfo loginData) throws Exception {
         ResponseBodySovler wechatResponseBody = WeChatUtil.getWechatResponseBody(loginData.getCode());
+        //System.out.println(wechatResponseBody.getOpenid());
         UserInformation findResult = userInformationMapper.selectByOpenId(wechatResponseBody.getOpenid());
         if (findResult == null) {
             UserInformation res = new UserInformation();
@@ -43,7 +46,6 @@ public class UserInformationServiceImpl implements UserInformationService {
             while (true) {
                 if (userInformationMapper.selectByPrimaryKey(mainId) == null) {
                     res.setMainId(mainId);
-                    //result.setMainId(123);
                     log.info("【微信登录】用户第一次使用，进行注册！");
                     break;
                 } else {
@@ -53,6 +55,8 @@ public class UserInformationServiceImpl implements UserInformationService {
             res.setOpenId(wechatResponseBody.getOpenid());
             res.setFalseName(loginData.getFalseName());
             res.setHeadPictureUrl(loginData.getHeadPictureUrl());
+
+            res.setRegistTime(System.currentTimeMillis());
             if (userInformationMapper.insert(res) != 0) {
                 return new CacheResponseBody<>(0,wechatResponseBody.getSession_key(),res);
             } else {

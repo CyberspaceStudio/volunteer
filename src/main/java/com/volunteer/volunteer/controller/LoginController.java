@@ -8,15 +8,13 @@ import com.volunteer.volunteer.util.ToolSupport.CacheResponseBody;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 
 /**
  * 本控制器用于控制用户登录的多种行为，通过重载方法来区分用户身份
- * 注:1.可能要序列化接口
+ * 注:1.可能要序列化接口0
  * 2.由于session_key再次请求会更新失效，所以将响应体写在了服务层
  */
 @RestController
@@ -29,8 +27,8 @@ public class LoginController {
     @Resource
     private ManagerService managerService;
 
-
-    @RequestMapping(value = "/login/user", method = RequestMethod.POST)
+    @GetMapping(value = "/login/user")
+    //@RequestMapping(value = "/login/user", method = RequestMethod.POST)
     public CacheResponseBody login(@NotNull WxInfo loginData) {
         try {
             return userInformationService.userLoginWechat(loginData);

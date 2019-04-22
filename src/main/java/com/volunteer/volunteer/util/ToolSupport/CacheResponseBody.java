@@ -8,7 +8,7 @@ package com.volunteer.volunteer.util.ToolSupport;
 public class CacheResponseBody<T> {
     private int errCode;
 
-    private String key;
+    private String session_key;
 
     private T value;
 
@@ -20,12 +20,12 @@ public class CacheResponseBody<T> {
         this.errCode = errCode;
     }
 
-    public String getKey() {
-        return key;
+    public String getSession_key() {
+        return session_key;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setSession_key(String session_key) {
+        this.session_key = session_key;
     }
 
     public T getValue() {
@@ -36,10 +36,10 @@ public class CacheResponseBody<T> {
         this.value = value;
     }
 
-    public CacheResponseBody(int errCode, String key, T value) {
+
+    public CacheResponseBody(int errCode, String session_key, T value) {
         this.errCode = errCode;
-        this.key = key;
+        this.session_key = session_key;
         this.value = value;
     }
-
 }
