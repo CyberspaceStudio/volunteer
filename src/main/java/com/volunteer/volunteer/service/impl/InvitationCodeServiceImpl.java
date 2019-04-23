@@ -34,8 +34,9 @@ public class InvitationCodeServiceImpl implements InvitationCodeService {
      */
     @Override
     public InvitationCode checkInvitationCode(String code) {
-        InvitationCode temp = this.invitationCodeMapper.selectByCode(code);
-        if (temp.getCodeContain() != null){
+        InvitationCode temp = null;
+        temp = this.invitationCodeMapper.selectByCode(code);
+        if (temp != null){
             return temp;
         }
         return null;

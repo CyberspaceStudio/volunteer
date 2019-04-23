@@ -17,7 +17,7 @@
     from invitation_code
     where code_id = #{codeId,jdbcType=INTEGER}
   </select>
-  <select id="selectByCode" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  <select id="selectByCode" resultMap="BaseResultMap" parameterType="java.lang.String">
     select
     <include refid="Base_Column_List"/>
     from invitation_code

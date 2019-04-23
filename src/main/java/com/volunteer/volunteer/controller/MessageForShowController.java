@@ -13,7 +13,6 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/message")
-//@CrossOrigin(allowCredentials = "true")
 public class MessageForShowController {
     @Resource
     MessageForShowService messageForShowService;

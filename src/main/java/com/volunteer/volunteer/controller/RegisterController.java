@@ -16,7 +16,7 @@ import javax.annotation.Resource;
  * 该控制器用于控制多种注册方法，通过mapping重载的方式来使用同类型方法处理不同的注册方式
  */
 @RestController
-@RequestMapping("register")
+@RequestMapping("/register")
 public class RegisterController {
     @Resource
     ManagerService managerService;
@@ -44,7 +44,7 @@ public class RegisterController {
      * @param manager 用于管理员注册的辅助对象，前端字段必须和对象属性相同
      * @return 返回一个通用请求体
      */
-    @GetMapping("/admin")
+    @PostMapping("/admin")
     public UniversalResponseBody register(Manager manager){
         if(managerService.insertManager(manager))
             return new UniversalResponseBody(0,"成功");
