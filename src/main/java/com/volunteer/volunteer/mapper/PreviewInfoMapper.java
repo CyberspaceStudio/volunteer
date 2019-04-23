@@ -10,5 +10,5 @@ public interface PreviewInfoMapper {
 
     List<PreviewInfo> selectByMainId(Integer mainId);
 
-    List<PreviewInfo> selectByDepartment(String department);
+    List<PreviewInfo> selectByDepartment(String department,String timeBeginning,String timeEnding);
 }

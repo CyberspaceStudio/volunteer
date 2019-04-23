@@ -28,7 +28,7 @@ public class PreviewInfoServiceImpl implements PreviewInfoService {
     }
 
     @Override
-    public List<PreviewInfo> getPreviewByDepartment(String department) {
-        return previewInfoMapper.selectByDepartment(department);
+    public List<PreviewInfo> getPreviewByDepartment(String department,String timeBeginning,String timeEnding) {
+        return previewInfoMapper.selectByDepartment(department,timeBeginning,timeEnding);
     }
 }

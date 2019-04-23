@@ -10,5 +10,5 @@ public interface PreviewInfoService {
 
     List<PreviewInfo> getPreviewByMainId(int mainId);
 
-    List<PreviewInfo> getPreviewByDepartment(String department);
+    List<PreviewInfo> getPreviewByDepartment(String department,String timeBeginning,String timeEnding);
 }

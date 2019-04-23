@@ -39,7 +39,7 @@
         where main_id = #{mainId,jdbcType=INTEGER}
         limit 2
     </select>
-    <select id="selectByDepartment" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="selectByDepartment" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         FROM
@@ -49,5 +49,7 @@
         )
         ) b on a.activity_id = b.activity_id
         where department = #{department,jdbcType=VARCHAR}
+        AND unix_timestamp(activity_time) > unix_timestamp(#{timeBeginning,jdbcType=VARCHAR})
+        AND unix_timestamp(activity_time) &lt; unix_timestamp(#{timeEnding,jdbcType=VARCHAR})
     </select>
 </mapper>

@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/picture")
+@CrossOrigin(allowCredentials = "true")
 public class PictureController {
     @Resource
     private FileUtil fileUtil;
