@@ -2,6 +2,8 @@ package com.volunteer.volunteer.mapper;
 
 import com.volunteer.volunteer.model.UserLike;
 
+import java.util.Map;
+
 public interface UserLikeMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -12,6 +14,10 @@ public interface UserLikeMapper {
     UserLike selectByPrimaryKey(Integer id);
 
     int getIdCounter(Integer activityId);
+
+    int updateStatus(Map<String,Object> data);
+
+    UserLike getCheckInfo(Map<String,Object> data);
 
     int updateByPrimaryKeySelective(UserLike record);
 

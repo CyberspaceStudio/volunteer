@@ -3,7 +3,9 @@ package com.volunteer.volunteer.service;
 import com.volunteer.volunteer.model.UserLike;
 
 public interface LikeStrategy {
-    void like(UserLike userLike);
+    boolean like(int userId,int activityId);
 
-    void unlike(UserLike userLike);
+    boolean unlike(int userId,int activityId);
+
+    boolean checkStatus(int userId,int activityId);
 }
