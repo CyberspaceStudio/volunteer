@@ -3,6 +3,7 @@ package com.volunteer.volunteer.controller;
 import com.volunteer.volunteer.model.InvitationCode;
 import com.volunteer.volunteer.service.InvitationCodeService;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +31,16 @@ public class InvitationController {
             return new UniversalResponseBody(1,"失败");
         }else {
             return new UniversalResponseBody<>(0,"成功",code);
+        }
+    }
+
+    @GetMapping("/check")
+    public UniversalResponseBody checkInvitationCode(String invitationCode){
+        InvitationCode res = invitationCodeService.checkInvitationCode(invitationCode);
+        if(res == null){
+            return new UniversalResponseBody<>(-1,"成功","Not exist");
+        }else{
+            return new UniversalResponseBody<>(0,"成功",res);
         }
     }
 }

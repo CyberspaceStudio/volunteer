@@ -42,10 +42,10 @@
   </delete>
   <insert id="insert" parameterType="com.volunteer.volunteer.model.MessageForShow" >
     insert into volunteer_activity (activity_id, information_name, department, 
-      activity_time, content, reading_volume, 
+      activity_time, content, reading_volume,
       main_id, portrait_url)
     values (#{activityId,jdbcType=INTEGER}, #{informationName,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, 
-      #{activityTime,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR}, #{readingVolume,jdbcType=INTEGER}, 
+      #{activityTime,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR}, #{readingVolume,jdbcType=INTEGER},
       #{mainId,jdbcType=INTEGER}, #{portraitUrl,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.volunteer.volunteer.model.MessageForShow" >

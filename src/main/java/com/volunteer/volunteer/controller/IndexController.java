@@ -18,7 +18,7 @@ public class IndexController {
     @GetMapping("/myInfo")
     public UniversalResponseBody getMyInformation(@RequestParam("mainId") int mainId){
 
-        return new UniversalResponseBody(0,"成功");
+        return new UniversalResponseBody<>(0,"成功",userInformationService.findById(mainId));
     }
 
     @GetMapping("/othersInfo")

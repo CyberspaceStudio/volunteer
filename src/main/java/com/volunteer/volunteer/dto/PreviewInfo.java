@@ -1,7 +1,7 @@
 package com.volunteer.volunteer.dto;
 
 public class PreviewInfo {
-    private Integer activity_id;
+    private Integer activityId;
 
     private String informationName;
 
@@ -29,12 +29,12 @@ public class PreviewInfo {
         this.pictureUrl = pictureUrl;
     }
 
-    public Integer getActivity_id() {
-        return activity_id;
+    public Integer getActivityId() {
+        return activityId;
     }
 
-    public void setActivity_id(Integer activity_id) {
-        this.activity_id = activity_id;
+    public void setActivityId(Integer activityId) {
+        this.activityId = activityId;
     }
 
     public String getInformationName() {
