@@ -33,6 +33,13 @@ public class FileUtil {
     public boolean uploadHelper(MultipartFile[] temp,int activityId){
         boolean flag = true;
         for(int incr = 0;incr < temp.length;incr++){
+            try {
+                if (temp[incr].getOriginalFilename() == null || temp[incr].getOriginalFilename().equals("")) {
+                    continue;
+                }
+            }catch (NullPointerException e){
+                e.printStackTrace();
+            }
             if(upload(temp[incr],activityId)){
                 flag = true;
             }else {
@@ -54,7 +61,8 @@ public class FileUtil {
             String fileType = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
             path = path + fileType;
             Picture temp = new Picture();
-            temp.setPictureUrl(path);
+            String picUrl = "/image/photo/" + fileName + "_" + activityId + fileType;
+            temp.setPictureUrl(picUrl);
             temp.setActivityId(activityId);
             java.io.File ttep = new java.io.File(path);
             if(!ttep.getParentFile().exists()){
