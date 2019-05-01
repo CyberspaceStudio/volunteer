@@ -24,6 +24,12 @@
     FROM user_like
     WHERE activity_id = #{activityId,jdbcType=INTEGER}
   </select>
+  <select id="getCheckInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from user_like
+    where user_id = #{userId,jdbcType=INTEGER} AND activity_id = #{activityId,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user_like
     where id = #{id,jdbcType=INTEGER}
@@ -98,6 +104,11 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateStatus">
+    update user_like
+    set like_status = #{likeStatus,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.volunteer.volunteer.model.UserLike">

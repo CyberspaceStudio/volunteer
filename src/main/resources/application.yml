@@ -5,6 +5,8 @@ server:
       timeout: 1800s
   tomcat:
     uri-encoding: UTF-8
+    protocol-header: x-forwarded-proto
+  use-forward-headers: true
 
 mybatis:
   type-aliases-package: com/volunteer/volunteer/model
