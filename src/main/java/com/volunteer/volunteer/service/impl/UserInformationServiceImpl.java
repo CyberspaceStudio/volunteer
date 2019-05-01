@@ -7,7 +7,8 @@ import com.volunteer.volunteer.service.UserInformationService;
 import com.volunteer.volunteer.util.ToolSupport.CacheResponseBody;
 import com.volunteer.volunteer.util.ToolSupport.ResponseBodySovler;
 import com.volunteer.volunteer.util.WeChatUtil;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import javax.annotation.Resource;
@@ -26,6 +27,9 @@ public class UserInformationServiceImpl implements UserInformationService {
     @Resource
     private UserInformationMapper userInformationMapper;
 
+    @Autowired
+    private WeChatUtil weChatUtil;
+
 
     /**
      * 用户如果未曾使用过，则进行注册
@@ -34,24 +38,23 @@ public class UserInformationServiceImpl implements UserInformationService {
      * bug:selectByOpenId 查出数据为null，通过测试openId 已经获取。
      */
     @Override
-    @Cacheable(value = "userCache", key = "#loginData.session_key",condition = "#loginData.session_key !='' and #loginData.session_key !=0" )
+    @CachePut(value = "userCache", key = "#result.session_key",condition = "#result.session_key != null")
     public CacheResponseBody<UserInformation> userLoginWechat(WxInfo loginData) throws Exception {
-        ResponseBodySovler wechatResponseBody = WeChatUtil.getWechatResponseBody(loginData.getCode());
-        //System.out.println(wechatResponseBody.getOpenid());
+        ResponseBodySovler wechatResponseBody = weChatUtil.getWechatResponseBody(loginData.getCode());
         UserInformation findResult = userInformationMapper.selectByOpenId(wechatResponseBody.getOpenid());
+
         if (findResult == null) {
             UserInformation res = new UserInformation();
-
-            log.info("【微信登录】用户第一次使用，进行注册！");
-
-            //res.setRegistTime(null);
             res.setOpenId(wechatResponseBody.getOpenid());
             res.setFalseName(loginData.getFalseName());
             res.setHeadPictureUrl(loginData.getHeadPictureUrl());
             res.setRegistTime(String.valueOf(System.currentTimeMillis()));
 
+            log.info("【微信登录】用户第一次使用，进行注册！");
+
             if (userInformationMapper.insert(res) != 0) {
-                return new CacheResponseBody<>(0,wechatResponseBody.getSession_key(),res);
+                return new CacheResponseBody<>(0,wechatResponseBody.getSession_key(),userInformationMapper.selectByOpenId(wechatResponseBody.getOpenid()));
+
             } else {
                 log.error("【数据库操作】插入失败！");
                 return new CacheResponseBody<>(1,wechatResponseBody.getSession_key(),null);

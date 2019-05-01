@@ -6,10 +6,6 @@ server:
   tomcat:
     uri-encoding: UTF-8
 
-spring:
-  profiles:
-    active: dev
-
 mybatis:
   type-aliases-package: com/volunteer/volunteer/model
   mapper-locations: classpath:mapping/*.xml
@@ -19,10 +15,12 @@ wx:
   appid: wx07995d169ac8092e
   secret: 1cb93e42d6888bf81c61d0c3ab336696
   url: https://api.weixin.qq.com/sns/jscode2session?appid=${wx.appid}&secret=${wx.secret}&grant_type=authorization_code&js_code=
----
+
+
 
 spring:
-  profiles: dev
+  profiles:
+    active: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/volunteer_test?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT

@@ -21,6 +21,7 @@ public class WxInfo implements Serializable {
         this.code = code;
         this.headPictureUrl = headPictureUrl;
         this.falseName = falseName;
+        this.session_key = null;
     }
 
     public WxInfo(String code, String headPictureUrl, String falseName, String session_key) {
@@ -28,6 +29,9 @@ public class WxInfo implements Serializable {
         this.headPictureUrl = headPictureUrl;
         this.falseName = falseName;
         this.session_key = session_key;
+    }
+
+    public WxInfo(){
     }
 
     public String getCode() {

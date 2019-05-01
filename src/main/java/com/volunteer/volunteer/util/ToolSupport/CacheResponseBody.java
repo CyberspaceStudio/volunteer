@@ -10,7 +10,7 @@ public class CacheResponseBody<T> {
 
     private String session_key;
 
-    private T value;
+    private T data;
 
     public int getErrCode() {
         return errCode;
@@ -28,18 +28,29 @@ public class CacheResponseBody<T> {
         this.session_key = session_key;
     }
 
-    public T getValue() {
-        return value;
+    public T getData() {
+        return data;
     }
 
-    public void setValue(T value) {
-        this.value = value;
+    public void setData(T data) {
+        this.data = data;
     }
 
+    public CacheResponseBody(String session_key) {
+        this.session_key = session_key;
+    }
 
-    public CacheResponseBody(int errCode, String session_key, T value) {
+    public CacheResponseBody(int errCode, String session_key, T data) {
         this.errCode = errCode;
         this.session_key = session_key;
-        this.value = value;
+        this.data = data;
+    }
+
+    public CacheResponseBody(){}
+
+    public CacheResponseBody(int errCode, String session_key) {
+        this.errCode = errCode;
+        this.session_key = session_key;
+        this.data = null;
     }
 }
