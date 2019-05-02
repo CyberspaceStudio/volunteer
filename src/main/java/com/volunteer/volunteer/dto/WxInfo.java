@@ -15,10 +15,23 @@ public class WxInfo implements Serializable {
 
     private String falseName;
 
+    private String session_key;
+
     public WxInfo(String code, String headPictureUrl, String falseName) {
         this.code = code;
         this.headPictureUrl = headPictureUrl;
         this.falseName = falseName;
+        this.session_key = null;
+    }
+
+    public WxInfo(String code, String headPictureUrl, String falseName, String session_key) {
+        this.code = code;
+        this.headPictureUrl = headPictureUrl;
+        this.falseName = falseName;
+        this.session_key = session_key;
+    }
+
+    public WxInfo(){
     }
 
     public String getCode() {
@@ -45,12 +58,21 @@ public class WxInfo implements Serializable {
         this.falseName = falseName;
     }
 
+    public String getSession_key() {
+        return session_key;
+    }
+
+    public void setSession_key(String session_key) {
+        this.session_key = session_key;
+    }
+
     @Override
     public String toString() {
         return "WxInfo{" +
                 "code='" + code + '\'' +
                 ", headPictureUrl='" + headPictureUrl + '\'' +
                 ", falseName='" + falseName + '\'' +
+                ", session_key='" + session_key + '\'' +
                 '}';
     }
 }

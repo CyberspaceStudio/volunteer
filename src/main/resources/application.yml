@@ -8,23 +8,21 @@ server:
     protocol-header: x-forwarded-proto
   use-forward-headers: true
 
-spring:
-  profiles:
-    active: dev
-
 mybatis:
   type-aliases-package: com/volunteer/volunteer/model
   mapper-locations: classpath:mapping/*.xml
 
 
 wx:
-  appid:
-  secret:
-  url:
----
+  appid: wx07995d169ac8092e
+  secret: 1cb93e42d6888bf81c61d0c3ab336696
+  url: https://api.weixin.qq.com/sns/jscode2session?appid=${wx.appid}&secret=${wx.secret}&grant_type=authorization_code&js_code=
+
+
 
 spring:
-  profiles: dev
+  profiles:
+    active: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/volunteer_test?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT
@@ -39,7 +37,7 @@ spring:
   redis:
     port: 6379
     host: 127.0.0.1
-    password: 123456
+    #password: 123456
     # 连接超时时间（毫秒）默认是2000ms
     timeout: 2000ms
     jedis:

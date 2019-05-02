@@ -7,11 +7,13 @@ import com.volunteer.volunteer.service.UserInformationService;
 import com.volunteer.volunteer.util.ToolSupport.CacheResponseBody;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -29,7 +31,7 @@ public class LoginController {
     @Resource
     private ManagerService managerService;
 
-
+    @Cacheable(value = "userCache",key = "#loginData.session_key",condition = "#loginData.session_key !=null")
     @RequestMapping(value = "/login/user", method = RequestMethod.POST)
     public CacheResponseBody login(@NotNull WxInfo loginData) {
         try {
@@ -54,14 +56,20 @@ public class LoginController {
                 return new UniversalResponseBody(0, "用户不存在!");
             } else if (!manager.getManagerPassword().equals(loginManager.getManagerPassword())) {
                 return new UniversalResponseBody(1, "密码错误！");
-            }else {
-                request.getSession().setAttribute("managerName",manager.getManagerName());
-                return new UniversalResponseBody<>(0,"成功！",manager);
+            } else {
+                request.getSession().setAttribute("managerName", manager.getManagerName());
+                return new UniversalResponseBody<>(0, "成功！", manager);
             }
         } catch (Exception e) {
             e.printStackTrace();
             log.error("【PC端登陆】登陆失败", e);
             return new UniversalResponseBody(1, "登陆异常！");
         }
+    }
+
+    @GetMapping(value = "/test")
+    @Cacheable(value = "userCache", key = "#loginData.session_key",condition = "#loginData.session_key !=0" )
+    public CacheResponseBody test(WxInfo loginData) {
+        return new CacheResponseBody(0,"ceshi");
     }
 }

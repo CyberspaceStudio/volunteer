@@ -26,12 +26,13 @@
     from information
     where main_id = #{mainId,jdbcType=INTEGER}
   </select>
-  <select id="selectByOpenId" resultType="com.volunteer.volunteer.model.UserInformation">
+  <select id="selectByOpenId" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
     from information
     where open_id = #{openId,jdbcType=VARCHAR}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from information
     where main_id = #{mainId,jdbcType=INTEGER}
