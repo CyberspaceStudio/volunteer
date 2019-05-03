@@ -27,6 +27,12 @@ public class UserInformation {
 
     private String registTime;
 
+    /**
+    * position 数字代表：
+    * 11 正队长 12 副队长
+    * 21 正部长 22 副部长
+    * 3  部员   4  游客
+    */
     private String position;
 
     public Integer getMainId() {

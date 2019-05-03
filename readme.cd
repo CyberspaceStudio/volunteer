@@ -1,0 +1,46 @@
+# 数据库更改:
+
+```
+CREATE TABLE `enroll` (
+  `main_id` int(6) unsigned NOT NULL COMMENT 'userInformationMainId',
+  `real_name` varchar(30) NOT NULL COMMENT '姓名',
+  `sex` char(6) NOT NULL COMMENT '性别',
+  `tel_no` int(12) NOT NULL COMMENT '电话',
+  `wechat` varchar(50) NOT NULL COMMENT '微信',
+  `school` varchar(20) NOT NULL COMMENT '学校',
+  `organization` varchar(20) NOT NULL COMMENT '组织',
+  `introduction` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '自我简介',
+  `first_choice` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '第一志愿',
+  `first_interview_score` char(2) DEFAULT NULL COMMENT '一面打分',
+  `first_interview_impression` varchar(255) DEFAULT NULL COMMENT '一面印象',
+  `second_choice` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '第二志愿',
+  `second_interview_score` char(2) DEFAULT NULL COMMENT '二面打分',
+  `second_interview_impression` varchar(255) DEFAULT NULL COMMENT '二面印象',
+  `third_choice` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '第三志愿',
+  `third_interview_score` char(2) DEFAULT NULL COMMENT '三面打分',
+  `third_interview_impression` varchar(255) DEFAULT NULL COMMENT '三面印象',
+  `final_department` varchar(10) DEFAULT NULL COMMENT '最终协调部门',
+  `enroll_status` char(2) DEFAULT '0' COMMENT '0未面试1通过一面2通过所有面试3正在一面4正在二面5未通过面试',
+  PRIMARY KEY (`main_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC
+```
+
+```
+CREATE DEFINER= `root`@localhost  FUNCTION `departmenttotal` (department VARCHAR(15)) RETURNS INT(11)
+BEGIN
+DECLARE res INT;
+DECLARE res1 INT;
+DECLARE res2 INT;
+DECLARE res3 INT;
+SET res = 0;
+SET res1 = 0;
+SET res2 = 0;
+SET res3 = 0;
+SELECT COUNT(first_choice) INTO res1 FROM enroll WHERE first_choice =  department;
+SELECT COUNT(second_choice) INTO res2 FROM enroll WHERE second_choice =  department;
+SELECT COUNT(third_choice) INTO res3 FROM enroll WHERE third_choice =  department;
+SET res = res1 + res2;
+SET res = res + res3;
+RETURN res;
+END
+```
