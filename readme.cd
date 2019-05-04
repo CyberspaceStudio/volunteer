@@ -20,9 +20,10 @@ CREATE TABLE `enroll` (
   `third_interview_score` char(2) DEFAULT NULL COMMENT '三面打分',
   `third_interview_impression` varchar(255) DEFAULT NULL COMMENT '三面印象',
   `final_department` varchar(10) DEFAULT NULL COMMENT '最终协调部门',
-  `enroll_status` char(2) DEFAULT '0' COMMENT '0未面试1通过一面2通过所有面试3正在一面4正在二面5未通过面试',
+  `enroll_status` char(5) NOT NULL DEFAULT '0' COMMENT '0未面试1通过一面2通过所有面试3正在一面4正在二面5未通过面试',
   PRIMARY KEY (`main_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC
+
 ```
 
 ```
@@ -44,3 +45,109 @@ SET res = res + res3;
 RETURN res;
 END
 ```
+
+
+
+```
+CREATE DEFINER= `root`@localhost  FUNCTION `crossdepartmenttotal` (department VARCHAR(15)) RETURNS INT(11)
+BEGIN
+    DECLARE res INT;
+    DECLARE res1 INT;
+    DECLARE res2 INT;
+    DECLARE res3 INT;
+    SET res = 0;
+    SET res1 = 0;
+    SET res2 = 0;
+    SET res3 = 0;
+    SELECT COUNT(first_choice) INTO res1 FROM enroll WHERE first_choice =  department AND second_choice is not null and second_choice <>'';
+    SELECT COUNT(second_choice) INTO res2 FROM enroll WHERE second_choice =  department;
+    SELECT COUNT(third_choice) INTO res3 FROM enroll WHERE third_choice =  department;
+    SET res = res1 + res2;
+    SET res = res + res3;
+    RETURN res;
+END;
+
+CREATE DEFINER= `root`@localhost  FUNCTION `departmentInterviewData` (department VARCHAR(15)) RETURNS INT(11)
+BEGIN
+    DECLARE res INT;
+DECLARE res1 INT;
+DECLARE res2 INT;
+DECLARE res3 INT;
+SET res = 0;
+SET res1 = 0;
+SET res2 = 0;
+SET res3 = 0;
+SELECT COUNT(first_choice) INTO res1 FROM enroll WHERE first_choice =  department AND first_interview_score is not null and first_interview_score <>'' ;
+SELECT COUNT(second_choice) INTO res2 FROM enroll WHERE second_choice =  department AND second_interview_score is not NULL and second_interview_score <>'';
+SELECT COUNT(third_choice) INTO res3 FROM enroll WHERE third_choice =  department AND third_interview_score is not NULL and third_interview_score <>'';
+SET res = res1 + res2;
+SET res = res + res3;
+RETURN res;
+END;
+
+
+CREATE DEFINER= `root`@localhost  FUNCTION `notDepartmentInterviewData` (department VARCHAR(15)) RETURNS INT(11)
+BEGIN
+    DECLARE res INT;
+    DECLARE res1 INT;
+    DECLARE res2 INT;
+    DECLARE res3 INT;
+    SET res = 0;
+    SET res1 = 0;
+    SET res2 = 0;
+    SET res3 = 0;
+    SELECT COUNT(first_choice) INTO res1 FROM enroll WHERE first_choice =  department AND first_interview_score is null or first_interview_score = '';
+    SELECT COUNT(second_choice) INTO res2 FROM enroll WHERE second_choice =  department AND second_interview_score is NULL or second_interview_score ='';
+    SELECT COUNT(third_choice) INTO res3 FROM enroll WHERE third_choice =  department AND third_interview_score is NULL or second_interview_score ='';
+    SET res = res1 + res2;
+    SET res = res + res3;
+    RETURN res;
+END;
+
+
+CREATE DEFINER= `root`@localhost  FUNCTION `departmentenrollbyman` (department VARCHAR(15)) RETURNS INT(11)
+BEGIN
+    DECLARE res INT;
+    DECLARE res1 INT;
+    DECLARE res2 INT;
+    DECLARE res3 INT;
+    SET res = 0;
+    SET res1 = 0;
+    SET res2 = 0;
+    SET res3 = 0;
+    SELECT COUNT(first_choice) INTO res1 FROM enroll WHERE first_choice =  department AND sex='男';
+    SELECT COUNT(second_choice) INTO res2 FROM enroll WHERE second_choice =  department AND sex='男';
+    SELECT COUNT(third_choice) INTO res3 FROM enroll WHERE third_choice =  department AND sex='男';
+    SET res = res1 + res2;
+    SET res = res + res3;
+    RETURN res;
+END;
+
+CREATE DEFINER= `root`@localhost  FUNCTION `departmentenrollbywoman` (department VARCHAR(15)) RETURNS INT(11)
+BEGIN
+    DECLARE res INT;
+    DECLARE res1 INT;
+    DECLARE res2 INT;
+    DECLARE res3 INT;
+    SET res = 0;
+    SET res1 = 0;
+    SET res2 = 0;
+    SET res3 = 0;
+    SELECT COUNT(first_choice) INTO res1 FROM enroll WHERE first_choice =  department AND sex='女';
+    SELECT COUNT(second_choice) INTO res2 FROM enroll WHERE second_choice =  department AND sex='女';
+    SELECT COUNT(third_choice) INTO res3 FROM enroll WHERE third_choice =  department AND sex='女';
+    SET res = res1 + res2;
+    SET res = res + res3;
+    RETURN res;
+END;
+```
+
+```
+alter table information modify position char(5) default 4 null comment '职位'
+```
+
+
+position 数字代表：
+11 正队长 12 副队长
+21 正部长 22 副部长
+3  部员   4  游客

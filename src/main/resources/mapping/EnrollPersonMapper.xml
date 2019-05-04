@@ -5,7 +5,7 @@
         <id column="main_id" property="mainId" jdbcType="INTEGER"/>
         <result column="real_name" property="realName" jdbcType="VARCHAR"/>
         <result column="sex" property="sex" jdbcType="CHAR"/>
-        <result column="tel_no" property="telNo" jdbcType="INTEGER"/>
+        <result column="tel_no" property="telNo" jdbcType="CHAR"/>
         <result column="wechat" property="wechat" jdbcType="VARCHAR"/>
         <result column="school" property="school" jdbcType="VARCHAR"/>
         <result column="organization" property="organization" jdbcType="VARCHAR"/>
@@ -46,6 +46,40 @@
     <select id="crossDepartmentTotal" resultType="java.lang.Integer">
         select crossdepartmenttotal (#{department});
     </select>
+    <select id="interviewData" resultType="java.lang.Integer">
+        select count(enroll_status)
+        from enroll
+        where  enroll_status !=0 ;
+    </select>
+    <select id="notInterviewData" resultType="java.lang.Integer">
+        select count(enroll_status)
+        from enroll
+        where  enroll_status =0 ;
+    </select>
+    <select id="departmentInterviewData" resultType="java.lang.Integer">
+        select departmentInterviewData(#{department});
+    </select>
+    <select id="notDepartmentInterviewData" resultType="java.lang.Integer">
+        select notDepartmentInterviewData(#{department});
+    </select>
+    <select id="secondDepartmentInterviewData" resultType="java.lang.Integer">
+        select count(final_department)
+        from enroll
+        where final_department=(#{department})
+        and enroll_status = 502;
+    </select>
+    <select id="notSecondDepartmentInterviewData" resultType="java.lang.Integer">
+        select count(final_department)
+        from enroll
+        where final_department=(#{department})
+        and enroll_status != 502;
+    </select>
+    <select id="departmentEnrollByMan" resultType="java.lang.Integer">
+        select departmentenrollbyman(#{department});
+    </select>
+    <select id="departmentEnrollByWoman" resultType="java.lang.Integer">
+        select departmentEnrollByWoman(#{department});
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from enroll
@@ -61,7 +95,7 @@
       third_choice, third_interview_score, third_interview_impression, 
       final_department, enroll_status)
     values (#{mainId,jdbcType=INTEGER}, #{realName,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, 
-      #{telNo,jdbcType=INTEGER}, #{wechat,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR}, 
+      #{telNo,jdbcType=CHAR}, #{wechat,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR},
       #{organization,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, #{firstChoice,jdbcType=VARCHAR}, 
       #{firstInterviewScore,jdbcType=CHAR}, #{firstInterviewImpression,jdbcType=VARCHAR}, 
       #{secondChoice,jdbcType=VARCHAR}, #{secondInterviewScore,jdbcType=CHAR}, #{secondInterviewImpression,jdbcType=VARCHAR}, 
@@ -140,7 +174,7 @@
                 #{sex,jdbcType=CHAR},
             </if>
             <if test="telNo != null">
-                #{telNo,jdbcType=INTEGER},
+                #{telNo,jdbcType=CHAR},
             </if>
             <if test="wechat != null">
                 #{wechat,jdbcType=VARCHAR},
@@ -199,7 +233,7 @@
                 sex = #{sex,jdbcType=CHAR},
             </if>
             <if test="telNo != null">
-                tel_no = #{telNo,jdbcType=INTEGER},
+                tel_no = #{telNo,jdbcType=CHAR},
             </if>
             <if test="wechat != null">
                 wechat = #{wechat,jdbcType=VARCHAR},
@@ -253,7 +287,7 @@
     update enroll
     set real_name = #{realName,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=CHAR},
-      tel_no = #{telNo,jdbcType=INTEGER},
+      tel_no = #{telNo,jdbcType=CHAR},
       wechat = #{wechat,jdbcType=VARCHAR},
       school = #{school,jdbcType=VARCHAR},
       organization = #{organization,jdbcType=VARCHAR},

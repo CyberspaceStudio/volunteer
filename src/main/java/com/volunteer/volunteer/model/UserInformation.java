@@ -15,7 +15,7 @@ public class UserInformation {
 
     private String sex;
 
-    private Integer telNo;
+    private String telNo;
 
     private String wechat;
 
@@ -83,11 +83,11 @@ public class UserInformation {
         this.sex = sex == null ? null : sex.trim();
     }
 
-    public Integer getTelNo() {
+    public String getTelNo() {
         return telNo;
     }
 
-    public void setTelNo(Integer telNo) {
+    public void setTelNo(String telNo) {
         this.telNo = telNo;
     }
 

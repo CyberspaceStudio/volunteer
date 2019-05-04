@@ -5,9 +5,10 @@ public class EnrollPerson {
 
     private String realName;
 
+    /**只能为男,女,数据库有相应操作*/
     private String sex;
 
-    private Integer telNo;
+    private String telNo;
 
     private String wechat;
 
@@ -38,9 +39,11 @@ public class EnrollPerson {
     private String finalDepartment;
 
     /**
-    * 0 未面试         1 通过一面
-    * 2 通过所有面试   3 正在一面
-    * 4 正在二面       5 未通过面试
+    *   101 通过第一志愿部门一面      201 通过第二志愿部门一面      301 通过第三志愿部门一面
+    *   102 未通过第一志愿部门一面    202 未通过第二志愿部门一面     302 未通过第三志愿部门一面
+    *   412 通过第一第二志愿一面      413 通过第一第二志愿一面      423 通过第二第三志愿一面      400 通过所有部门一面
+    *   512 未通过第一第二志愿一面    513 未通过第一第三志愿一面     523 未通过第二第三志愿一面    500 未通过所有面试
+    *   0   未面试                  501 正在一面                 502 正在二面                505  成为部员
     */
     private String enrollStatus;
 
@@ -68,11 +71,11 @@ public class EnrollPerson {
         this.sex = sex == null ? null : sex.trim();
     }
 
-    public Integer getTelNo() {
+    public String getTelNo() {
         return telNo;
     }
 
-    public void setTelNo(Integer telNo) {
+    public void setTelNo(String telNo) {
         this.telNo = telNo;
     }
 

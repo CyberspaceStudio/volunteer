@@ -21,4 +21,20 @@ public interface EnrollPersonMapper {
 
     int crossDepartmentTotal(String department);
 
+    int interviewData();
+
+    int notInterviewData();
+
+    int departmentInterviewData(String department);
+
+    int notDepartmentInterviewData(String department);
+
+    int secondDepartmentInterviewData(String department);
+
+    int notSecondDepartmentInterviewData(String department);
+
+    int departmentEnrollByMan(String department);
+
+    int departmentEnrollByWoman(String department);
+
 }
