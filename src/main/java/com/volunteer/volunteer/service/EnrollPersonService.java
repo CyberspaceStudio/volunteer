@@ -3,6 +3,7 @@ package com.volunteer.volunteer.service;
 import com.volunteer.volunteer.model.EnrollPerson;
 
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.Map;
 
 public interface EnrollPersonService {
@@ -34,5 +35,11 @@ public interface EnrollPersonService {
     Map<String, Integer> departmentEnrollDataBySex(String department);
 
     Map<String, Integer> oneDepartmentEnrollData(String department);
+
+    List<Map<String,Object>> pcWaitFirstInterview(String department);
+
+    Map<String,List<EnrollPerson>> PcFirstInterviewed(String department);
+
+    List<EnrollPerson> crossDepartment(String department);
 
 }

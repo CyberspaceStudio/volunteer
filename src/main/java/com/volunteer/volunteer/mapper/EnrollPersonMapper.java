@@ -2,6 +2,10 @@ package com.volunteer.volunteer.mapper;
 
 import com.volunteer.volunteer.model.EnrollPerson;
 
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.Map;
+
 public interface EnrollPersonMapper {
     int deleteByPrimaryKey(Integer mainId);
 
@@ -36,5 +40,11 @@ public interface EnrollPersonMapper {
     int departmentEnrollByMan(String department);
 
     int departmentEnrollByWoman(String department);
+
+    List<Map<String,Object>> PcWaitFirstInterview(String department);
+
+    List<EnrollPerson> crossDepartment(String department);
+
+    List<EnrollPerson> PcFirstInterviewed(String department,String score);
 
 }

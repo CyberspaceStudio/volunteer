@@ -22,8 +22,17 @@ CREATE TABLE `enroll` (
   `final_department` varchar(10) DEFAULT NULL COMMENT '最终协调部门',
   `enroll_status` char(5) NOT NULL DEFAULT '0' COMMENT '0未面试1通过一面2通过所有面试3正在一面4正在二面5未通过面试',
   PRIMARY KEY (`main_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
+create table enroll_pass
+(
+    pass_id     int(6) unsigned auto_increment
+        primary key,
+    main_id     int(6) unsigned  not null comment 'enroll_MainId',
+    first_pass  int(5) default 0 null comment '第一志愿是否通过',
+    second_pass int(5) default 0 null comment '第二志愿是否通过',
+    third_pass  int(5) default 0 null comment '第三志愿是否通过'
+);
 ```
 
 ```

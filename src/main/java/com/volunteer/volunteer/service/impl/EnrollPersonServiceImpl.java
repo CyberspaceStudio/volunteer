@@ -1,7 +1,9 @@
 package com.volunteer.volunteer.service.impl;
 
+import com.volunteer.volunteer.mapper.EnrollPassMapper;
 import com.volunteer.volunteer.mapper.EnrollPersonMapper;
 import com.volunteer.volunteer.mapper.UserInformationMapper;
+import com.volunteer.volunteer.model.EnrollPass;
 import com.volunteer.volunteer.model.EnrollPerson;
 import com.volunteer.volunteer.model.UserInformation;
 import com.volunteer.volunteer.service.EnrollPersonService;
@@ -9,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -27,6 +30,9 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     @Resource
     private UserInformationMapper userInformationMapper;
 
+    @Resource
+    private EnrollPassMapper enrollPassMapper;
+
     @Override
     public boolean insert(EnrollPerson enrollPerson) {
         return enrollPersonMapper.insert(enrollPerson) > 0;
@@ -36,6 +42,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
      * @Description: 成为部员数据插入user数据插入
      * @Param: [enrollPerson]
      * @return: boolean
+     * user.position :TODO 具体职位看管理员权限的字段
      */
     @Override
     public boolean saveInformation(EnrollPerson enrollPerson) {
@@ -53,7 +60,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
             return userInformationMapper.updateByPrimaryKeySelective(user) > 0;
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("【数据库】更新失败!");
+            log.error("【数据库】更新失败!", e);
             return false;
         }
     }
@@ -70,7 +77,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("【数据库】查询出错!");
+            log.error("【数据库】查询出错!", e);
             return null;
         }
     }
@@ -85,26 +92,30 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     public boolean updateScoreAndImpression(Integer mainId, String department, String score, String impression) {
         try {
             EnrollPerson enrollPerson = enrollPersonMapper.selectByPrimaryKey(mainId);
+            EnrollPass enrollPass = enrollPassMapper.selectByMainId(mainId);
             //enrollStatus 501 正在一面
             if (department.equals(enrollPerson.getFirstChoice())) {
                 enrollPerson.setFirstInterviewScore(score);
                 enrollPerson.setFirstInterviewImpression(impression);
                 enrollPerson.setEnrollStatus("501");
+                enrollPass.setFirstPass(1);
             } else if (department.equals(enrollPerson.getSecondChoice())) {
                 enrollPerson.setSecondInterviewScore(score);
                 enrollPerson.setSecondInterviewImpression(impression);
                 enrollPerson.setEnrollStatus("501");
+                enrollPass.setSecondPass(1);
             } else if (department.equals(enrollPerson.getThirdChoice())) {
                 enrollPerson.setThirdInterviewScore(score);
                 enrollPerson.setThirdInterviewImpression(impression);
                 enrollPerson.setEnrollStatus("501");
+                enrollPass.setThirdPass(1);
             } else {
                 throw new Exception("志愿和部门发生错误或对应关系错误!");
             }
-            return enrollPersonMapper.updateByPrimaryKeySelective(enrollPerson) > 0;
+            return enrollPersonMapper.updateByPrimaryKeySelective(enrollPerson) > 0 && enrollPassMapper.updateByMainId(enrollPass)>0;
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("【数据库】更新失败!");
+            log.error("【数据库】更新失败!", e);
             return false;
         }
     }
@@ -120,7 +131,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
             return enrollPersonMapper.enrollTotal();
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("【数据库】查询失败!");
+            log.error("【数据库】查询失败!", e);
             return -1;
         }
 
@@ -142,7 +153,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
             return res;
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("【数据库】查询失败!");
+            log.error("【数据库】查询失败!", e);
             return null;
         }
     }
@@ -163,7 +174,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
             return res;
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("【数据库】查询失败!");
+            log.error("【数据库】查询失败!", e);
             return null;
         }
     }
@@ -182,7 +193,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
             return res;
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("【数据库】查询失败!");
+            log.error("【数据库】查询失败!", e);
             return null;
         }
     }
@@ -202,6 +213,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
             return res;
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("【数据库】查询失败!", e);
             return null;
         }
     }
@@ -221,7 +233,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
             return res;
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("【数据库】查询失败!");
+            log.error("【数据库】查询失败!", e);
             return null;
         }
     }
@@ -242,7 +254,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
             return res;
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("【数据库】查询失败!");
+            log.error("【数据库】查询失败!", e);
             return null;
         }
     }
@@ -261,7 +273,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
             return res;
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("【数据库】查询失败!");
+            log.error("【数据库】查询失败!", e);
             return null;
         }
     }
@@ -283,7 +295,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
             return res;
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("【数据库】查询失败!");
+            log.error("【数据库】查询失败!", e);
             return null;
         }
     }
@@ -302,7 +314,64 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
             return res;
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("【数据库】查询失败!");
+            log.error("【数据库】查询失败!", e);
+            return null;
+        }
+    }
+
+    /**
+     * @Description: PC端:一面情况待面试人员
+     * @Param: [department]
+     * @return: List<Map < String, Object>>
+     */
+    @Override
+    public List<Map<String, Object>> pcWaitFirstInterview(String department) {
+
+        try {
+            return enrollPersonMapper.PcWaitFirstInterview(department);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("【数据库】查询失败!", e);
+            return null;
+        }
+    }
+
+    /**
+     * @Description: PC端:一面已面试人员
+     * @Param: [department]
+     * @return: Map<String, List < EnrollPerson>>
+     */
+    @Override
+    public Map<String, List<EnrollPerson>> PcFirstInterviewed(String department) {
+        try {
+            Map<String, List<EnrollPerson>> res = new TreeMap<>();
+            res.put("A", enrollPersonMapper.PcFirstInterviewed(department, "A"));
+            res.put("B", enrollPersonMapper.PcFirstInterviewed(department, "B"));
+            res.put("C", enrollPersonMapper.PcFirstInterviewed(department, "C"));
+            res.put("D", enrollPersonMapper.PcFirstInterviewed(department, "D"));
+            res.put("E", enrollPersonMapper.PcFirstInterviewed(department, "E"));
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("【数据库】查询失败!", e);
+            return null;
+        }
+    }
+
+
+
+    /**
+    * @Description: PC端:跨部人员
+    * @Param: [department]
+    * @return: List<EnrollPerson>
+    */
+    @Override
+    public List<EnrollPerson> crossDepartment(String department){
+        try{
+            return enrollPersonMapper.crossDepartment(department);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("【数据库】查询失败!", e);
             return null;
         }
     }
