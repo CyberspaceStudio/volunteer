@@ -38,32 +38,6 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
         return enrollPersonMapper.insert(enrollPerson) > 0;
     }
 
-    /**
-     * @Description: 成为部员数据插入user数据插入
-     * @Param: [enrollPerson]
-     * @return: boolean
-     * user.position :TODO 具体职位看管理员权限的字段
-     */
-    @Override
-    public boolean saveInformation(EnrollPerson enrollPerson) {
-        try {
-            UserInformation user = userInformationMapper.selectByPrimaryKey(enrollPerson.getMainId());
-
-            user.setRealName(enrollPerson.getRealName());
-            user.setSex(enrollPerson.getSex());
-            user.setTelNo(enrollPerson.getTelNo());
-            user.setWechat(enrollPerson.getWechat());
-            user.setSchool(enrollPerson.getSchool());
-            user.setOrganization(enrollPerson.getOrganization());
-            user.setDepartment(enrollPerson.getFinalDepartment());
-            user.setPosition("3");
-            return userInformationMapper.updateByPrimaryKeySelective(user) > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("【数据库】更新失败!", e);
-            return false;
-        }
-    }
 
     @Override
     public EnrollPerson findByMainId(Integer mainId) {
@@ -339,12 +313,12 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     /**
      * @Description: PC端:一面已面试人员
      * @Param: [department]
-     * @return: Map<String, List < EnrollPerson>>
+     * @return: Map<String, List<Map<String,Object>>>
      */
     @Override
-    public Map<String, List<EnrollPerson>> PcFirstInterviewed(String department) {
+    public Map<String, List<Map<String,Object>>> PcFirstInterviewed(String department) {
         try {
-            Map<String, List<EnrollPerson>> res = new TreeMap<>();
+            Map<String, List<Map<String,Object>>> res = new TreeMap<>();
             res.put("A", enrollPersonMapper.PcFirstInterviewed(department, "A"));
             res.put("B", enrollPersonMapper.PcFirstInterviewed(department, "B"));
             res.put("C", enrollPersonMapper.PcFirstInterviewed(department, "C"));
@@ -366,13 +340,87 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     * @return: List<EnrollPerson>
     */
     @Override
-    public List<EnrollPerson> crossDepartment(String department){
+    public List<Map<String,Object>> crossDepartment(String department){
         try{
             return enrollPersonMapper.crossDepartment(department);
         } catch (Exception e) {
             e.printStackTrace();
             log.error("【数据库】查询失败!", e);
             return null;
+        }
+    }
+
+
+    /**
+    * @Description:  PC端：二面待面试人员
+    * @Param: [department]
+    * @return: Map<String, List<Map<String,Object>>>
+    */
+    @Override
+    public Map<String, List<Map<String,Object>>> PcWaitSecondInterviewed(String department){
+        try {
+            Map<String, List<Map<String,Object>>> res = new TreeMap<>();
+            res.put("A", enrollPersonMapper.PcWaitSecondInterviewed(department, "A"));
+            res.put("B", enrollPersonMapper.PcWaitSecondInterviewed(department, "B"));
+            res.put("C", enrollPersonMapper.PcWaitSecondInterviewed(department, "C"));
+            res.put("D", enrollPersonMapper.PcWaitSecondInterviewed(department, "D"));
+            res.put("E", enrollPersonMapper.PcWaitSecondInterviewed(department, "E"));
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("【数据库】查询失败!", e);
+            return null;
+        }
+    }
+
+
+    /**
+     * @Description:  PC端：二面已面试人员
+     * @Param: [department]
+     * @return: Map<String, List<Map<String,Object>>>
+     */
+    @Override
+    public Map<String, List<Map<String,Object>>> PcSecondInterviewed(String department){
+        try {
+            Map<String, List<Map<String,Object>>> res = new TreeMap<>();
+            res.put("A", enrollPersonMapper.PcSecondInterviewed(department, "A"));
+            res.put("B", enrollPersonMapper.PcSecondInterviewed(department, "B"));
+            res.put("C", enrollPersonMapper.PcSecondInterviewed(department, "C"));
+            res.put("D", enrollPersonMapper.PcSecondInterviewed(department, "D"));
+            res.put("E", enrollPersonMapper.PcSecondInterviewed(department, "E"));
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("【数据库】查询失败!", e);
+            return null;
+        }
+    }
+
+
+    /**
+     * @Description: 成为部员数据插入user数据插入
+     * @Param: [enrollPerson]
+     * @return: boolean
+     * user.position :TODO 具体职位看管理员权限的字段
+     */
+    @Override
+    public boolean saveInformation(EnrollPerson enrollPerson) {
+        try {
+            UserInformation user = userInformationMapper.selectByPrimaryKey(enrollPerson.getMainId());
+
+            user.setRealName(enrollPerson.getRealName());
+            user.setSex(enrollPerson.getSex());
+            user.setTelNo(enrollPerson.getTelNo());
+            user.setWechat(enrollPerson.getWechat());
+            user.setSchool(enrollPerson.getSchool());
+            user.setOrganization(enrollPerson.getOrganization());
+            user.setDepartment(enrollPerson.getFinalDepartment());
+            user.setPosition("3");
+            return userInformationMapper.updateByPrimaryKeySelective(user) > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("【数据库】更新失败!", e);
+            return false;
         }
     }
 }

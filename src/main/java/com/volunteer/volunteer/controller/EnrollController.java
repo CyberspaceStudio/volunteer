@@ -249,12 +249,11 @@ public class EnrollController {
     /**
      * @Description: PC端:一面待面试人员
      * @Param: [request]
-     * @return: UniversalResponseBody<List < Map < String, Object>>>
+     * @return: UniversalResponseBody
      */
     @GetMapping(value = "/PcWaitFirstInterview")
     @ResponseBody
-    public UniversalResponseBody<List<Map<String, Object>>> PcWaitFirstInterview(HttpServletRequest request) {
-        //List<Map<String, Object>> res = enrollPersonService.pcWaitFirstInterview("网络技术工作室");
+    public UniversalResponseBody PcWaitFirstInterview(HttpServletRequest request) {
         List<Map<String, Object>> res = enrollPersonService.pcWaitFirstInterview((String) request.getSession().getAttribute("department"));
         if (res != null) {
             return new UniversalResponseBody<>(0, "请求成功:PC端:一面待面试人员", res);
@@ -266,12 +265,12 @@ public class EnrollController {
     /**
      * @Description: PC端:一面已面试人员
      * @Param: [request]
-     * @return: UniversalResponseBody<Map < String, List < EnrollPerson>>>
+     * @return: UniversalResponseBody
      */
     @GetMapping(value = "/PcFirstInterviewed")
     @ResponseBody
-    public UniversalResponseBody<Map<String, List<EnrollPerson>>> PcFirstInterviewed(HttpServletRequest request) {
-        Map<String, List<EnrollPerson>> res = enrollPersonService.PcFirstInterviewed((String) request.getSession().getAttribute("department"));
+    public UniversalResponseBody PcFirstInterviewed(HttpServletRequest request) {
+        Map<String, List<Map<String,Object>>> res = enrollPersonService.PcFirstInterviewed((String) request.getSession().getAttribute("department"));
         if (res != null) {
             return new UniversalResponseBody<>(0, "请求成功:PC端:一面已面试人员", res);
         } else {
@@ -283,14 +282,51 @@ public class EnrollController {
     /**
     * @Description: PC端:跨部人员
     * @Param: [request]
-    * @return: UniversalResponseBody<List<EnrollPerson>>
+    * @return: UniversalResponseBody
     */
     @GetMapping(value = "/crossDepartment")
     @ResponseBody
-    public UniversalResponseBody<List<EnrollPerson>> crossDepartment(HttpServletRequest request) {
-        List<EnrollPerson> res = enrollPersonService.crossDepartment((String) request.getSession().getAttribute("department"));
+    public UniversalResponseBody crossDepartment(HttpServletRequest request) {
+        List<Map<String,Object>> res = enrollPersonService.crossDepartment((String)request.getSession().getAttribute("department"));
         if (res != null) {
             return new UniversalResponseBody<>(0, "请求成功:PC端:跨部人员", res);
+        } else {
+            return new UniversalResponseBody<>(-1, "失败", null);
+        }
+    }
+
+
+
+    /**
+     * @Description: PC端：二面待面试人员
+     * @Param: [request]
+     * @return: UniversalResponseBody
+     */
+    @GetMapping(value = "/PcWaitSecondInterviewed")
+    @ResponseBody
+    public UniversalResponseBody PcWaitSecondInterviewed(HttpServletRequest request) {
+        Map<String, List<Map<String,Object>>> res = enrollPersonService.PcWaitSecondInterviewed((String) request.getSession().getAttribute("department"));
+        if (res != null) {
+            return new UniversalResponseBody<>(0, "请求成功:PC端:二面待面试人员", res);
+        } else {
+            return new UniversalResponseBody<>(-1, "失败", null);
+        }
+    }
+
+
+
+
+    /**
+     * @Description: PC端：二面已面试人员
+     * @Param: [request]
+     * @return: UniversalResponseBody
+     */
+    @GetMapping(value = "/PcSecondInterviewed")
+    @ResponseBody
+    public UniversalResponseBody PcSecondInterviewed(HttpServletRequest request) {
+        Map<String, List<Map<String,Object>>> res = enrollPersonService.PcWaitSecondInterviewed((String) request.getSession().getAttribute("department"));
+        if (res != null) {
+            return new UniversalResponseBody<>(0, "请求成功:PC端:二面已面试人员", res);
         } else {
             return new UniversalResponseBody<>(-1, "失败", null);
         }

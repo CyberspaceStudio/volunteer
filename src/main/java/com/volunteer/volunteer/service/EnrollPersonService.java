@@ -38,8 +38,12 @@ public interface EnrollPersonService {
 
     List<Map<String,Object>> pcWaitFirstInterview(String department);
 
-    Map<String,List<EnrollPerson>> PcFirstInterviewed(String department);
+    Map<String, List<Map<String,Object>>> PcFirstInterviewed(String department);
 
-    List<EnrollPerson> crossDepartment(String department);
+    Map<String, List<Map<String,Object>>> PcWaitSecondInterviewed(String department);
+
+    List<Map<String,Object>> crossDepartment(String department);
+
+    Map<String, List<Map<String,Object>>> PcSecondInterviewed(String department);
 
 }

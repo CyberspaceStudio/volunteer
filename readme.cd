@@ -33,6 +33,61 @@ create table enroll_pass
     second_pass int(5) default 0 null comment '第二志愿是否通过',
     third_pass  int(5) default 0 null comment '第三志愿是否通过'
 );
+
+
+CREATE VIEW cross_department AS
+SELECT
+	`enroll`.`main_id` AS `main_id`,
+	`enroll`.`real_name` AS `real_name`,
+	`enroll`.`sex` AS `sex`,
+	`enroll`.`tel_no` AS `tel_no`,
+	`enroll`.`wechat` AS `wechat`,
+	`enroll`.`first_choice` AS `first_choice`,
+	`enroll_pass`.`first_pass` AS `first_pass`,
+	`enroll`.`second_choice` AS `second_choice`,
+	`enroll_pass`.`second_pass` AS `second_pass`,
+	`enroll`.`third_choice` AS `third_choice`,
+	`enroll_pass`.`third_pass` AS `third_pass`
+FROM
+	( `enroll` JOIN `enroll_pass` )
+WHERE
+	(
+		( `enroll_pass`.`main_id` = `enroll`.`main_id` )
+		AND ( `enroll`.`enroll_status` <> 502 )
+		AND ( `enroll`.`enroll_status` <> 505 )
+		AND (
+			(
+				(
+				SELECT
+					sum( ( ( `enroll_pass`.`first_pass` + `enroll_pass`.`second_pass` ) + `enroll_pass`.`third_pass` ) )
+				FROM
+					`enroll_pass`
+				WHERE
+					( `enroll_pass`.`main_id` = `enroll`.`main_id` )
+				) = 200
+			)
+			OR (
+				(
+				SELECT
+					sum( ( ( `enroll_pass`.`first_pass` + `enroll_pass`.`second_pass` ) + `enroll_pass`.`third_pass` ) )
+				FROM
+					`enroll_pass`
+				WHERE
+					( `enroll_pass`.`main_id` = `enroll`.`main_id` )
+				) = 300
+			)
+			OR (
+				(
+				SELECT
+					sum( ( ( `enroll_pass`.`first_pass` + `enroll_pass`.`second_pass` ) + `enroll_pass`.`third_pass` ) )
+				FROM
+					`enroll_pass`
+				WHERE
+					( `enroll_pass`.`main_id` = `enroll`.`main_id` )
+				) = 700
+			)
+		)
+	);
 ```
 
 ```

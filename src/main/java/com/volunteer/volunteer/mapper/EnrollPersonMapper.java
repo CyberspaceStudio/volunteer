@@ -43,8 +43,12 @@ public interface EnrollPersonMapper {
 
     List<Map<String,Object>> PcWaitFirstInterview(String department);
 
-    List<EnrollPerson> crossDepartment(String department);
+    List<Map<String,Object>> PcFirstInterviewed(String department,String score);
 
-    List<EnrollPerson> PcFirstInterviewed(String department,String score);
+    List<Map<String,Object>> crossDepartment(String department);
+
+    List<Map<String,Object>> PcWaitSecondInterviewed(String department,String score);
+
+    List<Map<String,Object>> PcSecondInterviewed(String department,String score);
 
 }

@@ -31,6 +31,31 @@
         <result column="wechat" property="wechat" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <resultMap id="cross_department" type="java.util.Map">
+        <id column="main_id" property="mainId" jdbcType="INTEGER"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="CHAR"/>
+        <result column="tel_no" property="telNo" jdbcType="CHAR"/>
+        <result column="wechat" property="wechat" jdbcType="VARCHAR"/>
+        <result column="cross" property="cross" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="PcFirstInterviewed" type="java.util.Map">
+        <id column="main_id" property="mainId" jdbcType="INTEGER"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="CHAR"/>
+        <result column="score" property="score" jdbcType="CHAR"/>
+        <result column="impression" property="impression" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="PcWaitSecondInterviewed" type="java.util.Map">
+        <id column="main_id" property="mainId" jdbcType="INTEGER"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="CHAR"/>
+        <result column="tel_no" property="telNo" jdbcType="CHAR"/>
+        <result column="wechat" property="wechat" jdbcType="VARCHAR"/>
+        <result column="score" property="score" jdbcType="CHAR"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
         main_id, real_name, sex, tel_no, wechat, school, organization, introduction, first_choice,
     first_interview_score, first_interview_impression, second_choice, second_interview_score, 
@@ -90,6 +115,7 @@
     <select id="departmentEnrollByWoman" resultType="java.lang.Integer">
         select departmentEnrollByWoman(#{department,jdbcType=VARCHAR});
     </select>
+
     <select id="PcWaitFirstInterview" resultMap="Pc_First_notInterview">
         select main_id,
                real_name,
@@ -105,23 +131,118 @@
             or (third_choice = #{department,jdbcType=VARCHAR} and
                 (third_interview_score is null or third_interview_score = '')));
     </select>
-    <select id="PcFirstInterviewed" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from enroll
-        where
-        (first_choice = #{department,jdbcType=VARCHAR} and first_interview_score = #{score,jdbcType=CHAR} and )
-        or (second_choice = #{department,jdbcType=VARCHAR} and second_interview_score = #{score,jdbcType=CHAR})
-        or (third_choice = #{department,jdbcType=VARCHAR} and third_interview_score = #{score,jdbcType=CHAR})
+
+    <select id="PcFirstInterviewed" resultMap="PcFirstInterviewed">
+        select enroll.main_id,
+               enroll.real_name,
+               enroll.sex,
+               (
+                   case
+                       when enroll.first_choice = #{department,jdbcType=VARCHAR} and
+                            enroll.first_interview_score = #{score,jdbcType=CHAR} then enroll.first_interview_score
+                       when enroll.second_choice = #{department,jdbcType=VARCHAR} and
+                            enroll.second_interview_score = #{score,jdbcType=CHAR} then enroll.second_interview_score
+                       when enroll.third_choice = #{department,jdbcType=VARCHAR} and
+                            enroll.third_interview_score = #{score,jdbcType=CHAR} then enroll.third_interview_score
+                       end
+                   )
+                   as 'score',
+               (
+                   case
+                       when enroll.first_choice = #{department,jdbcType=VARCHAR} then enroll.first_interview_impression
+                       when enroll.second_choice = #{department,jdbcType=VARCHAR}
+                           then enroll.second_interview_impression
+                       when enroll.third_choice = #{department,jdbcType=VARCHAR} then enroll.third_interview_impression
+                       end
+                   )
+                   as 'impression'
+        from enroll,
+             enroll_pass
+        where (enroll_pass.main_id = enroll.main_id and enroll.enroll_status=501)
+          and ((enroll.first_choice = #{department,jdbcType=VARCHAR} and
+                enroll.first_interview_score = #{score,jdbcType=CHAR} and enroll_pass.first_pass = 1)
+            or (enroll.second_choice = #{department,jdbcType=VARCHAR} and
+                enroll.second_interview_score = #{score,jdbcType=CHAR} and enroll_pass.second_pass = 1)
+            or (enroll.third_choice = #{department,jdbcType=VARCHAR} and
+                enroll.third_interview_score = #{score,jdbcType=CHAR} and enroll_pass.third_pass = 1));
+
     </select>
-    <select id="crossDepartment" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
+
+
+    <select id="crossDepartment" resultMap="cross_department">
+        select main_id,
+               real_name,
+               sex,
+               tel_no,
+               wechat,
+               (
+                   case
+                       when first_pass != 100 then concat_ws(" ", second_choice, third_choice)
+                       when second_pass != 100 then concat_ws(" ", first_choice, third_choice)
+                       when third_pass != 100 then concat_ws(" ", first_choice, second_choice)
+                       when first_pass = 100 and second_pass = 100 and third_pass = 100
+                           then concat_ws(" ", first_choice, second_choice, third_choice)
+                       end
+                   )
+                   as 'cross'
+        from cross_department
+        where ((first_choice = #{department,jdbcType=VARCHAR} and first_pass = 100) or
+               (second_choice = #{department,jdbcType=VARCHAR} and second_pass = 100) or
+               (third_choice = #{department,jdbcType=VARCHAR} and third_pass = 100));
+    </select>
+    <select id="PcWaitSecondInterviewed" resultMap="PcWaitSecondInterviewed">
+        select main_id,
+               real_name,
+               sex,
+               tel_no,
+               wechat,
+               (
+                   case
+                       when first_choice = #{department,jdbcType=VARCHAR} and
+                            first_interview_score = #{score,jdbcType=CHAR} then first_interview_score
+                       when second_choice = #{department,jdbcType=VARCHAR} and
+                            second_interview_score =#{score,jdbcType=CHAR} then second_interview_score
+                       when third_choice = #{department,jdbcType=VARCHAR} and
+                            third_interview_score = #{score,jdbcType=CHAR} then third_interview_score
+                       end
+                   )
+                   as 'score'
         from enroll
-        where (final_department is null or final_department ='')
-        and ((first_choice = #{department,jdbcType=VARCHAR} and (second_choice is not null and second_choice !=''))
-        or second_choice = #{department,jdbcType=VARCHAR}
-        or third_choice = #{department,jdbcType=VARCHAR});
+        where (enroll_status=503 and final_department=#{department,jdbcType=VARCHAR})
+          and ((first_choice=#{department,jdbcType=VARCHAR} and first_interview_score=#{score,jdbcType=CHAR})
+            or (second_choice=#{department,jdbcType=VARCHAR} and second_interview_score=#{score,jdbcType=CHAR})
+            or (third_choice=#{department,jdbcType=VARCHAR} and third_interview_score=#{score,jdbcType=CHAR}));
+
+    </select>
+    <select id="PcSecondInterviewed" resultMap="PcFirstInterviewed">
+        select main_id,
+               real_name,
+               sex,
+               (
+                   case
+                       when first_choice = #{department,jdbcType=VARCHAR} and
+                            first_interview_score = #{score,jdbcType=CHAR} then first_interview_score
+                       when second_choice = #{department,jdbcType=VARCHAR} and
+                            second_interview_score =#{score,jdbcType=CHAR} then second_interview_score
+                       when third_choice = #{department,jdbcType=VARCHAR} and
+                            third_interview_score = #{score,jdbcType=CHAR} then third_interview_score
+                       end
+                   )
+                   as 'score',
+               (
+                   case
+                       when enroll.first_choice = #{department,jdbcType=VARCHAR} then enroll.first_interview_impression
+                       when enroll.second_choice = #{department,jdbcType=VARCHAR}
+                           then enroll.second_interview_impression
+                       when enroll.third_choice = #{department,jdbcType=VARCHAR} then enroll.third_interview_impression
+                       end
+                   )
+                   as 'impression'
+        from enroll
+        where (enroll_status=502 and final_department=#{department,jdbcType=VARCHAR})
+          and ((first_choice=#{department,jdbcType=VARCHAR} and first_interview_score=#{score,jdbcType=CHAR})
+            or (second_choice=#{department,jdbcType=VARCHAR} and second_interview_score=#{score,jdbcType=CHAR})
+            or (third_choice=#{department,jdbcType=VARCHAR} and third_interview_score=#{score,jdbcType=CHAR}));
     </select>
 
 

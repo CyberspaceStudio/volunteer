@@ -5,7 +5,7 @@ public class EnrollPerson {
 
     private String realName;
 
-    /**只能为男,女,数据库有相应操作*/
+    /**字符串："男","女",数据库有相应操作*/
     private String sex;
 
     private String telNo;
@@ -39,11 +39,8 @@ public class EnrollPerson {
     private String finalDepartment;
 
     /**
-    *   0   未面试                  501 正在一面                 502 正在二面                505  成为部员
-    *   除以上特殊数字还有如下数字规定:
-    *   用个数字代表面试情况,第一位为第一志愿,第二位为第二志愿,第三位为第三志愿:
-    *   0 未面试   1 已面试   100 面试通过   500 面试未通过
-    *   例: 012 代表第一志愿未面试,第二志愿面试通过,第三志愿面试不通过.共27种情况
+    *   0   未面试             501 正在一面                 502 正在二面
+    *   503 通过一面，待二面    504 通过一面，未通过二面       505 成为部员
     */
     private String enrollStatus;
 
