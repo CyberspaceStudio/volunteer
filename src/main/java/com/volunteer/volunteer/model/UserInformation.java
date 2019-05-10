@@ -15,7 +15,7 @@ public class UserInformation {
 
     private String sex;
 
-    private Integer telNo;
+    private String telNo;
 
     private String wechat;
 
@@ -27,6 +27,12 @@ public class UserInformation {
 
     private String registTime;
 
+    /**
+    * position 数字代表：
+    * 11 正队长 12 副队长
+    * 21 正部长 22 副部长
+    * 3  部员   4  游客
+    */
     private String position;
 
     public Integer getMainId() {
@@ -77,11 +83,11 @@ public class UserInformation {
         this.sex = sex == null ? null : sex.trim();
     }
 
-    public Integer getTelNo() {
+    public String getTelNo() {
         return telNo;
     }
 
-    public void setTelNo(Integer telNo) {
+    public void setTelNo(String telNo) {
         this.telNo = telNo;
     }
 

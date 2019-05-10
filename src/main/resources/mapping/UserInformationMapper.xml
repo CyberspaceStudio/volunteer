@@ -8,7 +8,7 @@
     <result column="head_picture_url" property="headPictureUrl" jdbcType="VARCHAR" />
     <result column="real_name" property="realName" jdbcType="VARCHAR" />
     <result column="sex" property="sex" jdbcType="CHAR" />
-    <result column="tel_no" property="telNo" jdbcType="INTEGER" />
+    <result column="tel_no" property="telNo" jdbcType="CHAR" />
     <result column="wechat" property="wechat" jdbcType="VARCHAR" />
     <result column="department" property="department" jdbcType="VARCHAR" />
     <result column="school" property="school" jdbcType="VARCHAR" />
@@ -49,7 +49,7 @@
       position)
     values (#{mainId,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{falseName,jdbcType=VARCHAR}, 
       #{headPictureUrl,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, 
-      #{telNo,jdbcType=INTEGER}, #{wechat,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, 
+      #{telNo,jdbcType=CHAR}, #{wechat,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR},
       #{school,jdbcType=VARCHAR}, #{organization,jdbcType=VARCHAR}, #{registTime,jdbcType=TIMESTAMP}, 
       #{position,jdbcType=VARCHAR})
   </insert>
@@ -116,7 +116,7 @@
         #{sex,jdbcType=CHAR},
       </if>
       <if test="telNo != null" >
-        #{telNo,jdbcType=INTEGER},
+        #{telNo,jdbcType=CHAR},
       </if>
       <if test="wechat != null" >
         #{wechat,jdbcType=VARCHAR},
@@ -157,7 +157,7 @@
         sex = #{sex,jdbcType=CHAR},
       </if>
       <if test="telNo != null" >
-        tel_no = #{telNo,jdbcType=INTEGER},
+        tel_no = #{telNo,jdbcType=CHAR},
       </if>
       <if test="wechat != null" >
         wechat = #{wechat,jdbcType=VARCHAR},
@@ -187,7 +187,7 @@
       head_picture_url = #{headPictureUrl,jdbcType=VARCHAR},
       real_name = #{realName,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=CHAR},
-      tel_no = #{telNo,jdbcType=INTEGER},
+      tel_no = #{telNo,jdbcType=CHAR},
       wechat = #{wechat,jdbcType=VARCHAR},
       department = #{department,jdbcType=VARCHAR},
       school = #{school,jdbcType=VARCHAR},
