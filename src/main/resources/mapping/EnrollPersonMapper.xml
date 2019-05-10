@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.volunteer.volunteer.mapper.EnrollPersonMapper">
+    <resultMap id="BaseResultMap" type="com.volunteer.volunteer.model.EnrollPerson">
+        <id column="main_id" property="mainId" jdbcType="INTEGER"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="CHAR"/>
+        <result column="tel_no" property="telNo" jdbcType="CHAR"/>
+        <result column="wechat" property="wechat" jdbcType="VARCHAR"/>
+        <result column="school" property="school" jdbcType="VARCHAR"/>
+        <result column="organization" property="organization" jdbcType="VARCHAR"/>
+        <result column="introduction" property="introduction" jdbcType="VARCHAR"/>
+        <result column="first_choice" property="firstChoice" jdbcType="VARCHAR"/>
+        <result column="first_interview_score" property="firstInterviewScore" jdbcType="CHAR"/>
+        <result column="first_interview_impression" property="firstInterviewImpression" jdbcType="VARCHAR"/>
+        <result column="second_choice" property="secondChoice" jdbcType="VARCHAR"/>
+        <result column="second_interview_score" property="secondInterviewScore" jdbcType="CHAR"/>
+        <result column="second_interview_impression" property="secondInterviewImpression" jdbcType="VARCHAR"/>
+        <result column="third_choice" property="thirdChoice" jdbcType="VARCHAR"/>
+        <result column="third_interview_score" property="thirdInterviewScore" jdbcType="CHAR"/>
+        <result column="third_interview_impression" property="thirdInterviewImpression" jdbcType="VARCHAR"/>
+        <result column="final_department" property="finalDepartment" jdbcType="VARCHAR"/>
+        <result column="enroll_status" property="enrollStatus" jdbcType="CHAR"/>
+    </resultMap>
+
+    <resultMap id="Pc_First_notInterview" type="java.util.Map">
+        <id column="main_id" property="mainId" jdbcType="INTEGER"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="CHAR"/>
+        <result column="tel_no" property="telNo" jdbcType="CHAR"/>
+        <result column="wechat" property="wechat" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="cross_department" type="java.util.Map">
+        <id column="main_id" property="mainId" jdbcType="INTEGER"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="CHAR"/>
+        <result column="tel_no" property="telNo" jdbcType="CHAR"/>
+        <result column="wechat" property="wechat" jdbcType="VARCHAR"/>
+        <result column="cross" property="cross" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="PcFirstInterviewed" type="java.util.Map">
+        <id column="main_id" property="mainId" jdbcType="INTEGER"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="CHAR"/>
+        <result column="score" property="score" jdbcType="CHAR"/>
+        <result column="impression" property="impression" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="PcWaitSecondInterviewed" type="java.util.Map">
+        <id column="main_id" property="mainId" jdbcType="INTEGER"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="CHAR"/>
+        <result column="tel_no" property="telNo" jdbcType="CHAR"/>
+        <result column="wechat" property="wechat" jdbcType="VARCHAR"/>
+        <result column="score" property="score" jdbcType="CHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        main_id, real_name, sex, tel_no, wechat, school, organization, introduction, first_choice,
+    first_interview_score, first_interview_impression, second_choice, second_interview_score, 
+    second_interview_impression, third_choice, third_interview_score, third_interview_impression, 
+    final_department, enroll_status
+    </sql>
+
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from enroll
+        where main_id = #{mainId,jdbcType=INTEGER}
+    </select>
+
+    <select id="enrollTotal" resultType="java.lang.Integer">
+        SELECT COUNT(main_id)
+        FROM enroll;
+    </select>
+    <select id="departmentEnrollTotal" resultType="java.lang.Integer">
+        SELECT departmenttotal(#{department,jdbcType=VARCHAR});
+    </select>
+    <select id="crossDepartmentTotal" resultType="java.lang.Integer">
+        select crossdepartmenttotal(#{department,jdbcType=VARCHAR});
+    </select>
+    <select id="interviewData" resultType="java.lang.Integer">
+        select count(enroll_status)
+        from enroll
+        where enroll_status != 0;
+    </select>
+    <select id="notInterviewData" resultType="java.lang.Integer">
+        select count(enroll_status)
+        from enroll
+        where enroll_status = 0;
+    </select>
+    <select id="departmentInterviewData" resultType="java.lang.Integer">
+        select departmentInterviewData(#{department,jdbcType=VARCHAR});
+    </select>
+    <select id="notDepartmentInterviewData" resultType="java.lang.Integer">
+        select notDepartmentInterviewData(#{department,jdbcType=VARCHAR});
+    </select>
+    <select id="secondDepartmentInterviewData" resultType="java.lang.Integer">
+        select count(final_department)
+        from enroll
+        where final_department = (#{department,jdbcType=VARCHAR})
+          and enroll_status = 502;
+    </select>
+    <select id="notSecondDepartmentInterviewData" resultType="java.lang.Integer">
+        select count(final_department)
+        from enroll
+        where final_department = (#{department,jdbcType=VARCHAR})
+          and enroll_status != 502;
+    </select>
+    <select id="departmentEnrollByMan" resultType="java.lang.Integer">
+        select departmentenrollbyman(#{department,jdbcType=VARCHAR});
+    </select>
+    <select id="departmentEnrollByWoman" resultType="java.lang.Integer">
+        select departmentEnrollByWoman(#{department,jdbcType=VARCHAR});
+    </select>
+
+    <select id="PcWaitFirstInterview" resultMap="Pc_First_notInterview">
+        select main_id,
+               real_name,
+               sex,
+               tel_no,
+               wechat
+        from enroll
+        where (final_department is null or final_department = '')
+          and ((first_choice = #{department,jdbcType=VARCHAR} and
+                (first_interview_score is null or first_interview_score = ''))
+            or (second_choice = #{department,jdbcType=VARCHAR} and
+                (second_interview_score is null or second_interview_score = ''))
+            or (third_choice = #{department,jdbcType=VARCHAR} and
+                (third_interview_score is null or third_interview_score = '')));
+    </select>
+
+    <select id="PcFirstInterviewed" resultMap="PcFirstInterviewed">
+        select enroll.main_id,
+               enroll.real_name,
+               enroll.sex,
+               (
+                   case
+                       when enroll.first_choice = #{department,jdbcType=VARCHAR} and
+                            enroll.first_interview_score = #{score,jdbcType=CHAR} then enroll.first_interview_score
+                       when enroll.second_choice = #{department,jdbcType=VARCHAR} and
+                            enroll.second_interview_score = #{score,jdbcType=CHAR} then enroll.second_interview_score
+                       when enroll.third_choice = #{department,jdbcType=VARCHAR} and
+                            enroll.third_interview_score = #{score,jdbcType=CHAR} then enroll.third_interview_score
+                       end
+                   )
+                   as 'score',
+               (
+                   case
+                       when enroll.first_choice = #{department,jdbcType=VARCHAR} then enroll.first_interview_impression
+                       when enroll.second_choice = #{department,jdbcType=VARCHAR}
+                           then enroll.second_interview_impression
+                       when enroll.third_choice = #{department,jdbcType=VARCHAR} then enroll.third_interview_impression
+                       end
+                   )
+                   as 'impression'
+        from enroll,
+             enroll_pass
+        where (enroll_pass.main_id = enroll.main_id and enroll.enroll_status=501)
+          and ((enroll.first_choice = #{department,jdbcType=VARCHAR} and
+                enroll.first_interview_score = #{score,jdbcType=CHAR} and enroll_pass.first_pass = 1)
+            or (enroll.second_choice = #{department,jdbcType=VARCHAR} and
+                enroll.second_interview_score = #{score,jdbcType=CHAR} and enroll_pass.second_pass = 1)
+            or (enroll.third_choice = #{department,jdbcType=VARCHAR} and
+                enroll.third_interview_score = #{score,jdbcType=CHAR} and enroll_pass.third_pass = 1));
+
+    </select>
+
+
+    <select id="crossDepartment" resultMap="cross_department">
+        select main_id,
+               real_name,
+               sex,
+               tel_no,
+               wechat,
+               (
+                   case
+                       when first_pass != 100 then concat_ws(" ", second_choice, third_choice)
+                       when second_pass != 100 then concat_ws(" ", first_choice, third_choice)
+                       when third_pass != 100 then concat_ws(" ", first_choice, second_choice)
+                       when first_pass = 100 and second_pass = 100 and third_pass = 100
+                           then concat_ws(" ", first_choice, second_choice, third_choice)
+                       end
+                   )
+                   as 'cross'
+        from cross_department
+        where ((first_choice = #{department,jdbcType=VARCHAR} and first_pass = 100) or
+               (second_choice = #{department,jdbcType=VARCHAR} and second_pass = 100) or
+               (third_choice = #{department,jdbcType=VARCHAR} and third_pass = 100));
+    </select>
+    <select id="PcWaitSecondInterviewed" resultMap="PcWaitSecondInterviewed">
+        select main_id,
+               real_name,
+               sex,
+               tel_no,
+               wechat,
+               (
+                   case
+                       when first_choice = #{department,jdbcType=VARCHAR} and
+                            first_interview_score = #{score,jdbcType=CHAR} then first_interview_score
+                       when second_choice = #{department,jdbcType=VARCHAR} and
+                            second_interview_score =#{score,jdbcType=CHAR} then second_interview_score
+                       when third_choice = #{department,jdbcType=VARCHAR} and
+                            third_interview_score = #{score,jdbcType=CHAR} then third_interview_score
+                       end
+                   )
+                   as 'score'
+        from enroll
+        where (enroll_status=503 and final_department=#{department,jdbcType=VARCHAR})
+          and ((first_choice=#{department,jdbcType=VARCHAR} and first_interview_score=#{score,jdbcType=CHAR})
+            or (second_choice=#{department,jdbcType=VARCHAR} and second_interview_score=#{score,jdbcType=CHAR})
+            or (third_choice=#{department,jdbcType=VARCHAR} and third_interview_score=#{score,jdbcType=CHAR}));
+
+    </select>
+    <select id="PcSecondInterviewed" resultMap="PcFirstInterviewed">
+        select main_id,
+               real_name,
+               sex,
+               (
+                   case
+                       when first_choice = #{department,jdbcType=VARCHAR} and
+                            first_interview_score = #{score,jdbcType=CHAR} then first_interview_score
+                       when second_choice = #{department,jdbcType=VARCHAR} and
+                            second_interview_score =#{score,jdbcType=CHAR} then second_interview_score
+                       when third_choice = #{department,jdbcType=VARCHAR} and
+                            third_interview_score = #{score,jdbcType=CHAR} then third_interview_score
+                       end
+                   )
+                   as 'score',
+               (
+                   case
+                       when enroll.first_choice = #{department,jdbcType=VARCHAR} then enroll.first_interview_impression
+                       when enroll.second_choice = #{department,jdbcType=VARCHAR}
+                           then enroll.second_interview_impression
+                       when enroll.third_choice = #{department,jdbcType=VARCHAR} then enroll.third_interview_impression
+                       end
+                   )
+                   as 'impression'
+        from enroll
+        where (enroll_status=502 and final_department=#{department,jdbcType=VARCHAR})
+          and ((first_choice=#{department,jdbcType=VARCHAR} and first_interview_score=#{score,jdbcType=CHAR})
+            or (second_choice=#{department,jdbcType=VARCHAR} and second_interview_score=#{score,jdbcType=CHAR})
+            or (third_choice=#{department,jdbcType=VARCHAR} and third_interview_score=#{score,jdbcType=CHAR}));
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from enroll
+        where enroll_status = #{mainId,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.volunteer.volunteer.model.EnrollPerson">
+        insert into enroll (main_id, real_name, sex,
+                            tel_no, wechat, school,
+                            organization, introduction, first_choice,
+                            first_interview_score, first_interview_impression,
+                            second_choice, second_interview_score, second_interview_impression,
+                            third_choice, third_interview_score, third_interview_impression,
+                            final_department, enroll_status)
+        values (#{mainId,jdbcType=INTEGER}, #{realName,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR},
+                #{telNo,jdbcType=CHAR}, #{wechat,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR},
+                #{organization,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, #{firstChoice,jdbcType=VARCHAR},
+                #{firstInterviewScore,jdbcType=CHAR}, #{firstInterviewImpression,jdbcType=VARCHAR},
+                #{secondChoice,jdbcType=VARCHAR}, #{secondInterviewScore,jdbcType=CHAR},
+                #{secondInterviewImpression,jdbcType=VARCHAR},
+                #{thirdChoice,jdbcType=VARCHAR}, #{thirdInterviewScore,jdbcType=CHAR},
+                #{thirdInterviewImpression,jdbcType=VARCHAR},
+                #{finalDepartment,jdbcType=VARCHAR}, #{enrollStatus,jdbcType=CHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.volunteer.volunteer.model.EnrollPerson">
+        insert into enroll
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mainId != null">
+                main_id,
+            </if>
+            <if test="realName != null">
+                real_name,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="telNo != null">
+                tel_no,
+            </if>
+            <if test="wechat != null">
+                wechat,
+            </if>
+            <if test="school != null">
+                school,
+            </if>
+            <if test="organization != null">
+                organization,
+            </if>
+            <if test="introduction != null">
+                introduction,
+            </if>
+            <if test="firstChoice != null">
+                first_choice,
+            </if>
+            <if test="firstInterviewScore != null">
+                first_interview_score,
+            </if>
+            <if test="firstInterviewImpression != null">
+                first_interview_impression,
+            </if>
+            <if test="secondChoice != null">
+                second_choice,
+            </if>
+            <if test="secondInterviewScore != null">
+                second_interview_score,
+            </if>
+            <if test="secondInterviewImpression != null">
+                second_interview_impression,
+            </if>
+            <if test="thirdChoice != null">
+                third_choice,
+            </if>
+            <if test="thirdInterviewScore != null">
+                third_interview_score,
+            </if>
+            <if test="thirdInterviewImpression != null">
+                third_interview_impression,
+            </if>
+            <if test="finalDepartment != null">
+                final_department,
+            </if>
+            <if test="enrollStatus != null">
+                enroll_status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mainId != null">
+                #{mainId,jdbcType=INTEGER},
+            </if>
+            <if test="realName != null">
+                #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=CHAR},
+            </if>
+            <if test="telNo != null">
+                #{telNo,jdbcType=CHAR},
+            </if>
+            <if test="wechat != null">
+                #{wechat,jdbcType=VARCHAR},
+            </if>
+            <if test="school != null">
+                #{school,jdbcType=VARCHAR},
+            </if>
+            <if test="organization != null">
+                #{organization,jdbcType=VARCHAR},
+            </if>
+            <if test="introduction != null">
+                #{introduction,jdbcType=VARCHAR},
+            </if>
+            <if test="firstChoice != null">
+                #{firstChoice,jdbcType=VARCHAR},
+            </if>
+            <if test="firstInterviewScore != null">
+                #{firstInterviewScore,jdbcType=CHAR},
+            </if>
+            <if test="firstInterviewImpression != null">
+                #{firstInterviewImpression,jdbcType=VARCHAR},
+            </if>
+            <if test="secondChoice != null">
+                #{secondChoice,jdbcType=VARCHAR},
+            </if>
+            <if test="secondInterviewScore != null">
+                #{secondInterviewScore,jdbcType=CHAR},
+            </if>
+            <if test="secondInterviewImpression != null">
+                #{secondInterviewImpression,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdChoice != null">
+                #{thirdChoice,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdInterviewScore != null">
+                #{thirdInterviewScore,jdbcType=CHAR},
+            </if>
+            <if test="thirdInterviewImpression != null">
+                #{thirdInterviewImpression,jdbcType=VARCHAR},
+            </if>
+            <if test="finalDepartment != null">
+                #{finalDepartment,jdbcType=VARCHAR},
+            </if>
+            <if test="enrollStatus != null">
+                #{enrollStatus,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.volunteer.volunteer.model.EnrollPerson">
+        update enroll
+        <set>
+            <if test="realName != null">
+                real_name = #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=CHAR},
+            </if>
+            <if test="telNo != null">
+                tel_no = #{telNo,jdbcType=CHAR},
+            </if>
+            <if test="wechat != null">
+                wechat = #{wechat,jdbcType=VARCHAR},
+            </if>
+            <if test="school != null">
+                school = #{school,jdbcType=VARCHAR},
+            </if>
+            <if test="organization != null">
+                organization = #{organization,jdbcType=VARCHAR},
+            </if>
+            <if test="introduction != null">
+                introduction = #{introduction,jdbcType=VARCHAR},
+            </if>
+            <if test="firstChoice != null">
+                first_choice = #{firstChoice,jdbcType=VARCHAR},
+            </if>
+            <if test="firstInterviewScore != null">
+                first_interview_score = #{firstInterviewScore,jdbcType=CHAR},
+            </if>
+            <if test="firstInterviewImpression != null">
+                first_interview_impression = #{firstInterviewImpression,jdbcType=VARCHAR},
+            </if>
+            <if test="secondChoice != null">
+                second_choice = #{secondChoice,jdbcType=VARCHAR},
+            </if>
+            <if test="secondInterviewScore != null">
+                second_interview_score = #{secondInterviewScore,jdbcType=CHAR},
+            </if>
+            <if test="secondInterviewImpression != null">
+                second_interview_impression = #{secondInterviewImpression,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdChoice != null">
+                third_choice = #{thirdChoice,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdInterviewScore != null">
+                third_interview_score = #{thirdInterviewScore,jdbcType=CHAR},
+            </if>
+            <if test="thirdInterviewImpression != null">
+                third_interview_impression = #{thirdInterviewImpression,jdbcType=VARCHAR},
+            </if>
+            <if test="finalDepartment != null">
+                final_department = #{finalDepartment,jdbcType=VARCHAR},
+            </if>
+            <if test="enrollStatus != null">
+                enroll_status = #{enrollStatus,jdbcType=CHAR},
+            </if>
+        </set>
+        where main_id = #{mainId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.volunteer.volunteer.model.EnrollPerson">
+        update enroll
+        set real_name                   = #{realName,jdbcType=VARCHAR},
+            sex                         = #{sex,jdbcType=CHAR},
+            tel_no                      = #{telNo,jdbcType=CHAR},
+            wechat                      = #{wechat,jdbcType=VARCHAR},
+            school                      = #{school,jdbcType=VARCHAR},
+            organization                = #{organization,jdbcType=VARCHAR},
+            introduction                = #{introduction,jdbcType=VARCHAR},
+            first_choice                = #{firstChoice,jdbcType=VARCHAR},
+            first_interview_score       = #{firstInterviewScore,jdbcType=CHAR},
+            first_interview_impression  = #{firstInterviewImpression,jdbcType=VARCHAR},
+            second_choice               = #{secondChoice,jdbcType=VARCHAR},
+            second_interview_score      = #{secondInterviewScore,jdbcType=CHAR},
+            second_interview_impression = #{secondInterviewImpression,jdbcType=VARCHAR},
+            third_choice                = #{thirdChoice,jdbcType=VARCHAR},
+            third_interview_score       = #{thirdInterviewScore,jdbcType=CHAR},
+            third_interview_impression  = #{thirdInterviewImpression,jdbcType=VARCHAR},
+            final_department            = #{finalDepartment,jdbcType=VARCHAR},
+            enroll_status               = #{enrollStatus,jdbcType=CHAR}
+        where main_id = #{mainId,jdbcType=INTEGER}
+    </update>
+</mapper>

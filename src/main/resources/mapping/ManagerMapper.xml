@@ -23,7 +23,8 @@
   </select>
   <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
     select
-    <include refid="Login_List"/>
+    <!--<include refid="Login_List"/>  查询结果需要用到部门,直接改为全字段-->
+    <include refid="Base_Column_List"/>
     from manager
     where manager_name = #{managerName,jdbcType=VARCHAR}
   </select>

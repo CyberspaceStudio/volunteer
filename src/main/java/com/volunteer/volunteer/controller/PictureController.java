@@ -20,7 +20,6 @@ public class PictureController {
     @Resource
     private PictureService pictureService;
 
-
     @PostMapping("/upload")
     public UniversalResponseBody uploadFiles(@RequestParam("file") MultipartFile[] file,@RequestParam("id")int id){
         if(fileUtil.uploadHelper(file,id)){
