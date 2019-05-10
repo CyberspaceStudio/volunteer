@@ -1,7 +1,6 @@
 package com.volunteer.volunteer.controller;
 
-import com.volunteer.volunteer.mapper.EnrollPassMapper;
-import com.volunteer.volunteer.model.EnrollPass;
+
 import com.volunteer.volunteer.model.EnrollPerson;
 import com.volunteer.volunteer.service.EnrollPassService;
 import com.volunteer.volunteer.service.EnrollPersonService;
@@ -9,7 +8,6 @@ import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
@@ -434,16 +432,5 @@ public class EnrollController {
             return new UniversalResponseBody(-1,"失败");
         }
     }
-    @Resource
-    private EnrollPassMapper enrollPassMapper;
 
-    @GetMapping(value = "/test01")
-    @ResponseBody
-    public UniversalResponseBody test() {
-        EnrollPass enrollPass = enrollPassMapper.selectByMainId(100001);
-        enrollPass.setFirstPass(500);
-        enrollPass.setSecondPass(0);
-        enrollPass.setThirdPass(0);
-        return new UniversalResponseBody<>(0, "ceshi", enrollPassMapper.updateByMainId(enrollPass));
-    }
 }
