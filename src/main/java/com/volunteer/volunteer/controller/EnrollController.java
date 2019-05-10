@@ -243,7 +243,7 @@ public class EnrollController {
     }
 
     /**
-     * TODO 一二面扫码签到
+     * TODO 一面扫码-->简历
      */
 
 
@@ -278,6 +278,7 @@ public class EnrollController {
             return new UniversalResponseBody<>(-1, "失败", null);
         }
     }
+
 
 
     /**
@@ -370,12 +371,6 @@ public class EnrollController {
     }
 
 
-
-    //TODO 一面后录取为部员
-
-
-
-
     /**
      * @Description: PC端：二面后录取为部员
      * @Param: [mainIds[], request]
@@ -432,5 +427,17 @@ public class EnrollController {
             return new UniversalResponseBody(-1,"失败");
         }
     }
+
+
+    //TODO 一面已通过人员
+
+    //TODO 退部操作 修改information 表的权限为游客
+
+    //TODO 跨部协调
+
+    //TODO 一面后录取为部员
+
+    //TODO 导出各种名单
+
 
 }
