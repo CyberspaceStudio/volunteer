@@ -88,6 +88,22 @@ WHERE
 			)
 		)
 	);
+
+	CREATE VIEW pass_or_not AS
+	SELECT
+    	`enroll`.`main_id` AS `main_id`,
+    	`enroll`.`first_choice` AS `first_choice`,
+    	`enroll_pass`.`first_pass` AS `first_pass`,
+    	`enroll`.`second_choice` AS `second_choice`,
+    	`enroll_pass`.`second_pass` AS `second_pass`,
+    	`enroll`.`third_choice` AS `third_choice`,
+    	`enroll_pass`.`third_pass` AS `third_pass`,
+    	`enroll`.`final_department` AS `final_department`,
+    	`enroll`.`enroll_status` AS `enroll_status`
+    FROM
+    	( `enroll` JOIN `enroll_pass` )
+    WHERE
+    	( `enroll`.`main_id` = `enroll_pass`.`main_id` )
 ```
 
 ```

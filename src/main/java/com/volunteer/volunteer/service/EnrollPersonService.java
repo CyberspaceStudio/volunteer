@@ -10,6 +10,8 @@ public interface EnrollPersonService {
 
     boolean insert(EnrollPerson enrollPerson);
 
+    boolean updateStatusByMainId(Integer mainId,Integer status);
+
     boolean saveInformation(EnrollPerson enrollPerson);
 
     EnrollPerson findByMainId(Integer mainId);

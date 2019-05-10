@@ -20,4 +20,5 @@ public interface EnrollPassMapper {
     int updateByPrimaryKey(EnrollPass record);
 
     int updateByMainId(EnrollPass record);
+
 }

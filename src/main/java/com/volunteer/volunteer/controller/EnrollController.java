@@ -1,5 +1,7 @@
 package com.volunteer.volunteer.controller;
 
+import com.volunteer.volunteer.mapper.EnrollPassMapper;
+import com.volunteer.volunteer.model.EnrollPass;
 import com.volunteer.volunteer.model.EnrollPerson;
 import com.volunteer.volunteer.service.EnrollPassService;
 import com.volunteer.volunteer.service.EnrollPersonService;
@@ -7,6 +9,7 @@ import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
@@ -242,8 +245,8 @@ public class EnrollController {
     }
 
     /**
-    * TODO 一二面扫码签到
-    */
+     * TODO 一二面扫码签到
+     */
 
 
     /**
@@ -270,7 +273,7 @@ public class EnrollController {
     @GetMapping(value = "/PcFirstInterviewed")
     @ResponseBody
     public UniversalResponseBody PcFirstInterviewed(HttpServletRequest request) {
-        Map<String, List<Map<String,Object>>> res = enrollPersonService.PcFirstInterviewed((String) request.getSession().getAttribute("department"));
+        Map<String, List<Map<String, Object>>> res = enrollPersonService.PcFirstInterviewed((String) request.getSession().getAttribute("department"));
         if (res != null) {
             return new UniversalResponseBody<>(0, "请求成功:PC端:一面已面试人员", res);
         } else {
@@ -280,21 +283,20 @@ public class EnrollController {
 
 
     /**
-    * @Description: PC端:跨部人员
-    * @Param: [request]
-    * @return: UniversalResponseBody
-    */
+     * @Description: PC端:跨部人员
+     * @Param: [request]
+     * @return: UniversalResponseBody
+     */
     @GetMapping(value = "/crossDepartment")
     @ResponseBody
     public UniversalResponseBody crossDepartment(HttpServletRequest request) {
-        List<Map<String,Object>> res = enrollPersonService.crossDepartment((String)request.getSession().getAttribute("department"));
+        List<Map<String, Object>> res = enrollPersonService.crossDepartment((String) request.getSession().getAttribute("department"));
         if (res != null) {
             return new UniversalResponseBody<>(0, "请求成功:PC端:跨部人员", res);
         } else {
             return new UniversalResponseBody<>(-1, "失败", null);
         }
     }
-
 
 
     /**
@@ -305,15 +307,13 @@ public class EnrollController {
     @GetMapping(value = "/PcWaitSecondInterviewed")
     @ResponseBody
     public UniversalResponseBody PcWaitSecondInterviewed(HttpServletRequest request) {
-        Map<String, List<Map<String,Object>>> res = enrollPersonService.PcWaitSecondInterviewed((String) request.getSession().getAttribute("department"));
+        Map<String, List<Map<String, Object>>> res = enrollPersonService.PcWaitSecondInterviewed((String) request.getSession().getAttribute("department"));
         if (res != null) {
             return new UniversalResponseBody<>(0, "请求成功:PC端:二面待面试人员", res);
         } else {
             return new UniversalResponseBody<>(-1, "失败", null);
         }
     }
-
-
 
 
     /**
@@ -324,11 +324,126 @@ public class EnrollController {
     @GetMapping(value = "/PcSecondInterviewed")
     @ResponseBody
     public UniversalResponseBody PcSecondInterviewed(HttpServletRequest request) {
-        Map<String, List<Map<String,Object>>> res = enrollPersonService.PcWaitSecondInterviewed((String) request.getSession().getAttribute("department"));
+        Map<String, List<Map<String, Object>>> res = enrollPersonService.PcWaitSecondInterviewed((String) request.getSession().getAttribute("department"));
         if (res != null) {
             return new UniversalResponseBody<>(0, "请求成功:PC端:二面已面试人员", res);
         } else {
             return new UniversalResponseBody<>(-1, "失败", null);
         }
+    }
+
+
+    /**
+     * @Description: PC端：一面通过，录取为二面
+     * @Param: [mainIds[], request]
+     * @return: UniversalResponseBody
+     */
+    @PostMapping(value = "/firstPass")
+    @ResponseBody
+    public UniversalResponseBody firstPass(@RequestParam("mainIds") int[] mainIds, HttpServletRequest request){
+        try{
+            enrollPassService.ManyPassOrNot(mainIds,(String)request.getSession().getAttribute("department"),100,503);
+            //enrollPassService.ManyPassOrNot(mainIds,"网络技术工作室",100,503);
+            return new UniversalResponseBody(0,"成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            return new UniversalResponseBody(-1,"失败");
+        }
+    }
+
+
+    /**
+     * @Description: PC端：一面通过，录取为二面
+     * @Param: [mainIds[], request]
+     * @return: UniversalResponseBody
+     */
+    @PostMapping(value = "/notPass")
+    @ResponseBody
+    public UniversalResponseBody notPass(@RequestParam("mainIds") int[] mainIds, HttpServletRequest request){
+        //statusNum, passNum 为0 此时不会进行更新
+        try{
+            enrollPassService.ManyPassOrNot(mainIds,(String)request.getSession().getAttribute("department"),500,0);
+            //enrollPassService.ManyPassOrNot(mainIds,"网络技术工作室",500,0);
+            return new UniversalResponseBody(0,"成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            return new UniversalResponseBody(-1,"失败");
+        }
+    }
+
+
+
+    //TODO 一面后录取为部员
+
+
+
+
+    /**
+     * @Description: PC端：二面后录取为部员
+     * @Param: [mainIds[], request]
+     * @return: UniversalResponseBody
+     */
+    @PostMapping(value = "/secondAdmit")
+    @ResponseBody
+    public UniversalResponseBody secondAdmit(@RequestParam("mainIds") int[] mainIds, HttpServletRequest request){
+        //statusNum, passNum 为0 此时不会进行更新
+        try{
+            enrollPassService.ManyPassOrNot(mainIds,(String)request.getSession().getAttribute("department"),0,505);
+            //enrollPassService.ManyPassOrNot(mainIds,"网络技术工作室",0,505);
+            return new UniversalResponseBody(0,"成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            return new UniversalResponseBody(-1,"失败");
+        }
+    }
+
+
+    /**
+     * @Description: PC端：二面被刷
+     * @Param: [mainIds[], request]
+     * @return: UniversalResponseBody
+     */
+    @PostMapping(value = "/secondInterviewNotPass")
+    @ResponseBody
+    public UniversalResponseBody secondInterviewNotPass(@RequestParam("mainIds") int[] mainIds, HttpServletRequest request){
+        //statusNum, passNum 为0 此时不会进行更新
+        try{
+            //enrollPassService.ManyPassOrNot(mainIds,(String)request.getSession().getAttribute("department"),0,504);
+            enrollPassService.ManyPassOrNot(mainIds,"网络技术工作室",0,504);
+            return new UniversalResponseBody(0,"成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            return new UniversalResponseBody(-1,"失败");
+        }
+    }
+
+    /**
+     * @Description: PC端：二面签到
+     * @Param: [mainId, request]
+     * @return: UniversalResponseBody
+     */
+    @PostMapping(value = "/secondInterviewPresence")
+    @ResponseBody
+    public UniversalResponseBody secondInterviewPresence(@RequestParam("mainId") int mainId){
+        try{
+            if (enrollPersonService.updateStatusByMainId(mainId,502)) {
+                return new UniversalResponseBody(0, "成功");
+            }else return new UniversalResponseBody(-1,"失败");
+        }catch (Exception e){
+            e.printStackTrace();
+            return new UniversalResponseBody(-1,"失败");
+        }
+    }
+    @Resource
+    private EnrollPassMapper enrollPassMapper;
+
+    @GetMapping(value = "/test01")
+    @ResponseBody
+    public UniversalResponseBody test() {
+        EnrollPass enrollPass = enrollPassMapper.selectByMainId(100001);
+        enrollPass.setFirstPass(500);
+        enrollPass.setSecondPass(0);
+        enrollPass.setThirdPass(0);
+        return new UniversalResponseBody<>(0, "ceshi", enrollPassMapper.updateByMainId(enrollPass));
     }
 }

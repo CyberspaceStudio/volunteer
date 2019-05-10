@@ -23,6 +23,7 @@
         from enroll_pass
         where main_id = #{mainId,jdbcType=INTEGER}
     </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from enroll_pass
@@ -106,9 +107,20 @@
 
     <update id="updateByMainId" parameterType="com.volunteer.volunteer.model.EnrollPass">
         update enroll_pass
-        set first_pass  = #{firstPass,jdbcType=INTEGER},
-            second_pass = #{secondPass,jdbcType=INTEGER},
-            third_pass  = #{thirdPass,jdbcType=INTEGER}
+        <set>
+            <if test="firstPass != null and firstPass !=0">
+                first_pass = #{firstPass,jdbcType=INTEGER},
+            </if>
+            <if test="secondPass != null and secondPass !=0">
+                second_pass = #{secondPass,jdbcType=INTEGER},
+            </if>
+            <if test="thirdPass != null and thirdPass !=0">
+                third_pass = #{thirdPass,jdbcType=INTEGER},
+            </if>
+        </set>
         where main_id = #{mainId,jdbcType=INTEGER}
     </update>
+
+
+
 </mapper>

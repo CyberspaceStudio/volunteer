@@ -9,7 +9,6 @@ import com.volunteer.volunteer.model.UserInformation;
 import com.volunteer.volunteer.service.EnrollPersonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +37,13 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
         return enrollPersonMapper.insert(enrollPerson) > 0;
     }
 
+    @Override
+    public boolean updateStatusByMainId(Integer mainId,Integer status){
+
+        EnrollPerson enrollPerson = enrollPersonMapper.selectByPrimaryKey(mainId);
+        enrollPerson.setEnrollStatus(""+status);
+        return enrollPersonMapper.updateByPrimaryKeySelective(enrollPerson)>0;
+    }
 
     @Override
     public EnrollPerson findByMainId(Integer mainId) {
