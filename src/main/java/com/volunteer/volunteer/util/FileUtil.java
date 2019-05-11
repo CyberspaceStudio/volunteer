@@ -57,7 +57,7 @@ public class FileUtil {
             //重新构造文件名，防止文件名重复
             String fileName = String.valueOf(new Date().getTime());
             //Please replace the file path in you particular project.
-            String path = "E:/temptest/" + fileName + "_" + activityId;
+            String path = "/root/uploadpicture" + fileName + "_" + activityId;
             String fileType = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
             path = path + fileType;
             Picture temp = new Picture();
