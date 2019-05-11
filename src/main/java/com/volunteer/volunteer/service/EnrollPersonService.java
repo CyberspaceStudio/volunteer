@@ -12,7 +12,9 @@ public interface EnrollPersonService {
 
     boolean updateStatusByMainId(Integer mainId,Integer status);
 
-    boolean saveInformation(EnrollPerson enrollPerson);
+    boolean transferDepartment(int mainId,String department);
+
+    void saveManyInformation(int[] mainIds) throws Exception;
 
     EnrollPerson findByMainId(Integer mainId);
 
@@ -41,6 +43,8 @@ public interface EnrollPersonService {
     List<Map<String,Object>> pcWaitFirstInterview(String department);
 
     Map<String, List<Map<String,Object>>> PcFirstInterviewed(String department);
+
+    Map<String, List<Map<String,Object>>> firstInterviewPass(String department);
 
     Map<String, List<Map<String,Object>>> PcWaitSecondInterviewed(String department);
 

@@ -2,8 +2,10 @@ package com.volunteer.volunteer.controller;
 
 
 import com.volunteer.volunteer.model.EnrollPerson;
+import com.volunteer.volunteer.model.UserInformation;
 import com.volunteer.volunteer.service.EnrollPassService;
 import com.volunteer.volunteer.service.EnrollPersonService;
+import com.volunteer.volunteer.service.UserInformationService;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -32,6 +34,8 @@ public class EnrollController {
     @Resource
     private EnrollPassService enrollPassService;
 
+    @Resource
+    private UserInformationService userInformationService;
 
     /**
      * @Description: 报名
@@ -323,11 +327,11 @@ public class EnrollController {
     @GetMapping(value = "/PcSecondInterviewed")
     @ResponseBody
     public UniversalResponseBody PcSecondInterviewed(HttpServletRequest request) {
-        Map<String, List<Map<String, Object>>> res = enrollPersonService.PcWaitSecondInterviewed((String) request.getSession().getAttribute("department"));
+        Map<String, List<Map<String, Object>>> res = enrollPersonService.PcSecondInterviewed((String) request.getSession().getAttribute("department"));
         if (res != null) {
             return new UniversalResponseBody<>(0, "请求成功:PC端:二面已面试人员", res);
         } else {
-            return new UniversalResponseBody<>(-1, "失败", null);
+            return new UniversalResponseBody(-1, "失败");
         }
     }
 
@@ -352,7 +356,7 @@ public class EnrollController {
 
 
     /**
-     * @Description: PC端：一面通过，录取为二面
+     * @Description: PC端：一面刷人
      * @Param: [mainIds[], request]
      * @return: UniversalResponseBody
      */
@@ -381,8 +385,9 @@ public class EnrollController {
     public UniversalResponseBody secondAdmit(@RequestParam("mainIds") int[] mainIds, HttpServletRequest request){
         //statusNum, passNum 为0 此时不会进行更新
         try{
-            enrollPassService.ManyPassOrNot(mainIds,(String)request.getSession().getAttribute("department"),0,505);
             //enrollPassService.ManyPassOrNot(mainIds,"网络技术工作室",0,505);
+            enrollPassService.ManyPassOrNot(mainIds,(String)request.getSession().getAttribute("department"),0,505);
+            enrollPersonService.saveManyInformation(mainIds);
             return new UniversalResponseBody(0,"成功");
         }catch (Exception e){
             e.printStackTrace();
@@ -401,8 +406,8 @@ public class EnrollController {
     public UniversalResponseBody secondInterviewNotPass(@RequestParam("mainIds") int[] mainIds, HttpServletRequest request){
         //statusNum, passNum 为0 此时不会进行更新
         try{
-            //enrollPassService.ManyPassOrNot(mainIds,(String)request.getSession().getAttribute("department"),0,504);
-            enrollPassService.ManyPassOrNot(mainIds,"网络技术工作室",0,504);
+            enrollPassService.ManyPassOrNot(mainIds,(String)request.getSession().getAttribute("department"),0,504);
+            //enrollPassService.ManyPassOrNot(mainIds,"网络技术工作室",0,504);
             return new UniversalResponseBody(0,"成功");
         }catch (Exception e){
             e.printStackTrace();
@@ -429,13 +434,60 @@ public class EnrollController {
     }
 
 
-    //TODO 一面已通过人员
 
-    //TODO 退部操作 修改information 表的权限为游客
+    /**
+     * @Description: PC端： 一面已通过人员
+     * @Param: [request]
+     * @return: UniversalResponseBody
+     */
+    @PostMapping(value = "/firstInterviewPass")
+    @ResponseBody
+    public UniversalResponseBody firstInterviewPass(HttpServletRequest request){
+        //Map<String, List<Map<String, Object>>> res = enrollPersonService.firstInterviewPass("网络技术工作室");
+        Map<String, List<Map<String, Object>>> res = enrollPersonService.firstInterviewPass((String) request.getSession().getAttribute("department"));
+        if (res != null) {
+            return new UniversalResponseBody<>(0, "请求成功:PC端:一面通过面试人员", res);
+        } else {
+            return new UniversalResponseBody<>(-1, "失败", null);
+        }
+    }
 
-    //TODO 跨部协调
+
+    /**
+     * @Description: PC端：跨部协调
+     * @Param: [mainId,request]
+     * @return: UniversalResponseBody
+     */
+    @PostMapping(value = "/transferDepartment")
+    @ResponseBody
+    public UniversalResponseBody transferDepartment(@RequestParam("mainId") int mainId, HttpServletRequest request){
+        if (enrollPersonService.transferDepartment(mainId,(String) request.getSession().getAttribute("department"))) {
+            return new UniversalResponseBody(0, "成功");
+        } else {
+            return new UniversalResponseBody(-1, "失败");
+        }
+    }
+
+    /**
+     * @Description: PC端：我的部员
+     * @Param: [mainId,request]
+     * @return: UniversalResponseBody
+     */
+    @GetMapping(value = "/myMembers")
+    @ResponseBody
+    public UniversalResponseBody myMembers(HttpServletRequest request){
+        List<UserInformation> list = userInformationService.findMemberByDepartment((String) request.getSession().getAttribute("department"));
+        if (list != null) {
+            return new UniversalResponseBody<>(0, "成功",list);
+        } else {
+            return new UniversalResponseBody(-1, "失败");
+        }
+    }
+
 
     //TODO 一面后录取为部员
+
+    // TODO 退部操作 修改information 表的权限为游客
 
     //TODO 导出各种名单
 

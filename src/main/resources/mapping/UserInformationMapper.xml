@@ -32,8 +32,14 @@
     from information
     where open_id = #{openId,jdbcType=VARCHAR}
   </select>
+    <select id="findMembers" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from information
+      where department = #{department,jdbcType=VARCHAR} and position='部员'
+    </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from information
     where main_id = #{mainId,jdbcType=INTEGER}
   </delete>

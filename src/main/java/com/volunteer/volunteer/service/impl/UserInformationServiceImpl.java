@@ -12,6 +12,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -100,5 +101,10 @@ public class UserInformationServiceImpl implements UserInformationService {
     @Override
     public boolean update(UserInformation user) {
         return userInformationMapper.updateByPrimaryKeySelective(user) != 0;
+    }
+
+    @Override
+    public List<UserInformation> findMemberByDepartment(String department){
+        return userInformationMapper.findMembers(department);
     }
 }

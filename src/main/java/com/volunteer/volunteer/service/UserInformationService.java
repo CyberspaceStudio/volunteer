@@ -5,6 +5,8 @@ import com.volunteer.volunteer.model.UserInformation;
 import com.volunteer.volunteer.util.ToolSupport.CacheResponseBody;
 import org.springframework.cache.annotation.Cacheable;
 
+import java.util.List;
+
 /**
  * @Author: MaoLin
  * @Date: 2019/3/24 11:04
@@ -27,4 +29,6 @@ public interface UserInformationService {
     boolean deleteByOpenId(String openId);
 
     boolean update(UserInformation user);
+
+    List<UserInformation> findMemberByDepartment(String department);
 }

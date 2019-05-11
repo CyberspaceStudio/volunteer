@@ -9,6 +9,8 @@ import com.volunteer.volunteer.model.UserInformation;
 import com.volunteer.volunteer.service.EnrollPersonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
@@ -337,7 +339,27 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
             return null;
         }
     }
-
+    /**
+     * @Description: PC端:一面已通过面试人员
+     * @Param: [department]
+     * @return: Map<String, List<Map<String,Object>>>
+     */
+    @Override
+    public Map<String, List<Map<String,Object>>> firstInterviewPass(String department) {
+        try {
+            Map<String, List<Map<String,Object>>> res = new TreeMap<>();
+            res.put("A", enrollPersonMapper.PcFirstInterviewPass(department, "A"));
+            res.put("B", enrollPersonMapper.PcFirstInterviewPass(department, "B"));
+            res.put("C", enrollPersonMapper.PcFirstInterviewPass(department, "C"));
+            res.put("D", enrollPersonMapper.PcFirstInterviewPass(department, "D"));
+            res.put("E", enrollPersonMapper.PcFirstInterviewPass(department, "E"));
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("【数据库】查询失败!", e);
+            return null;
+        }
+    }
 
 
     /**
@@ -404,16 +426,37 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
 
 
     /**
-     * @Description: 成为部员数据插入user数据插入
+     * @Description:  PC端：跨部协调
+     * @Param: [department]
+     * @return: Map<String, List<Map<String,Object>>>
+     */
+    @Override
+    public boolean transferDepartment(int mainId,String department){
+        try {
+            EnrollPerson enrollPerson = enrollPersonMapper.selectByPrimaryKey(mainId);
+            enrollPerson.setEnrollStatus("503");
+            enrollPerson.setFinalDepartment(department);
+            return enrollPersonMapper.updateByPrimaryKeySelective(enrollPerson)>0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("【数据库】更新失败!", e);
+            return false;
+        }
+    }
+
+
+    /**
+     * @Description: 成为部员多成员数据插入user
      * @Param: [enrollPerson]
      * @return: boolean
      * user.position :TODO 具体职位看管理员权限的字段
      */
-    @Override
-    public boolean saveInformation(EnrollPerson enrollPerson) {
-        try {
-            UserInformation user = userInformationMapper.selectByPrimaryKey(enrollPerson.getMainId());
+    @Transactional
+    public void saveManyInformation(int[] mainIds) throws Exception {
 
+        for (int mainId : mainIds) {
+            EnrollPerson enrollPerson = enrollPersonMapper.selectByPrimaryKey(mainId);
+            UserInformation user = userInformationMapper.selectByPrimaryKey(enrollPerson.getMainId());
             user.setRealName(enrollPerson.getRealName());
             user.setSex(enrollPerson.getSex());
             user.setTelNo(enrollPerson.getTelNo());
@@ -421,12 +464,9 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
             user.setSchool(enrollPerson.getSchool());
             user.setOrganization(enrollPerson.getOrganization());
             user.setDepartment(enrollPerson.getFinalDepartment());
-            user.setPosition("3");
-            return userInformationMapper.updateByPrimaryKeySelective(user) > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("【数据库】更新失败!", e);
-            return false;
+            user.setPosition("部员");
+            userInformationMapper.updateByPrimaryKeySelective(user);
         }
     }
+
 }

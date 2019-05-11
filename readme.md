@@ -23,7 +23,9 @@ CREATE TABLE `enroll` (
   `enroll_status` char(5) NOT NULL DEFAULT '0' COMMENT '0未面试1通过一面2通过所有面试3正在一面4正在二面5未通过面试',
   PRIMARY KEY (`main_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+```
 
+```
 create table enroll_pass
 (
     pass_id     int(6) unsigned auto_increment
@@ -33,10 +35,11 @@ create table enroll_pass
     second_pass int(5) default 0 null comment '第二志愿是否通过',
     third_pass  int(5) default 0 null comment '第三志愿是否通过'
 );
+```
 
 
-CREATE VIEW cross_department AS
-SELECT
+```
+CREATE OR REPLACE ALGORITHM = UNDEFINED DEFINER = `root`@`localhost` SQL SECURITY DEFINER VIEW `volunteer_test`.`cross_department` AS SELECT
 	`enroll`.`main_id` AS `main_id`,
 	`enroll`.`real_name` AS `real_name`,
 	`enroll`.`sex` AS `sex`,
@@ -47,50 +50,62 @@ SELECT
 	`enroll`.`second_choice` AS `second_choice`,
 	`enroll_pass`.`second_pass` AS `second_pass`,
 	`enroll`.`third_choice` AS `third_choice`,
-	`enroll_pass`.`third_pass` AS `third_pass`
+	`enroll_pass`.`third_pass` AS `third_pass` 
 FROM
-	( `enroll` JOIN `enroll_pass` )
+	( `enroll` JOIN `enroll_pass` ) 
 WHERE
 	(
-		( `enroll_pass`.`main_id` = `enroll`.`main_id` )
-		AND ( `enroll`.`enroll_status` <> 502 )
-		AND ( `enroll`.`enroll_status` <> 505 )
+		( `enroll_pass`.`main_id` = `enroll`.`main_id` ) 
+		AND ( `enroll`.`enroll_status` <> 502 ) 
+		AND ( `enroll`.`enroll_status` <> 505 ) 
+		AND ( isnull( `enroll`.`final_department` ) OR ( `enroll`.`final_department` = '' ) ) 
 		AND (
 			(
 				(
 				SELECT
-					sum( ( ( `enroll_pass`.`first_pass` + `enroll_pass`.`second_pass` ) + `enroll_pass`.`third_pass` ) )
+					sum( ( ( `enroll_pass`.`first_pass` + `enroll_pass`.`second_pass` ) + `enroll_pass`.`third_pass` ) ) 
 				FROM
-					`enroll_pass`
+					`enroll_pass` 
 				WHERE
-					( `enroll_pass`.`main_id` = `enroll`.`main_id` )
-				) = 200
-			)
+					( `enroll_pass`.`main_id` = `enroll`.`main_id` ) 
+				) = 200 
+			) 
 			OR (
 				(
 				SELECT
-					sum( ( ( `enroll_pass`.`first_pass` + `enroll_pass`.`second_pass` ) + `enroll_pass`.`third_pass` ) )
+					sum( ( ( `enroll_pass`.`first_pass` + `enroll_pass`.`second_pass` ) + `enroll_pass`.`third_pass` ) ) 
 				FROM
-					`enroll_pass`
+					`enroll_pass` 
 				WHERE
-					( `enroll_pass`.`main_id` = `enroll`.`main_id` )
-				) = 300
-			)
+					( `enroll_pass`.`main_id` = `enroll`.`main_id` ) 
+				) = 300 
+			) 
 			OR (
 				(
 				SELECT
-					sum( ( ( `enroll_pass`.`first_pass` + `enroll_pass`.`second_pass` ) + `enroll_pass`.`third_pass` ) )
+					sum( ( ( `enroll_pass`.`first_pass` + `enroll_pass`.`second_pass` ) + `enroll_pass`.`third_pass` ) ) 
 				FROM
-					`enroll_pass`
+					`enroll_pass` 
 				WHERE
-					( `enroll_pass`.`main_id` = `enroll`.`main_id` )
-				) = 700
-			)
-		)
+					( `enroll_pass`.`main_id` = `enroll`.`main_id` ) 
+				) = 201 
+			) 
+			OR (
+				(
+				SELECT
+					sum( ( ( `enroll_pass`.`first_pass` + `enroll_pass`.`second_pass` ) + `enroll_pass`.`third_pass` ) ) 
+				FROM
+					`enroll_pass` 
+				WHERE
+					( `enroll_pass`.`main_id` = `enroll`.`main_id` ) 
+				) = 700 
+			) 
+		) 
 	);
+```
 
-	CREATE VIEW pass_or_not AS
-	SELECT
+```
+	CREATE OR REPLACE ALGORITHM = UNDEFINED DEFINER = `root`@`localhost` SQL SECURITY DEFINER VIEW `volunteer_test`.`pass_or_not` AS SELECT
     	`enroll`.`main_id` AS `main_id`,
     	`enroll`.`first_choice` AS `first_choice`,
     	`enroll_pass`.`first_pass` AS `first_pass`,
@@ -99,11 +114,11 @@ WHERE
     	`enroll`.`third_choice` AS `third_choice`,
     	`enroll_pass`.`third_pass` AS `third_pass`,
     	`enroll`.`final_department` AS `final_department`,
-    	`enroll`.`enroll_status` AS `enroll_status`
+    	`enroll`.`enroll_status` AS `enroll_status` 
     FROM
-    	( `enroll` JOIN `enroll_pass` )
+    	( `enroll` JOIN `enroll_pass` ) 
     WHERE
-    	( `enroll`.`main_id` = `enroll_pass`.`main_id` )
+    	( `enroll`.`main_id` = `enroll_pass`.`main_id` );
 ```
 
 ```
@@ -146,7 +161,10 @@ BEGIN
     SET res = res + res3;
     RETURN res;
 END;
+```
 
+
+```
 CREATE DEFINER= `root`@localhost  FUNCTION `departmentInterviewData` (department VARCHAR(15)) RETURNS INT(11)
 BEGIN
     DECLARE res INT;
@@ -164,8 +182,10 @@ SET res = res1 + res2;
 SET res = res + res3;
 RETURN res;
 END;
+```
 
 
+```
 CREATE DEFINER= `root`@localhost  FUNCTION `notDepartmentInterviewData` (department VARCHAR(15)) RETURNS INT(11)
 BEGIN
     DECLARE res INT;
@@ -183,8 +203,9 @@ BEGIN
     SET res = res + res3;
     RETURN res;
 END;
+```
 
-
+```
 CREATE DEFINER= `root`@localhost  FUNCTION `departmentenrollbyman` (department VARCHAR(15)) RETURNS INT(11)
 BEGIN
     DECLARE res INT;
@@ -202,7 +223,9 @@ BEGIN
     SET res = res + res3;
     RETURN res;
 END;
+```
 
+```
 CREATE DEFINER= `root`@localhost  FUNCTION `departmentenrollbywoman` (department VARCHAR(15)) RETURNS INT(11)
 BEGIN
     DECLARE res INT;
@@ -222,12 +245,4 @@ BEGIN
 END;
 ```
 
-```
-alter table information modify position char(5) default 4 null comment '职位'
-```
 
-
-position 数字代表：
-11 正队长 12 副队长
-21 正部长 22 副部长
-3  部员   4  游客
