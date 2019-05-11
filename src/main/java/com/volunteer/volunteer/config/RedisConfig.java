@@ -8,10 +8,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+
 import java.io.Serializable;
 import java.time.Duration;
 import java.util.HashMap;
@@ -31,10 +34,7 @@ public class RedisConfig implements Serializable {
      * 根据类或者方法所使用的注解以及缓存的状态，这个切面会从缓存中获取数据，将数据添加到缓存之中或者从缓存中移除某个值
      */
 
-   /* @Bean
-    public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
-        return RedisCacheManager.create(redisConnectionFactory);
-    }
+
 
     @Bean
     public RedisTemplate redisTemplate(RedisConnectionFactory factory) {
@@ -55,7 +55,7 @@ public class RedisConfig implements Serializable {
         template.setValueSerializer(jackson2JsonRedisSerializer);
 
         return template;
-    }*/
+    }
 
 
     /**

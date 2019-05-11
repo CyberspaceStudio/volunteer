@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
  */
 @RestController
 @Slf4j
+@RequestMapping("/login")
 public class LoginController {
 
     @Resource
@@ -31,7 +32,7 @@ public class LoginController {
     private ManagerService managerService;
 
     @Cacheable(value = "userCache", key = "#loginData.session_key", condition = "#loginData.session_key !=null")
-    @RequestMapping(value = "/login/user", method = RequestMethod.POST)
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
     public CacheResponseBody login(@NotNull WxInfo loginData) {
         try {
             return userInformationService.userLoginWechat(loginData);
@@ -47,7 +48,7 @@ public class LoginController {
      * @Param: [loginManager, request]
      * @return: UniversalResponseBody
      */
-    @RequestMapping(value = "/login/manager", method = RequestMethod.POST)
+    @RequestMapping(value = "/manager", method = RequestMethod.POST)
     public UniversalResponseBody pcLogin(@NotNull @RequestParam("managerName") String managerName, @NotNull @RequestParam("managerPwd") String managerPwd, HttpServletRequest request) {
         try {
             Manager manager = managerService.findManagerByName(managerName);
