@@ -12,6 +12,8 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -47,8 +49,6 @@ public class UserInformationServiceImpl implements UserInformationService {
             UserInformation res = new UserInformation();
             res.setOpenId(wechatResponseBody.getOpenid());
             res.setFalseName(loginData.getFalseName());
-            res.setHeadPictureUrl(loginData.getHeadPictureUrl());
-            res.setRegistTime(String.valueOf(System.currentTimeMillis()));
 
             log.info("【微信登录】用户第一次使用，进行注册！");
 
