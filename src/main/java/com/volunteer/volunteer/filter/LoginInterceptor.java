@@ -9,6 +9,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+/**
+ * 注册拦截器，在redis中检测登录信息，拦截除登录，注册外所有的非登录请求
+ */
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
     @Autowired
