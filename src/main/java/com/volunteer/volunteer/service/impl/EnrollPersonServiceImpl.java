@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -345,15 +346,9 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
      * @return: Map<String, List<Map<String,Object>>>
      */
     @Override
-    public Map<String, List<Map<String,Object>>> firstInterviewPass(String department) {
+    public List<Map<String,Object>> firstInterviewPass(String department) {
         try {
-            Map<String, List<Map<String,Object>>> res = new TreeMap<>();
-            res.put("A", enrollPersonMapper.PcFirstInterviewPass(department, "A"));
-            res.put("B", enrollPersonMapper.PcFirstInterviewPass(department, "B"));
-            res.put("C", enrollPersonMapper.PcFirstInterviewPass(department, "C"));
-            res.put("D", enrollPersonMapper.PcFirstInterviewPass(department, "D"));
-            res.put("E", enrollPersonMapper.PcFirstInterviewPass(department, "E"));
-            return res;
+            return enrollPersonMapper.PcFirstInterviewPass(department);
         } catch (Exception e) {
             e.printStackTrace();
             log.error("【数据库】查询失败!", e);
@@ -434,7 +429,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     public boolean transferDepartment(int mainId,String department){
         try {
             EnrollPerson enrollPerson = enrollPersonMapper.selectByPrimaryKey(mainId);
-            enrollPerson.setEnrollStatus("503");
+            enrollPerson.setEnrollStatus("501");
             enrollPerson.setFinalDepartment(department);
             return enrollPersonMapper.updateByPrimaryKeySelective(enrollPerson)>0;
         } catch (Exception e) {

@@ -45,7 +45,7 @@ public interface EnrollPersonMapper {
 
     List<Map<String,Object>> PcFirstInterviewed(String department,String score);
 
-    List<Map<String,Object>> PcFirstInterviewPass(String department,String score);
+    List<Map<String,Object>> PcFirstInterviewPass(String department);
 
     List<Map<String,Object>> crossDepartment(String department);
 

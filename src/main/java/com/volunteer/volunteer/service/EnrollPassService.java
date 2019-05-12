@@ -9,4 +9,6 @@ public interface EnrollPassService {
     boolean PassOrNot(EnrollPass enrollPass);
 
     void ManyPassOrNot(int[] mainIds,String department,Integer passNum,Integer statusNum) throws Exception;
+
+    void ManyUpdateFinalDepartment(int[] mainIds, String  department) throws Exception;
 }

@@ -39,8 +39,8 @@ public class EnrollPerson {
     private String finalDepartment;
 
     /**
-    *   0   未面试             501 正在一面                 502 正在二面
-    *   503 通过一面，待二面    504 通过一面，未通过二面    505 成为部员      500 未通过所有面试
+    *   0   未面试                                 501 正在一面                502 正在二面
+    *   503 部门协调后，单部门通过一面，待二面     504 通过一面，未通过二面    505 成为部员      500 未通过所有面试
     */
     private String enrollStatus;
 

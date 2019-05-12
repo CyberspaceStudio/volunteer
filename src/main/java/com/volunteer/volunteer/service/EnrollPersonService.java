@@ -44,7 +44,7 @@ public interface EnrollPersonService {
 
     Map<String, List<Map<String,Object>>> PcFirstInterviewed(String department);
 
-    Map<String, List<Map<String,Object>>> firstInterviewPass(String department);
+    List<Map<String,Object>> firstInterviewPass(String department);
 
     Map<String, List<Map<String,Object>>> PcWaitSecondInterviewed(String department);
 

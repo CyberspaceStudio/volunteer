@@ -92,4 +92,13 @@ public class EnrollPassServiceImpl implements EnrollPassService {
         }
     }
 
+    @Transactional
+    public void ManyUpdateFinalDepartment(int[] mainIds, String  department) throws Exception{
+        for (int mainId : mainIds) {
+            EnrollPerson enrollPerson = enrollPersonMapper.selectByPrimaryKey(mainId);
+            enrollPerson.setFinalDepartment(department);
+            enrollPersonMapper.updateByPrimaryKeySelective(enrollPerson);
+        }
+    }
+
 }
