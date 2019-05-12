@@ -267,7 +267,7 @@ public class EnrollController {
 
 
     /**
-     * @Description: PC端：我的部员
+     * @Description: PC端：退部
      * @Param: [mainId]
      * @return: UniversalResponseBody
      */

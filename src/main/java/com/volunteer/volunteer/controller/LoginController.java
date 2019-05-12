@@ -39,7 +39,7 @@ public class LoginController {
         } catch (Exception e) {
             log.error(" 【微信登录】登录失败", e);
             e.printStackTrace();
-            return null;
+            return new CacheResponseBody(-1,"失败");
         }
     }
 
