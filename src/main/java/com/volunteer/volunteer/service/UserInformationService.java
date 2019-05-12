@@ -24,6 +24,8 @@ public interface UserInformationService {
 
     UserInformation findByOpenId(String openId);
 
+    boolean updateDropOut(int mainId);
+
     boolean deleteById(int mainId);
 
     boolean deleteByOpenId(String openId);

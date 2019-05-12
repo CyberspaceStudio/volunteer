@@ -247,9 +247,6 @@ public class EnrollController {
     }
 
 
-
-
-
     /**
      * @Description: PC端：我的部员
      * @Param: [mainId,request]
@@ -269,7 +266,20 @@ public class EnrollController {
 
 
 
-    // TODO 退部操作 修改information 表的权限为游客
+    /**
+     * @Description: PC端：我的部员
+     * @Param: [mainId]
+     * @return: UniversalResponseBody
+     */
+    @PostMapping(value = "/dropOut")
+    @ResponseBody
+    public UniversalResponseBody dropOut(int mainId){
+        if (userInformationService.updateDropOut(mainId)) {
+            return new UniversalResponseBody<>(0, "成功");
+        } else {
+            return new UniversalResponseBody(-1, "失败");
+        }
+    }
 
 
 
