@@ -56,7 +56,7 @@
     values (#{mainId,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{falseName,jdbcType=VARCHAR}, 
       #{headPictureUrl,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, 
       #{telNo,jdbcType=CHAR}, #{wechat,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR},
-      #{school,jdbcType=VARCHAR}, #{organization,jdbcType=VARCHAR}, #{registTime,jdbcType=TIMESTAMP}, 
+      #{school,jdbcType=VARCHAR}, #{organization,jdbcType=VARCHAR}, #{registTime,jdbcType=TIMESTAMP},
       #{position,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.volunteer.volunteer.model.UserInformation" >

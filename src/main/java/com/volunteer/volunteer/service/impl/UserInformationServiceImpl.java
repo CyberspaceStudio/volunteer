@@ -49,7 +49,6 @@ public class UserInformationServiceImpl implements UserInformationService {
             res.setOpenId(wechatResponseBody.getOpenid());
             res.setFalseName(loginData.getFalseName());
             res.setHeadPictureUrl(loginData.getHeadPictureUrl());
-            res.setRegistTime(String.valueOf(System.currentTimeMillis()));
 
             log.info("【微信登录】用户第一次使用，进行注册！");
 
