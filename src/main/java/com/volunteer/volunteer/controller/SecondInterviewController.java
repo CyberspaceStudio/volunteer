@@ -64,7 +64,6 @@ public class SecondInterviewController {
     }
 
 
-
     /**
      * @Description: PC端：二面后录取为部员
      * @Param: [mainIds[], request]
