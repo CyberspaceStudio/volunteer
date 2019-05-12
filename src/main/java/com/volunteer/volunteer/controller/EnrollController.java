@@ -1,6 +1,7 @@
 package com.volunteer.volunteer.controller;
 
 
+import com.volunteer.volunteer.enums.DepartmentEnum;
 import com.volunteer.volunteer.model.EnrollPerson;
 import com.volunteer.volunteer.model.UserInformation;
 import com.volunteer.volunteer.service.EnrollPassService;
@@ -23,7 +24,7 @@ import java.util.TreeMap;
  * @create: 2019-05-03 01:24
  **/
 
-@Controller
+@RestController
 @RequestMapping("/enroll")
 @Slf4j
 public class EnrollController {
@@ -43,7 +44,6 @@ public class EnrollController {
      * @return: UniversalResponseBody<Map < String, Integer>>
      */
     @PostMapping(value = "/index")
-    @ResponseBody
     public UniversalResponseBody<EnrollPerson> enroll(
             @NotNull @RequestParam("mainId") int mainId,
             @NotNull @RequestParam("realName") String realName,
@@ -88,7 +88,6 @@ public class EnrollController {
      * @return: UniversalResponseBody<Map < String, Integer>>
      */
     @GetMapping(value = "/enrollTotal")
-    @ResponseBody
     public UniversalResponseBody<Map<String, Integer>> enrollTotal() {
         Map<String, Integer> res = new TreeMap<>();
         int total = enrollPersonService.enrollTotal();
@@ -107,7 +106,6 @@ public class EnrollController {
      * @return: UniversalResponseBody<Map < String, Map < String, Integer>>>
      */
     @GetMapping(value = "/departmentEnrollData")
-    @ResponseBody
     public UniversalResponseBody<Map<String, Map<String, Integer>>> departmentEnrollData() {
         Map<String, Integer> res1 = enrollPersonService.departmentEnrollTotal();
         Map<String, Integer> res2 = enrollPersonService.crossDepartmentTotal();
@@ -128,7 +126,6 @@ public class EnrollController {
      * @return: UniversalResponseBody<Map < String, Integer>>
      */
     @GetMapping(value = "/interviewData")
-    @ResponseBody
     public UniversalResponseBody<Map<String, Integer>> interviewData() {
         Map<String, Integer> res = enrollPersonService.interviewData();
         if (res != null) {
@@ -143,7 +140,6 @@ public class EnrollController {
      * @return: UniversalResponseBody<Map < String, Integer>>
      */
     @GetMapping(value = "/departmentInterviewData")
-    @ResponseBody
     public UniversalResponseBody<Map<String, Map<String, Integer>>> departmentInterviewData() {
         Map<String, Integer> res1 = enrollPersonService.departmentInterviewData();
         Map<String, Integer> res2 = enrollPersonService.notDepartmentInterviewData();
@@ -164,9 +160,8 @@ public class EnrollController {
      * @return: UniversalResponseBody<Map < String, Integer>>
      */
     @GetMapping(value = "/oneDepartmentInterviewData")
-    @ResponseBody
-    public UniversalResponseBody<Map<String, Integer>> oneDepartmentInterviewData(@NotNull @RequestParam("department") String department) {
-
+    public UniversalResponseBody<Map<String, Integer>> oneDepartmentInterviewData(@NotNull @RequestParam("department") int departmentCode) {
+        String department = DepartmentEnum.getDepartment(departmentCode);
         Map<String, Integer> res = enrollPersonService.oneDepartmentInterviewData(department);
         if (res != null) {
             return new UniversalResponseBody<>(0, "请求成功:单个部门一面数据", res);
@@ -181,9 +176,8 @@ public class EnrollController {
      * @return: UniversalResponseBody<Map < String, Integer>>
      */
     @GetMapping(value = "/secondDepartmentInterviewData")
-    @ResponseBody
-    public UniversalResponseBody<Map<String, Integer>> secondDepartmentInterviewData(@NotNull @RequestParam("department") String department) {
-
+    public UniversalResponseBody<Map<String, Integer>> secondDepartmentInterviewData(@NotNull @RequestParam("department") int departmentCode) {
+        String department = DepartmentEnum.getDepartment(departmentCode);
         Map<String, Integer> res = enrollPersonService.secondDepartmentInterviewData(department);
         if (res != null) {
             return new UniversalResponseBody<>(0, "请求成功:单个部门二面数据", res);
@@ -197,7 +191,6 @@ public class EnrollController {
      * @return: UniversalResponseBody<EnrollPerson>
      */
     @PostMapping(value = "/notDepartmentInterviewData")
-    @ResponseBody
     public UniversalResponseBody<EnrollPerson> checkResume(Integer mainId) {
         EnrollPerson res = enrollPersonService.findByMainId(mainId);
         if (res != null) {
@@ -213,7 +206,6 @@ public class EnrollController {
      * @return: UniversalResponseBody<EnrollPerson>
      */
     @PostMapping(value = "/updateScoreAndImpression")
-    @ResponseBody
     public UniversalResponseBody updateScoreAndImpression(
             @NotNull @RequestParam("mainId") Integer mainId,
             @NotNull @RequestParam("department") String department,
@@ -232,8 +224,8 @@ public class EnrollController {
      * @return: UniversalResponseBody<Map < String, Integer>>
      */
     @GetMapping(value = "/oneDepartmentEnrollData")
-    @ResponseBody
-    public UniversalResponseBody<Map<String, Integer>> oneDepartmentEnrollData(@NotNull @RequestParam("department") String department) {
+    public UniversalResponseBody<Map<String, Integer>> oneDepartmentEnrollData(@NotNull @RequestParam("department") int departmentCode) {
+        String department = DepartmentEnum.getDepartment(departmentCode);
         Map<String, Integer> res = new TreeMap<>();
         Map<String, Integer> res1 = enrollPersonService.oneDepartmentEnrollData(department);
         Map<String, Integer> res2 = enrollPersonService.departmentEnrollDataBySex(department);
@@ -253,9 +245,8 @@ public class EnrollController {
      * @return: UniversalResponseBody
      */
     @GetMapping(value = "/myMembers")
-    @ResponseBody
-    public UniversalResponseBody myMembers(HttpServletRequest request){
-        List<UserInformation> list = userInformationService.findMemberByDepartment((String) request.getSession().getAttribute("department"));
+    public UniversalResponseBody myMembers(@RequestParam("department")int departmentCode){
+        List<UserInformation> list = userInformationService.findMemberByDepartment(DepartmentEnum.getDepartment(departmentCode));
         if (list != null) {
             return new UniversalResponseBody<>(0, "成功",list);
         } else {
@@ -272,7 +263,6 @@ public class EnrollController {
      * @return: UniversalResponseBody
      */
     @PostMapping(value = "/dropOut")
-    @ResponseBody
     public UniversalResponseBody dropOut(int mainId){
         if (userInformationService.updateDropOut(mainId)) {
             return new UniversalResponseBody<>(0, "成功");

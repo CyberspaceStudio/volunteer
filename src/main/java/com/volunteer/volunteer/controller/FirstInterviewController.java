@@ -1,5 +1,6 @@
 package com.volunteer.volunteer.controller;
 
+import com.volunteer.volunteer.enums.DepartmentEnum;
 import com.volunteer.volunteer.service.EnrollPassService;
 import com.volunteer.volunteer.service.EnrollPersonService;
 import com.volunteer.volunteer.service.UserInformationService;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 
-@Controller
+@RestController
 @RequestMapping("/enroll")
 @Slf4j
 public class FirstInterviewController {
@@ -32,9 +33,8 @@ public class FirstInterviewController {
      * @return: UniversalResponseBody
      */
     @GetMapping(value = "/PcWaitFirstInterview")
-    @ResponseBody
-    public UniversalResponseBody PcWaitFirstInterview(HttpServletRequest request) {
-        List<Map<String, Object>> res = enrollPersonService.pcWaitFirstInterview((String) request.getSession().getAttribute("department"));
+    public UniversalResponseBody PcWaitFirstInterview(@RequestParam("department")int departmentCode) {
+        List<Map<String, Object>> res = enrollPersonService.pcWaitFirstInterview(DepartmentEnum.getDepartment(departmentCode));
         if (res != null) {
             return new UniversalResponseBody<>(0, "成功", res);
         } else {
@@ -49,8 +49,8 @@ public class FirstInterviewController {
      */
     @GetMapping(value = "/PcFirstInterviewed")
     @ResponseBody
-    public UniversalResponseBody PcFirstInterviewed(HttpServletRequest request) {
-        Map<String, List<Map<String, Object>>> res = enrollPersonService.PcFirstInterviewed((String) request.getSession().getAttribute("department"));
+    public UniversalResponseBody PcFirstInterviewed(@RequestParam("department")int departmentCode) {
+        Map<String, List<Map<String, Object>>> res = enrollPersonService.PcFirstInterviewed(DepartmentEnum.getDepartment(departmentCode));
         if (res != null) {
             return new UniversalResponseBody<>(0, "成功", res);
         } else {
@@ -64,11 +64,10 @@ public class FirstInterviewController {
      * @return: UniversalResponseBody
      */
     @PostMapping(value = "/passFirstInterview")
-    @ResponseBody
-    public UniversalResponseBody passFirstInterview(@RequestParam("mainIds") int[] mainIds, HttpServletRequest request){
+    public UniversalResponseBody passFirstInterview(@RequestParam("mainIds") int[] mainIds, @RequestParam("department")int departmentCode){
         //statusNum, passNum 为0 此时不会进行更新
         try{
-            enrollPassService.ManyPassOrNot(mainIds,(String)request.getSession().getAttribute("department"),100,501);
+            enrollPassService.ManyPassOrNot(mainIds,DepartmentEnum.getDepartment(departmentCode),100,501);
             return new UniversalResponseBody(0,"成功");
         }catch (Exception e){
             e.printStackTrace();
@@ -82,11 +81,10 @@ public class FirstInterviewController {
      * @return: UniversalResponseBody
      */
     @PostMapping(value = "/notPass")
-    @ResponseBody
-    public UniversalResponseBody notPass(@RequestParam("mainIds") int[] mainIds, HttpServletRequest request){
+    public UniversalResponseBody notPass(@RequestParam("mainIds") int[] mainIds, @RequestParam("department")int departmentCode){
         //statusNum, passNum 为0 此时不会进行更新
         try{
-            enrollPassService.ManyPassOrNot(mainIds,(String)request.getSession().getAttribute("department"),500,0);
+            enrollPassService.ManyPassOrNot(mainIds,DepartmentEnum.getDepartment(departmentCode),500,0);
             //enrollPassService.ManyPassOrNot(mainIds,"网络技术工作室",500,0);
             return new UniversalResponseBody(0,"成功");
         }catch (Exception e){
@@ -101,9 +99,8 @@ public class FirstInterviewController {
      * @return: UniversalResponseBody
      */
     @GetMapping(value = "/firstInterviewPass")
-    @ResponseBody
-    public UniversalResponseBody firstInterviewPass(HttpServletRequest request){
-        List<Map<String, Object>> res = enrollPersonService.firstInterviewPass((String) request.getSession().getAttribute("department"));
+    public UniversalResponseBody firstInterviewPass(@RequestParam("department")int departmentCode){
+        List<Map<String, Object>> res = enrollPersonService.firstInterviewPass(DepartmentEnum.getDepartment(departmentCode));
         if (res != null) {
             return new UniversalResponseBody<>(0, "成功", res);
         } else {
@@ -118,12 +115,11 @@ public class FirstInterviewController {
      * @return: UniversalResponseBody
      */
     @PostMapping(value = "/firstPass")
-    @ResponseBody
-    public UniversalResponseBody firstPass(@RequestParam("mainIds") int[] mainIds, HttpServletRequest request){
+    public UniversalResponseBody firstPass(@RequestParam("mainIds") int[] mainIds, @RequestParam("department")int departmentCode){
         //passNum、statusNum为0代表不更新此数字
         try{
-            enrollPassService.ManyPassOrNot(mainIds,(String)request.getSession().getAttribute("department"),0,503);
-            enrollPassService.ManyUpdateFinalDepartment(mainIds,(String)request.getSession().getAttribute("department"));
+            enrollPassService.ManyPassOrNot(mainIds,DepartmentEnum.getDepartment(departmentCode),0,503);
+            enrollPassService.ManyUpdateFinalDepartment(mainIds,DepartmentEnum.getDepartment(departmentCode));
             return new UniversalResponseBody(0,"成功");
         }catch (Exception e){
             e.printStackTrace();
@@ -136,12 +132,11 @@ public class FirstInterviewController {
      * @return: UniversalResponseBody
      */
     @PostMapping(value = "/admitMember")
-    @ResponseBody
-    public UniversalResponseBody admitMember(@RequestParam("mainIds") int[] mainIds, HttpServletRequest request){
+    public UniversalResponseBody admitMember(@RequestParam("mainIds") int[] mainIds, @RequestParam("department")int departmentCode){
         //passNum、statusNum为0代表不更新此数字
         try{
-            enrollPassService.ManyPassOrNot(mainIds,(String)request.getSession().getAttribute("department"),0,505);
-            enrollPassService.ManyUpdateFinalDepartment(mainIds,(String)request.getSession().getAttribute("department"));
+            enrollPassService.ManyPassOrNot(mainIds,DepartmentEnum.getDepartment(departmentCode),0,505);
+            enrollPassService.ManyUpdateFinalDepartment(mainIds,DepartmentEnum.getDepartment(departmentCode));
             enrollPersonService.saveManyInformation(mainIds);
             return new UniversalResponseBody(0,"成功");
         }catch (Exception e){
@@ -156,9 +151,8 @@ public class FirstInterviewController {
      * @return: UniversalResponseBody
      */
     @GetMapping(value = "/crossDepartment")
-    @ResponseBody
-    public UniversalResponseBody crossDepartment(HttpServletRequest request) {
-        List<Map<String, Object>> res = enrollPersonService.crossDepartment((String) request.getSession().getAttribute("department"));
+    public UniversalResponseBody crossDepartment(@RequestParam("department")int departmentCode) {
+        List<Map<String, Object>> res = enrollPersonService.crossDepartment(DepartmentEnum.getDepartment(departmentCode));
         if (res != null) {
             return new UniversalResponseBody<>(0, "成功", res);
         } else {
@@ -173,9 +167,8 @@ public class FirstInterviewController {
      * @return: UniversalResponseBody
      */
     @PostMapping(value = "/transferDepartment")
-    @ResponseBody
-    public UniversalResponseBody transferDepartment(@RequestParam("mainId") int mainId, HttpServletRequest request){
-        if (enrollPersonService.transferDepartment(mainId,(String) request.getSession().getAttribute("department"))) {
+    public UniversalResponseBody transferDepartment(@RequestParam("mainId") int mainId,@RequestParam("department")int departmentCode){
+        if (enrollPersonService.transferDepartment(mainId,DepartmentEnum.getDepartment(departmentCode))) {
             return new UniversalResponseBody(0, "成功");
         } else {
             return new UniversalResponseBody(-1, "失败");
