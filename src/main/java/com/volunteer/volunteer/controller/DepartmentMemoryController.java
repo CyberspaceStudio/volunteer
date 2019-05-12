@@ -1,5 +1,6 @@
 package com.volunteer.volunteer.controller;
 
+import com.volunteer.volunteer.enums.DepartmentEnum;
 import com.volunteer.volunteer.service.PreviewInfoService;
 import com.volunteer.volunteer.util.DateStringUtil;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
@@ -18,7 +19,7 @@ public class DepartmentMemoryController {
 
     /**
      *
-     * @param department
+     * @param departmentCode
      * @param day
      * @param month
      * @param year 请输入：1、当前日期年份；2、起始日期年份
@@ -26,7 +27,7 @@ public class DepartmentMemoryController {
      */
     @GetMapping("/myDepartment")
     public UniversalResponseBody getMyDepartmentMemory(
-            @RequestParam("department")String department,@RequestParam("day")int day,
+            @RequestParam("department")int departmentCode,@RequestParam("day")int day,
             @RequestParam("month")int month,@RequestParam("year")int year){
         int currentMonth = Calendar.getInstance().get(Calendar.MONTH ) + 1;
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -45,6 +46,6 @@ public class DepartmentMemoryController {
             year += 1;
             timeEnding = year + "-" + "08-31 00:00:00";
         }
-        return new UniversalResponseBody<>(0,"成功",previewInfoService.getPreviewByDepartment(department,timeBeginning,timeEnding));
+        return new UniversalResponseBody<>(0,"成功",previewInfoService.getPreviewByDepartment(DepartmentEnum.getDepartment(departmentCode),timeBeginning,timeEnding));
     }
 }

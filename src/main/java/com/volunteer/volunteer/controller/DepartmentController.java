@@ -1,5 +1,6 @@
 package com.volunteer.volunteer.controller;
 
+import com.volunteer.volunteer.enums.OrganizationEnum;
 import com.volunteer.volunteer.model.Department;
 import com.volunteer.volunteer.service.DepartmentService;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
@@ -19,7 +20,7 @@ public class DepartmentController {
 
     @GetMapping("/organization/info")
     public UniversalResponseBody getDepartmentByOrganization(@RequestParam("organization") String organization){
-        List<Department> temp = departmentService.findDepartmentByOrganization(organization);
+        List<Department> temp = departmentService.findDepartmentByOrganization(OrganizationEnum.XD.getOrganization());
         List<String> res = new ArrayList<>();
         for (Department row : temp
              ) {
