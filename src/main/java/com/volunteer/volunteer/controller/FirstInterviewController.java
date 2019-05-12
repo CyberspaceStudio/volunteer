@@ -25,8 +25,7 @@ public class FirstInterviewController {
     @Resource
     private EnrollPassService enrollPassService;
 
-    @Resource
-    private UserInformationService userInformationService;
+
     /**
      * @Description: PC端:一面情况：待面试人员
      * @Param: [request]

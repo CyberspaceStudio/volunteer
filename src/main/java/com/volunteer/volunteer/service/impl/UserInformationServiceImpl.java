@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
+
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class UserInformationServiceImpl implements UserInformationService {
      * bug:selectByOpenId 查出数据为null，通过测试openId 已经获取。
      */
     @Override
-    @CachePut(value = "userCache", key = "#result.session_key",condition = "#result.session_key != null")
+    @CachePut(value = "userCache", key = "#result.session_key", condition = "#result.session_key != null")
     public CacheResponseBody<UserInformation> userLoginWechat(WxInfo loginData) throws Exception {
         ResponseBodySovler wechatResponseBody = weChatUtil.getWechatResponseBody(loginData.getCode());
         UserInformation findResult = userInformationMapper.selectByOpenId(wechatResponseBody.getOpenid());
@@ -53,14 +54,14 @@ public class UserInformationServiceImpl implements UserInformationService {
             log.info("【微信登录】用户第一次使用，进行注册！");
 
             if (userInformationMapper.insert(res) != 0) {
-                return new CacheResponseBody<>(0,wechatResponseBody.getSession_key(),userInformationMapper.selectByOpenId(wechatResponseBody.getOpenid()));
+                return new CacheResponseBody<>(0, wechatResponseBody.getSession_key(), userInformationMapper.selectByOpenId(wechatResponseBody.getOpenid()));
 
             } else {
                 log.error("【数据库操作】插入失败！");
-                return new CacheResponseBody<>(1,wechatResponseBody.getSession_key(),null);
+                return new CacheResponseBody<>(1, wechatResponseBody.getSession_key(), null);
             }
         }
-        return new CacheResponseBody<>(0,wechatResponseBody.getSession_key(),findResult);
+        return new CacheResponseBody<>(0, wechatResponseBody.getSession_key(), findResult);
     }
 
     /**
@@ -88,6 +89,21 @@ public class UserInformationServiceImpl implements UserInformationService {
     }
 
     @Override
+    public boolean updateDropOut(int mainId) {
+        UserInformation user = userInformationMapper.selectByPrimaryKey(mainId);
+        user.setDepartment("");
+        user.setPosition("游客");
+        try{
+            userInformationMapper.updateByPrimaryKey(user);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("【数据库】更新失败");
+            return false;
+        }
+    }
+
+    @Override
     public boolean deleteById(int mainId) {
         return userInformationMapper.deleteByPrimaryKey(mainId) != 0;
     }
@@ -103,7 +119,7 @@ public class UserInformationServiceImpl implements UserInformationService {
     }
 
     @Override
-    public List<UserInformation> findMemberByDepartment(String department){
+    public List<UserInformation> findMemberByDepartment(String department) {
         return userInformationMapper.findMembers(department);
     }
 }
