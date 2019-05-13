@@ -3,21 +3,16 @@ package com.volunteer.volunteer.controller;
 import com.volunteer.volunteer.enums.DepartmentEnum;
 import com.volunteer.volunteer.service.EnrollPassService;
 import com.volunteer.volunteer.service.EnrollPersonService;
-import com.volunteer.volunteer.service.UserInformationService;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
 
-@RestController
-@RequestMapping("/enroll")
-@Slf4j
+@Controller
+@RequestMapping("/pc/interview/first")
 public class FirstInterviewController {
 
     @Resource
@@ -32,7 +27,8 @@ public class FirstInterviewController {
      * @Param: [request]
      * @return: UniversalResponseBody
      */
-    @GetMapping(value = "/PcWaitFirstInterview")
+    @GetMapping(value = "/without")
+    @ResponseBody
     public UniversalResponseBody PcWaitFirstInterview(@RequestParam("department")int departmentCode) {
         List<Map<String, Object>> res = enrollPersonService.pcWaitFirstInterview(DepartmentEnum.getDepartment(departmentCode));
         if (res != null) {
@@ -47,7 +43,7 @@ public class FirstInterviewController {
      * @Param: [request]
      * @return: UniversalResponseBody
      */
-    @GetMapping(value = "/PcFirstInterviewed")
+    @GetMapping(value = "/done")
     @ResponseBody
     public UniversalResponseBody PcFirstInterviewed(@RequestParam("department")int departmentCode) {
         Map<String, List<Map<String, Object>>> res = enrollPersonService.PcFirstInterviewed(DepartmentEnum.getDepartment(departmentCode));
@@ -59,11 +55,12 @@ public class FirstInterviewController {
     }
 
     /**
-     * @Description: PC端：一面情况：已面试人员：通过
+     * @Description: PC端：一面情况：已面试人员：通过按钮
      * @Param: [mainIds[], request]
      * @return: UniversalResponseBody
      */
-    @PostMapping(value = "/passFirstInterview")
+    @PostMapping(value = "/PASS")
+    @ResponseBody
     public UniversalResponseBody passFirstInterview(@RequestParam("mainIds") int[] mainIds, @RequestParam("department")int departmentCode){
         //statusNum, passNum 为0 此时不会进行更新
         try{
@@ -76,11 +73,12 @@ public class FirstInterviewController {
     }
 
     /**
-     * @Description: PC端：一面情况：已面试人员：刷人
+     * @Description: PC端：一面情况：已面试人员：刷人按钮
      * @Param: [mainIds[], request]
      * @return: UniversalResponseBody
      */
-    @PostMapping(value = "/notPass")
+    @PostMapping(value = "/OUT")
+    @ResponseBody
     public UniversalResponseBody notPass(@RequestParam("mainIds") int[] mainIds, @RequestParam("department")int departmentCode){
         //statusNum, passNum 为0 此时不会进行更新
         try{
@@ -98,7 +96,8 @@ public class FirstInterviewController {
      * @Param: [request]
      * @return: UniversalResponseBody
      */
-    @GetMapping(value = "/firstInterviewPass")
+        @GetMapping(value = "/interviewed")
+    @ResponseBody
     public UniversalResponseBody firstInterviewPass(@RequestParam("department")int departmentCode){
         List<Map<String, Object>> res = enrollPersonService.firstInterviewPass(DepartmentEnum.getDepartment(departmentCode));
         if (res != null) {
@@ -110,11 +109,12 @@ public class FirstInterviewController {
 
 
     /**
-     * @Description: PC端：一面情况：通过人员：录取为二面
+     * @Description: PC端：一面情况：通过人员：录取为二面按钮
      * @Param: [mainIds[], request]
      * @return: UniversalResponseBody
      */
-    @PostMapping(value = "/firstPass")
+    @PostMapping(value = "/second/ADMIT")
+    @ResponseBody
     public UniversalResponseBody firstPass(@RequestParam("mainIds") int[] mainIds, @RequestParam("department")int departmentCode){
         //passNum、statusNum为0代表不更新此数字
         try{
@@ -127,11 +127,12 @@ public class FirstInterviewController {
         }
     }
     /**
-     * @Description: PC端：一面情况：通过人员：录取为部员
+     * @Description: PC端：一面情况：通过人员：录取为部员按钮
      * @Param: [mainIds[], request]
      * @return: UniversalResponseBody
      */
-    @PostMapping(value = "/admitMember")
+    @PostMapping(value = "/member/ADMIT")
+    @ResponseBody
     public UniversalResponseBody admitMember(@RequestParam("mainIds") int[] mainIds, @RequestParam("department")int departmentCode){
         //passNum、statusNum为0代表不更新此数字
         try{
@@ -150,7 +151,8 @@ public class FirstInterviewController {
      * @Param: [request]
      * @return: UniversalResponseBody
      */
-    @GetMapping(value = "/crossDepartment")
+    @GetMapping(value = "/cross")
+    @ResponseBody
     public UniversalResponseBody crossDepartment(@RequestParam("department")int departmentCode) {
         List<Map<String, Object>> res = enrollPersonService.crossDepartment(DepartmentEnum.getDepartment(departmentCode));
         if (res != null) {
@@ -160,13 +162,13 @@ public class FirstInterviewController {
         }
     }
 
-
     /**
      * @Description: PC端：跨部协调
      * @Param: [mainId,request]
      * @return: UniversalResponseBody
      */
-    @PostMapping(value = "/transferDepartment")
+    @PostMapping(value = "/transfer")
+    @ResponseBody
     public UniversalResponseBody transferDepartment(@RequestParam("mainId") int mainId,@RequestParam("department")int departmentCode){
         if (enrollPersonService.transferDepartment(mainId,DepartmentEnum.getDepartment(departmentCode))) {
             return new UniversalResponseBody(0, "成功");

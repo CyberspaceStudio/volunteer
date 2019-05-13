@@ -1,5 +1,7 @@
 package com.volunteer.volunteer.controller;
 
+import com.volunteer.volunteer.enums.DepartmentEnum;
+import com.volunteer.volunteer.model.UserInformation;
 import com.volunteer.volunteer.service.EnrollPassService;
 import com.volunteer.volunteer.service.EnrollPersonService;
 import com.volunteer.volunteer.service.UserInformationService;
@@ -15,7 +17,7 @@ import java.util.Map;
 
 
 @Controller
-@RequestMapping("/enroll")
+@RequestMapping("/pc/interview/second")
 @Slf4j
 public class SecondInterviewController {
 
@@ -35,7 +37,7 @@ public class SecondInterviewController {
      * @Param: [request]
      * @return: UniversalResponseBody
      */
-    @GetMapping(value = "/PcWaitSecondInterviewed")
+    @GetMapping(value = "/without")
     @ResponseBody
     public UniversalResponseBody PcWaitSecondInterviewed(HttpServletRequest request) {
         Map<String, List<Map<String, Object>>> res = enrollPersonService.PcWaitSecondInterviewed((String) request.getSession().getAttribute("department"));
@@ -52,7 +54,7 @@ public class SecondInterviewController {
      * @Param: [request]
      * @return: UniversalResponseBody
      */
-    @GetMapping(value = "/PcSecondInterviewed")
+    @GetMapping(value = "/interviewed")
     @ResponseBody
     public UniversalResponseBody PcSecondInterviewed(HttpServletRequest request) {
         Map<String, List<Map<String, Object>>> res = enrollPersonService.PcSecondInterviewed((String) request.getSession().getAttribute("department"));
@@ -69,7 +71,7 @@ public class SecondInterviewController {
      * @Param: [mainIds[], request]
      * @return: UniversalResponseBody
      */
-    @PostMapping(value = "/secondAdmit")
+    @PostMapping(value = "/member/ADMIT")
     @ResponseBody
     public UniversalResponseBody secondAdmit(@RequestParam("mainIds") int[] mainIds, HttpServletRequest request){
         //statusNum, passNum 为0 此时不会进行更新
@@ -90,7 +92,7 @@ public class SecondInterviewController {
      * @Param: [mainIds[], request]
      * @return: UniversalResponseBody
      */
-    @PostMapping(value = "/secondInterviewNotPass")
+    @PostMapping(value = "/OUT")
     @ResponseBody
     public UniversalResponseBody secondInterviewNotPass(@RequestParam("mainIds") int[] mainIds, HttpServletRequest request){
         //statusNum, passNum 为0 此时不会进行更新
@@ -104,21 +106,36 @@ public class SecondInterviewController {
         }
     }
 
+
+    //TODO 后面两个接口放这里有点突兀，后续再调整
+
     /**
-     * @Description: PC端：二面签到
-     * @Param: [mainId, request]
+     * @Description: PC端：我的部员
+     * @Param: [mainId,request]
      * @return: UniversalResponseBody
      */
-    @PostMapping(value = "/secondInterviewPresence")
-    @ResponseBody
-    public UniversalResponseBody secondInterviewPresence(@RequestParam("mainId") int mainId){
-        try{
-            if (enrollPersonService.updateStatusByMainId(mainId,502)) {
-                return new UniversalResponseBody(0, "成功");
-            }else return new UniversalResponseBody(-1,"失败");
-        }catch (Exception e){
-            e.printStackTrace();
-            return new UniversalResponseBody(-1,"失败");
+    @GetMapping(value = "/members")
+    public UniversalResponseBody myMembers(@RequestParam("department")int departmentCode){
+        List<UserInformation> list = userInformationService.findMemberByDepartment(DepartmentEnum.getDepartment(departmentCode));
+        if (list != null) {
+            return new UniversalResponseBody<>(0, "成功",list);
+        } else {
+            return new UniversalResponseBody(-1, "失败");
+        }
+    }
+
+
+    /**
+     * @Description: PC端：退部
+     * @Param: [mainId]
+     * @return: UniversalResponseBody
+     */
+    @PostMapping(value = "member/DROP")
+    public UniversalResponseBody dropOut(int mainId){
+        if (userInformationService.updateDropOut(mainId)) {
+            return new UniversalResponseBody<>(0, "成功");
+        } else {
+            return new UniversalResponseBody(-1, "失败");
         }
     }
 }
