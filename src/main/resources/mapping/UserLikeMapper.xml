@@ -9,6 +9,10 @@
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+  <resultMap id="LikerResultMap" type="com.volunteer.volunteer.dto.LikerInfo">
+    <result column="real_name" jdbcType="VARCHAR" property="userName" />
+    <result column="department" jdbcType="VARCHAR" property="department"/>
+  </resultMap>
   <sql id="Base_Column_List">
     id, user_id, activity_id, like_status, is_delete, create_time
   </sql>
@@ -23,6 +27,18 @@
     count(activity_id)
     FROM user_like
     WHERE activity_id = #{activityId,jdbcType=INTEGER}
+  </select>
+  <select id="getLikeNumber" resultType="java.lang.Integer">
+    select
+           COUNT(activity_id)
+    FROM user_like
+    WHERE like_status = 1 AND activity_id = #{activityId,jdbcType=INTEGER};
+  </select>
+  <select id="getLikerInfo" resultType="LikerResultMap">
+    select
+           information.real_name,department
+    FROM user_like LEFT JOIN information ON user_id = main_id
+    where like_status = 1 AND activity_id = #{activityId,jdbcType=INTEGER};
   </select>
   <select id="getCheckInfo" resultMap="BaseResultMap">
     select

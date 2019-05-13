@@ -37,4 +37,13 @@ public class UserLikeController {
             return new UniversalResponseBody<>(0,"成功","empty");
         }
     }
+    @GetMapping("/liker/number")
+    public UniversalResponseBody countLikeNumber(int activityId){
+        return new UniversalResponseBody<>(0,"成功",likeStrategy.getLikeNumber(activityId));
+    }
+
+    @GetMapping("/liker/info")
+    public UniversalResponseBody getLikerInfo(int activityId){
+        return new UniversalResponseBody<>(0,"成功",likeStrategy.getLikerInfo(activityId));
+    }
 }
