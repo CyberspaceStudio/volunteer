@@ -1,7 +1,9 @@
 package com.volunteer.volunteer.mapper;
 
+import com.volunteer.volunteer.dto.LikerInfo;
 import com.volunteer.volunteer.model.UserLike;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserLikeMapper {
@@ -14,6 +16,10 @@ public interface UserLikeMapper {
     UserLike selectByPrimaryKey(Integer id);
 
     int getIdCounter(Integer activityId);
+
+    int getLikeNumber(Integer activityId);
+
+    List<LikerInfo> getLikerInfo(Integer activityId);
 
     int updateStatus(Map<String,Object> data);
 

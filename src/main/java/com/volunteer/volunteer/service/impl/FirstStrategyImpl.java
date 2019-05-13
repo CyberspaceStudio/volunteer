@@ -1,5 +1,6 @@
 package com.volunteer.volunteer.service.impl;
 
+import com.volunteer.volunteer.dto.LikerInfo;
 import com.volunteer.volunteer.mapper.UserLikeMapper;
 import com.volunteer.volunteer.model.UserLike;
 import com.volunteer.volunteer.service.LikeStrategy;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -100,5 +102,15 @@ public class FirstStrategyImpl implements LikeStrategy {
         }else {
             return false;
         }
+    }
+
+    @Override
+    public int getLikeNumber(int activityId) {
+        return userLikeMapper.getLikeNumber(activityId);
+    }
+
+    @Override
+    public List<LikerInfo> getLikerInfo(int activityId) {
+        return userLikeMapper.getLikerInfo(activityId);
     }
 }
