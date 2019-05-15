@@ -34,7 +34,7 @@
     FROM user_like
     WHERE like_status = 1 AND activity_id = #{activityId,jdbcType=INTEGER};
   </select>
-  <select id="getLikerInfo" resultType="LikerResultMap">
+  <select id="getLikerInfo" resultMap="LikerResultMap">
     select
            information.real_name,department
     FROM user_like LEFT JOIN information ON user_id = main_id
