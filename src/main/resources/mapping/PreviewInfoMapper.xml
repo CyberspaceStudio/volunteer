@@ -25,6 +25,7 @@
             SELECT 1 FROM picture p2 WHERE p2.activity_id=p1.activity_id AND p1.picture_id > p2.picture_id
           )
         ) b on a.activity_id = b.activity_id
+        ORDER BY activity_time DESC
         limit #{pageNumber},#{pageSize}
     </select>
     <select id="selectByMainId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -37,6 +38,7 @@
         )
         ) b on a.activity_id = b.activity_id
         where main_id = #{mainId,jdbcType=INTEGER}
+        ORDER BY activity_time DESC
         limit 2
     </select>
     <select id="selectByDepartment" resultMap="BaseResultMap">
@@ -51,5 +53,6 @@
         where department = #{department}
         AND unix_timestamp(activity_time) > unix_timestamp(#{timeBeginning})
         AND unix_timestamp(activity_time) &lt; unix_timestamp(#{timeEnding})
+        ORDER BY activity_time DESC
     </select>
 </mapper>

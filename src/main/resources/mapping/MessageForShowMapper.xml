@@ -35,6 +35,7 @@
     <include refid="Base_Column_List"/>
     from volunteer_activity
     where department = #{department,jdbcType=VARCHAR}
+    order by activity_time desc
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from volunteer_activity
