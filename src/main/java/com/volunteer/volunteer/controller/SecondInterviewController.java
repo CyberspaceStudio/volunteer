@@ -106,36 +106,4 @@ public class SecondInterviewController {
         }
     }
 
-
-    //TODO 后面两个接口放这里有点突兀，后续再调整
-
-    /**
-     * @Description: PC端：我的部员
-     * @Param: [mainId,request]
-     * @return: UniversalResponseBody
-     */
-    @GetMapping(value = "/members")
-    public UniversalResponseBody myMembers(@RequestParam("department")int departmentCode){
-        List<UserInformation> list = userInformationService.findMemberByDepartment(DepartmentEnum.getDepartment(departmentCode));
-        if (list != null) {
-            return new UniversalResponseBody<>(0, "成功",list);
-        } else {
-            return new UniversalResponseBody(-1, "失败");
-        }
-    }
-
-
-    /**
-     * @Description: PC端：退部
-     * @Param: [mainId]
-     * @return: UniversalResponseBody
-     */
-    @PostMapping(value = "member/DROP")
-    public UniversalResponseBody dropOut(int mainId){
-        if (userInformationService.updateDropOut(mainId)) {
-            return new UniversalResponseBody<>(0, "成功");
-        } else {
-            return new UniversalResponseBody(-1, "失败");
-        }
-    }
 }
