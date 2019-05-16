@@ -10,9 +10,7 @@ import com.volunteer.volunteer.service.EnrollPersonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -42,7 +40,6 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
 
     @Override
     public boolean updateStatusByMainId(Integer mainId,Integer status){
-
         EnrollPerson enrollPerson = enrollPersonMapper.selectByPrimaryKey(mainId);
         enrollPerson.setEnrollStatus(""+status);
         return enrollPersonMapper.updateByPrimaryKeySelective(enrollPerson)>0;
@@ -129,6 +126,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     public Map<String, Integer> departmentEnrollTotal() {
         Map<String, Integer> res = new TreeMap<>();
         String[] departments = new String[]{"秘书处", "网络技术工作室", "交流部", "支教部", "项目部", "宣传部", "环保部", "培训部", "活动部", "红十字会"};
+
         try {
             for (String department : departments) {
                 res.put(department, enrollPersonMapper.departmentEnrollTotal(department));
@@ -171,8 +169,8 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     public Map<String, Integer> oneDepartmentEnrollData(String department) {
         Map<String, Integer> res = new TreeMap<>();
         try {
-            res.put("部门报名总人数", enrollPersonMapper.departmentEnrollTotal(department));
-            res.put("部门跨部人数", enrollPersonMapper.crossDepartmentTotal(department));
+            res.put("enrollNumber", enrollPersonMapper.departmentEnrollTotal(department));
+            res.put("crossNumber", enrollPersonMapper.crossDepartmentTotal(department));
             return res;
         } catch (Exception e) {
             e.printStackTrace();
@@ -191,8 +189,8 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     public Map<String, Integer> departmentEnrollDataBySex(String department) {
         Map<String, Integer> res = new TreeMap<>();
         try {
-            res.put("男", enrollPersonMapper.departmentEnrollByMan(department));
-            res.put("女", enrollPersonMapper.departmentEnrollByWoman(department));
+            res.put("man", enrollPersonMapper.departmentEnrollByMan(department));
+            res.put("woman", enrollPersonMapper.departmentEnrollByWoman(department));
             return res;
         } catch (Exception e) {
             e.printStackTrace();
@@ -211,8 +209,8 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     public Map<String, Integer> interviewData() {
         try {
             Map<String, Integer> res = new TreeMap<>();
-            res.put("已面试总人数", enrollPersonMapper.interviewData());
-            res.put("未面试总人数", enrollPersonMapper.notInterviewData());
+            res.put("interviewed", enrollPersonMapper.interviewData());
+            res.put("noInterview", enrollPersonMapper.notInterviewData());
             return res;
         } catch (Exception e) {
             e.printStackTrace();
@@ -251,8 +249,8 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     public Map<String, Integer> oneDepartmentInterviewData(String department) {
         Map<String, Integer> res = new TreeMap<>();
         try {
-            res.put("一面已面试人数", enrollPersonMapper.departmentInterviewData(department));
-            res.put("一面未面试人数", enrollPersonMapper.notDepartmentInterviewData(department));
+            res.put("interviewed", enrollPersonMapper.departmentInterviewData(department));
+            res.put("noInterview", enrollPersonMapper.notDepartmentInterviewData(department));
             return res;
         } catch (Exception e) {
             e.printStackTrace();
@@ -292,8 +290,8 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     public Map<String, Integer> secondDepartmentInterviewData(String department) {
         Map<String, Integer> res = new TreeMap<>();
         try {
-            res.put("二面已面试人数", enrollPersonMapper.secondDepartmentInterviewData(department));
-            res.put("二面未面试人数", enrollPersonMapper.notSecondDepartmentInterviewData(department));
+            res.put("interviewed", enrollPersonMapper.secondDepartmentInterviewData(department));
+            res.put("noInterview", enrollPersonMapper.notSecondDepartmentInterviewData(department));
             return res;
         } catch (Exception e) {
             e.printStackTrace();

@@ -72,7 +72,7 @@ public class EnrollController {
             if (enrollPersonService.insert(res) && enrollPassService.insertMainId(mainId)) {
                 return new UniversalResponseBody<>(0, "成功", res);
             } else {
-                return new UniversalResponseBody<>(-1, "数据插入失败", res);
+                return new UniversalResponseBody<>(-1, "失败", res);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -91,8 +91,8 @@ public class EnrollController {
         int total = enrollPersonService.enrollTotal();
 
         if (total >= 0) {
-            res.put("总人数", total);
-            return new UniversalResponseBody<>(0, "请求成功:报名总人数", res);
+            res.put("totalNumber", total);
+            return new UniversalResponseBody<>(0, "成功", res);
         } else
             return new UniversalResponseBody<>(-1, "失败", null);
     }
@@ -101,20 +101,40 @@ public class EnrollController {
     /**
      * @Description: 各部门报名数据
      * @Param: []
-     * @return: UniversalResponseBody<Map < String, Map < String, Integer>>>
+     * @return: UniversalResponseBody
      */
     @GetMapping(value = "/enroll/departments/number")
-    public UniversalResponseBody<Map<String, Map<String, Integer>>> departmentEnrollData() {
+    public UniversalResponseBody departmentEnrollData() {
         Map<String, Integer> res1 = enrollPersonService.departmentEnrollTotal();
         Map<String, Integer> res2 = enrollPersonService.crossDepartmentTotal();
         Map<String, Map<String, Integer>> res = new TreeMap<>();
 
         if (res1 != null && res2 != null) {
-            res.put("各部门报名人数", res1);
-            res.put("各部门跨部人数", res2);
-            return new UniversalResponseBody<>(0, "请求成功:各部门报名数据", res);
+            res.put("enrollNumber", res1);
+            res.put("crossNumber", res2);
+            return new UniversalResponseBody<>(0, "成功", res);
         } else
             return new UniversalResponseBody<>(-1, "失败", null);
+    }
+
+    /**
+     * @Description: 单个部门招新数据
+     * @Param: [department]
+     * @return: UniversalResponseBody
+     */
+    @GetMapping(value = "/enroll/department/data")
+    public UniversalResponseBody oneDepartmentEnrollData(@NotNull @RequestParam("department") int departmentCode) {
+        String department = DepartmentEnum.getDepartment(departmentCode);
+        Map<String, Integer> res = new TreeMap<>();
+        Map<String, Integer> res1 = enrollPersonService.oneDepartmentEnrollData(department);
+        Map<String, Integer> res2 = enrollPersonService.departmentEnrollDataBySex(department);
+
+        if (res1 != null && res2 != null) {
+            res.putAll(res1);
+            res.putAll(res2);
+            return new UniversalResponseBody<>(0, "成功", res);
+        } else
+            return new UniversalResponseBody(-1, "失败");
     }
 
 
@@ -127,7 +147,7 @@ public class EnrollController {
     public UniversalResponseBody<Map<String, Integer>> interviewData() {
         Map<String, Integer> res = enrollPersonService.interviewData();
         if (res != null) {
-            return new UniversalResponseBody<>(0, "请求成功:总队已面试和未面试人数", res);
+            return new UniversalResponseBody<>(0, "成功", res);
         } else
             return new UniversalResponseBody<>(-1, "失败", null);
     }
@@ -143,10 +163,10 @@ public class EnrollController {
         Map<String, Integer> res2 = enrollPersonService.notDepartmentInterviewData();
         Map<String, Map<String, Integer>> res = new TreeMap<>();
         if (res1 != null && res2 != null) {
-            res.put("各部门已面试人数", res1);
-            res.put("各部门未面试人数", res2);
+            res.put("interviewedNumber", res1);
+            res.put("noInterviewNumber", res2);
 
-            return new UniversalResponseBody<>(0, "请求成功:各部门面试数据", res);
+            return new UniversalResponseBody<>(0, "成功", res);
         } else
             return new UniversalResponseBody<>(-1, "失败", null);
     }
@@ -162,7 +182,7 @@ public class EnrollController {
         String department = DepartmentEnum.getDepartment(departmentCode);
         Map<String, Integer> res = enrollPersonService.oneDepartmentInterviewData(department);
         if (res != null) {
-            return new UniversalResponseBody<>(0, "请求成功:单个部门一面数据", res);
+            return new UniversalResponseBody<>(0, "成功", res);
         } else
             return new UniversalResponseBody<>(-1, "失败", null);
     }
@@ -178,7 +198,7 @@ public class EnrollController {
         String department = DepartmentEnum.getDepartment(departmentCode);
         Map<String, Integer> res = enrollPersonService.secondDepartmentInterviewData(department);
         if (res != null) {
-            return new UniversalResponseBody<>(0, "请求成功:单个部门二面数据", res);
+            return new UniversalResponseBody<>(0, "成功", res);
         } else
             return new UniversalResponseBody<>(-1, "失败", null);
     }
@@ -206,35 +226,17 @@ public class EnrollController {
     @PostMapping(value = "/interview/first/scoring")
     public UniversalResponseBody updateScoreAndImpression(
             @NotNull @RequestParam("mainId") Integer mainId,
-            @NotNull @RequestParam("department") String department,
+            @NotNull @RequestParam("department") int departmentCode,
             @NotNull @RequestParam("score") String score,
             @RequestParam("impression") String impression) {
-
+        String department = DepartmentEnum.getDepartment(departmentCode);
         if (enrollPersonService.updateScoreAndImpression(mainId, department, score, impression)) {
             return new UniversalResponseBody(0, "成功");
         } else
             return new UniversalResponseBody(-1, "失败");
     }
 
-    /**
-     * @Description: 单个部门招新数据
-     * @Param: [department]
-     * @return: UniversalResponseBody<Map < String, Integer>>
-     */
-    @GetMapping(value = "/enroll/department/data")
-    public UniversalResponseBody<Map<String, Integer>> oneDepartmentEnrollData(@NotNull @RequestParam("department") int departmentCode) {
-        String department = DepartmentEnum.getDepartment(departmentCode);
-        Map<String, Integer> res = new TreeMap<>();
-        Map<String, Integer> res1 = enrollPersonService.oneDepartmentEnrollData(department);
-        Map<String, Integer> res2 = enrollPersonService.departmentEnrollDataBySex(department);
 
-        if (res1 != null && res2 != null) {
-            res.putAll(res1);
-            res.putAll(res2);
-            return new UniversalResponseBody<>(0, "请求成功:部门招新数据", res);
-        } else
-            return new UniversalResponseBody<>(-1, "请求失败", null);
-    }
     /**
      * @Description: 二面签到
      * @Param: [mainId, request]
