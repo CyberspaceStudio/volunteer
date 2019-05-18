@@ -2,11 +2,14 @@ package com.volunteer.volunteer.controller;
 
 import com.volunteer.volunteer.enums.DepartmentEnum;
 import com.volunteer.volunteer.model.UserInformation;
+import com.volunteer.volunteer.service.EnrollPersonService;
 import com.volunteer.volunteer.service.UserInformationService;
 import com.volunteer.volunteer.util.ExcelUtil;
+import com.volunteer.volunteer.util.Object2Map;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/pc/member")
@@ -61,20 +66,25 @@ public class MemberController {
      * @return: void
      */
     @GetMapping(value = "/export/list")
-    public void exportMyMembersList(HttpServletResponse response,HttpServletRequest request){
+    public void exportMyMembersList(HttpServletResponse response,HttpServletRequest request) throws IOException {
         String department = (String)request.getSession().getAttribute("department");
-        List<UserInformation> list = userInformationService.findMemberByDepartment(department);
-        ExcelUtil.exportExcel(list,department+"部员名单","花名册",UserInformation.class,department+"名单.xls",response);
+        List<Map<String,Object>> listMap = Object2Map.object2MapList(userInformationService.findMemberByDepartment(department));
+        ExcelUtil.templateExportExcel(ResourceUtils.getFile("classpath:tempExcel")+"/member.xls",listMap,department+"部员名单.xls",response);
     }
 
+
+    @Resource
+    private EnrollPersonService enrollPersonService;
     /**
      * @Description: 导出考勤表
      * @Param: [response]
      * @return: void
      */
     @GetMapping(value = "/export/attendance")
-    public void exportAttendance(HttpServletResponse response,HttpServletRequest request){
-        request.getSession().getAttribute("department");
-        //TODO 未完
+    public void exportAttendance(HttpServletResponse response,HttpServletRequest request) throws IOException{
+        String department = (String)request.getSession().getAttribute("department");
+        List<Map<String,Object>> maps = enrollPersonService.crossDepartment(department);
+        ExcelUtil.templateExportExcel(
+                ResourceUtils.getFile("classpath:tempExcel")+"/attendance.xls",maps,department+"考勤.xls",response);
     }
 }
