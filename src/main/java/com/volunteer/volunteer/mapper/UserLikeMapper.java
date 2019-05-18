@@ -21,6 +21,8 @@ public interface UserLikeMapper {
 
     List<LikerInfo> getLikerInfo(Integer activityId);
 
+    int getNewLike(String lastQueryTime);
+
     int updateStatus(Map<String,Object> data);
 
     UserLike getCheckInfo(Map<String,Object> data);

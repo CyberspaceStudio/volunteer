@@ -15,4 +15,6 @@ public interface LikeStrategy {
     int getLikeNumber(int activityId);
 
     List<LikerInfo> getLikerInfo(int activityId);
+
+    int getNewLikeNumber(String lastQueryTime);
 }

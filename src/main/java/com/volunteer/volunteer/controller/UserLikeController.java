@@ -46,4 +46,14 @@ public class UserLikeController {
     public UniversalResponseBody getLikerInfo(int activityId){
         return new UniversalResponseBody<>(0,"成功",likeStrategy.getLikerInfo(activityId));
     }
+
+    @GetMapping("/new/like/number")
+    public UniversalResponseBody getNewLikeNumber(String lastQueryTime){
+        int res = likeStrategy.getNewLikeNumber(lastQueryTime);
+        if(res == 0){
+            return new UniversalResponseBody(1,"成功");
+        }
+        return new UniversalResponseBody<>(0,"成功",res);
+    }
+
 }

@@ -45,6 +45,12 @@
     <include refid="Base_Column_List"/>
     from user_like
     where user_id = #{userId,jdbcType=INTEGER} AND activity_id = #{activityId,jdbcType=INTEGER}
+    ORDER BY create_time desc 
+  </select>
+  <select id="getNewLike" resultType="java.lang.Integer">
+    select count()
+    from  user_like
+    where create_time between unix_timestamp(#{lastQueryTime,jdbcType=VARCHAR}) and current_timestamp
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user_like

@@ -113,4 +113,9 @@ public class FirstStrategyImpl implements LikeStrategy {
     public List<LikerInfo> getLikerInfo(int activityId) {
         return userLikeMapper.getLikerInfo(activityId);
     }
+
+    @Override
+    public int getNewLikeNumber(String lastQueryTime) {
+        return userLikeMapper.getNewLike(lastQueryTime);
+    }
 }
