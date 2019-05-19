@@ -48,9 +48,9 @@
     ORDER BY create_time desc 
   </select>
   <select id="getNewLike" resultType="java.lang.Integer">
-    select count()
+    select count(*)
     from  user_like
-    where create_time between unix_timestamp(#{lastQueryTime,jdbcType=VARCHAR}) and current_timestamp
+    where create_time between unix_timestamp(#{lastQueryTime}) and current_timestamp
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user_like
