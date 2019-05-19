@@ -1,8 +1,5 @@
 package com.volunteer.volunteer.model;
 
-
-import cn.afterturn.easypoi.excel.annotation.Excel;
-
 public class UserInformation {
     private Integer mainId;
 
@@ -12,16 +9,12 @@ public class UserInformation {
 
     private String headPictureUrl;
 
-    @Excel(name = "姓名", orderNum = "0")
     private String realName;
 
-    @Excel(name = "性别", orderNum = "1")
     private String sex;
 
-    @Excel(name = "电话")
     private String telNo;
 
-    @Excel(name = "微信")
     private String wechat;
 
     private String department;
@@ -142,5 +135,24 @@ public class UserInformation {
 
     public void setPosition(String position) {
         this.position = position == null ? null : position.trim();
+    }
+
+    @Override
+    public String toString() {
+        return "UserInformation{" +
+                "mainId=" + mainId +
+                ", openId='" + openId + '\'' +
+                ", falseName='" + falseName + '\'' +
+                ", headPictureUrl='" + headPictureUrl + '\'' +
+                ", realName='" + realName + '\'' +
+                ", sex='" + sex + '\'' +
+                ", telNo='" + telNo + '\'' +
+                ", wechat='" + wechat + '\'' +
+                ", department='" + department + '\'' +
+                ", school='" + school + '\'' +
+                ", organization='" + organization + '\'' +
+                ", registTime='" + registTime + '\'' +
+                ", position='" + position + '\'' +
+                '}';
     }
 }
