@@ -66,7 +66,7 @@ public class EnrollController {
         res.setFirstChoice(firstChoice);
         res.setSecondChoice(secondChoice);
         res.setThirdChoice(thirdChoice);
-        res.setIntroduction(introduction);
+        res.setIntroduction(introduction.replace("\n","。"));
         res.setEnrollStatus("0");
         try {
             if (enrollPersonService.insert(res) && enrollPassService.insertMainId(mainId)) {
