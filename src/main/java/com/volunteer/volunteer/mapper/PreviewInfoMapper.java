@@ -11,4 +11,6 @@ public interface PreviewInfoMapper {
     List<PreviewInfo> selectByMainId(Integer mainId);
 
     List<PreviewInfo> selectByDepartment(Map<String,Object> data);
+
+    List<PreviewInfo> selectForPreviewByMainId(Map<String,Object> data);
 }

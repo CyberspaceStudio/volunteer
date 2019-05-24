@@ -15,6 +15,15 @@ public class PreviewInfoServiceImpl implements PreviewInfoService {
     PreviewInfoMapper previewInfoMapper;
 
     @Override
+    public List<PreviewInfo> getPreviemByMainIdAnd(int mainId, int pageNumber) {
+        Map<String,Object> data = new HashMap<>();
+        data.put("pageNumber",(pageNumber-1)*7);
+        data.put("mainId",mainId);
+        data.put("pageSize",7);
+        return previewInfoMapper.selectForPreviewByMainId(data);
+    }
+
+    @Override
     public List<PreviewInfo> getPreviewMassage(int pageNumber, int pageSize) {
         Map<String,Object> data = new HashMap<>();
         data.put("pageNumber",(pageNumber-1)*pageSize);

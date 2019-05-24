@@ -11,4 +11,6 @@ public interface PreviewInfoService {
     List<PreviewInfo> getPreviewByMainId(int mainId);
 
     List<PreviewInfo> getPreviewByDepartment(String department,String timeBeginning,String timeEnding);
+
+    List<PreviewInfo> getPreviemByMainIdAnd(int mainId,int pageNumber);
 }

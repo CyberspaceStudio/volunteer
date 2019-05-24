@@ -82,5 +82,10 @@ public class MessageForShowController {
         return new UniversalResponseBody<>(0,"成功",previewInfoService.getPreviewByMainId(mainId));
     }
 
+    @GetMapping("/personal/preview")
+    public UniversalResponseBody getPersonalPerviewLike(@RequestParam("mainId")int mainId,@RequestParam("pageNumber")int pageNumber){
+        return new UniversalResponseBody<>(0,"成功",previewInfoService.getPreviemByMainIdAnd(mainId, pageNumber));
+    }
+
 
 }
