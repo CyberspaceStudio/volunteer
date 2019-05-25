@@ -9,12 +9,9 @@ import com.volunteer.volunteer.service.EnrollPersonService;
 import com.volunteer.volunteer.service.UserInformationService;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -34,6 +31,9 @@ public class EnrollController {
 
     @Resource
     private EnrollPassService enrollPassService;
+
+    @Resource
+    private UserInformationService userInformationService;
 
 
     /**
@@ -68,8 +68,29 @@ public class EnrollController {
         res.setThirdChoice(thirdChoice);
         res.setIntroduction(introduction.replace("\n","。"));
         res.setEnrollStatus("0");
+
+        /**
+         * 阉割版添加
+         */
+
+        UserInformation user = new UserInformation();
+        user.setMainId(mainId);
+        user.setRealName(realName);
+        user.setSex(sex);
+        user.setTelNo(telNo);
+        user.setWechat(wechat);
+        user.setSchool(school);
+        user.setOrganization(organization);
+        user.setSchool(school);
+        user.setDepartment(firstChoice);
+        user.setPosition("1");
+
+        /**
+         * 阉割版添加部分结束
+         */
         try {
-            if (enrollPersonService.insert(res) && enrollPassService.insertMainId(mainId)) {
+            if (enrollPersonService.insert(res) && enrollPassService.insertMainId(mainId) && userInformationService.update(user)) {
+
                 return new UniversalResponseBody<>(0, "成功", res);
             } else {
                 return new UniversalResponseBody<>(-1, "失败", res);

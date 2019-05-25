@@ -5,6 +5,16 @@ public class LikerInfo {
 
     private String department;
 
+    private String headPictureUrl;
+
+    public String getHeadPictureUrl() {
+        return headPictureUrl;
+    }
+
+    public void setHeadPictureUrl(String headPictureUrl) {
+        this.headPictureUrl = headPictureUrl;
+    }
+
     public String getUserName() {
         return userName;
     }
