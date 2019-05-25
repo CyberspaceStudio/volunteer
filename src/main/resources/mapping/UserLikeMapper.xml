@@ -13,6 +13,7 @@
     <result column="real_name" jdbcType="VARCHAR" property="userName" />
     <result column="department" jdbcType="VARCHAR" property="department"/>
     <result column="head_picture_url" jdbcType="VARCHAR" property="headPictureUrl"/>
+    <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
   </resultMap>
   <sql id="Base_Column_List">
     id, user_id, activity_id, like_status, is_delete, create_time
@@ -37,7 +38,7 @@
   </select>
   <select id="getLikerInfo" resultMap="LikerResultMap">
     select
-           information.real_name,department,head_picture_url
+           information.real_name,department,head_picture_url,create_time
     FROM user_like LEFT JOIN information ON user_id = main_id
     where like_status = 1 AND activity_id = #{activityId,jdbcType=INTEGER};
   </select>

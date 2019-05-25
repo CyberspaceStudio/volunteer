@@ -7,6 +7,16 @@ public class LikerInfo {
 
     private String headPictureUrl;
 
+    private String createTime;
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
     public String getHeadPictureUrl() {
         return headPictureUrl;
     }
