@@ -50,8 +50,8 @@ public class UserInformationServiceImpl implements UserInformationService {
             res.setOpenId(wechatResponseBody.getOpenid());
             res.setFalseName(loginData.getFalseName());
             res.setHeadPictureUrl(loginData.getHeadPictureUrl());
-            //暂定 1 为部员
-            res.setPosition("1");
+            //暂定 0 为游客，1 为部员
+            res.setPosition("0");
             log.info("【微信登录】用户第一次使用，进行注册！");
 
             if (userInformationMapper.insert(res) != 0) {
