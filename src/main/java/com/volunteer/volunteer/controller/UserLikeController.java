@@ -48,8 +48,8 @@ public class UserLikeController {
     }
 
     @GetMapping("/new/like/number")
-    public UniversalResponseBody getNewLikeNumber(String lastQueryTime){
-        int res = likeStrategy.getNewLikeNumber(lastQueryTime);
+    public UniversalResponseBody getNewLikeNumber(String lastQueryTime,int mainId){
+        int res = likeStrategy.getNewLikeNumber(lastQueryTime,mainId);
         if(res == 0){
             return new UniversalResponseBody(1,"成功");
         }

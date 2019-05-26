@@ -7,11 +7,10 @@ import com.volunteer.volunteer.service.UserInformationService;
 import com.volunteer.volunteer.util.ToolSupport.CacheResponseBody;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +29,9 @@ public class LoginController {
 
     @Resource
     private ManagerService managerService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Cacheable(value = "userCache", key = "#loginData.session_key", condition = "#loginData.session_key !=null")
     @RequestMapping(value = "/user", method = RequestMethod.POST)
@@ -65,6 +67,16 @@ public class LoginController {
             e.printStackTrace();
             log.error("【PC端登陆】登陆失败", e);
             return new UniversalResponseBody(-1, "登陆异常！");
+        }
+    }
+    @GetMapping("/check/session")
+    public UniversalResponseBody checkSession(String session){
+        boolean flag = redisTemplate.hasKey("userCache::" + session);
+        if(flag){
+            return new UniversalResponseBody(0,"成功");
+        }else {
+            log.info("日志信息：访问拦截。提交的session过期" + session);
+            return new UniversalResponseBody(102,"失败");
         }
     }
 }

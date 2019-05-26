@@ -115,7 +115,10 @@ public class FirstStrategyImpl implements LikeStrategy {
     }
 
     @Override
-    public int getNewLikeNumber(String lastQueryTime) {
-        return userLikeMapper.getNewLike(lastQueryTime);
+    public int getNewLikeNumber(String lastQueryTime,int mainId) {
+        Map<String,Object> data = new HashMap<>();
+        data.put("lastQueryTime",lastQueryTime);
+        data.put("mainId",mainId);
+        return userLikeMapper.getNewLike(data);
     }
 }
