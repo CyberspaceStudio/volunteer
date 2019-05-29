@@ -52,7 +52,7 @@
   <select id="getNewLike" resultType="java.lang.Integer">
     select count(*)
     from  user_like LEFT JOIN volunteer_activity ON volunteer_activity.activity_id = user_like.activity_id
-    where create_time between unix_timestamp(#{lastQueryTime}) and current_timestamp
+    where unix_timestamp(create_time) between unix_timestamp(#{lastQueryTime}) and current_timestamp
     AND main_id = #{mainId}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
