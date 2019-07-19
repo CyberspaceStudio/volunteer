@@ -48,7 +48,7 @@ public class UserInformationServiceImpl implements UserInformationService {
         if (findResult == null) {
             UserInformation res = new UserInformation();
             res.setOpenId(wechatResponseBody.getOpenid());
-            res.setFalseName(loginData.getFalseName());
+            res.setFalseName(loginData.getNickName());
             res.setHeadPictureUrl(loginData.getHeadPictureUrl());
             //暂定 0 为游客，1 为部员
             res.setPosition("0");

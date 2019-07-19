@@ -1,9 +1,12 @@
 package com.volunteer.volunteer.controller;
 
+import com.volunteer.volunteer.annotation.UserLoginToken;
+import com.volunteer.volunteer.dto.TokenInfo;
 import com.volunteer.volunteer.dto.WxInfo;
 import com.volunteer.volunteer.model.Manager;
 import com.volunteer.volunteer.service.ManagerService;
 import com.volunteer.volunteer.service.UserInformationService;
+import com.volunteer.volunteer.util.TokenUtil;
 import com.volunteer.volunteer.util.ToolSupport.CacheResponseBody;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import lombok.extern.slf4j.Slf4j;
@@ -55,28 +58,30 @@ public class LoginController {
         try {
             Manager manager = managerService.findManagerByName(managerName);
             if (manager == null) {
-                return new UniversalResponseBody(0, "用户不存在!");
+                return new UniversalResponseBody(-1,"User does not exist!");
             } else if (!manager.getManagerPassword().equals(managerPwd)) {
-                return new UniversalResponseBody(-1, "密码错误！");
+                return new UniversalResponseBody(-1, "Wrong password!");
             } else {
+                String token = TokenUtil.getToken(manager.getManagerName());
                 request.getSession().setAttribute("managerName", manager.getManagerName());
                 request.getSession().setAttribute("department", manager.getDepartment());
-                return new UniversalResponseBody<>(0, "成功！", manager);
+                return new UniversalResponseBody<>(0, "success", new TokenInfo<>(manager,token));
             }
         } catch (Exception e) {
             e.printStackTrace();
             log.error("【PC端登陆】登陆失败", e);
-            return new UniversalResponseBody(-1, "登陆异常！");
+            return new UniversalResponseBody(-1, "failed！");
         }
     }
     @GetMapping("/check/session")
     public UniversalResponseBody checkSession(String session){
         boolean flag = redisTemplate.hasKey("userCache::" + session);
         if(flag){
-            return new UniversalResponseBody(0,"成功");
+            return new UniversalResponseBody(0,"success");
         }else {
             log.info("日志信息：访问拦截。提交的session过期" + session);
-            return new UniversalResponseBody(102,"失败");
+            return new UniversalResponseBody(102,"failed");
         }
     }
+
 }

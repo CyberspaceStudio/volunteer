@@ -73,7 +73,7 @@ public class EnrollController {
          * 阉割版添加
          */
 
-        UserInformation user = new UserInformation();
+       /* UserInformation user = new UserInformation();
         user.setMainId(mainId);
         user.setRealName(realName);
         user.setSex(sex);
@@ -83,13 +83,13 @@ public class EnrollController {
         user.setOrganization(organization);
         user.setSchool(school);
         user.setDepartment(firstChoice);
-        user.setPosition("1");
+        user.setPosition("1");*/
 
         /**
          * 阉割版添加部分结束
          */
         try {
-            if (enrollPersonService.insert(res) && enrollPassService.insertMainId(mainId) && userInformationService.update(user)) {
+            if (enrollPersonService.insert(res) && enrollPassService.insertMainId(mainId)) {
 
                 return new UniversalResponseBody<>(0, "成功", res);
             } else {

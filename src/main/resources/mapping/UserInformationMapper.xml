@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.volunteer.volunteer.model.UserInformation" >
     <id column="main_id" property="mainId" jdbcType="INTEGER" />
     <result column="open_id" property="openId" jdbcType="VARCHAR" />
-    <result column="false_name" property="falseName" jdbcType="VARCHAR" />
+    <result column="false_name" property="nickName" jdbcType="VARCHAR" />
     <result column="head_picture_url" property="headPictureUrl" jdbcType="VARCHAR" />
     <result column="real_name" property="realName" jdbcType="VARCHAR" />
     <result column="sex" property="sex" jdbcType="CHAR" />
@@ -53,7 +53,7 @@
       tel_no, wechat, department, 
       school, organization, regist_time, 
       position)
-    values (#{mainId,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{falseName,jdbcType=VARCHAR}, 
+    values (#{mainId,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR},
       #{headPictureUrl,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, 
       #{telNo,jdbcType=CHAR}, #{wechat,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR},
       #{school,jdbcType=VARCHAR}, #{organization,jdbcType=VARCHAR}, #{registTime,jdbcType=TIMESTAMP},
@@ -68,7 +68,7 @@
       <if test="openId != null" >
         open_id,
       </if>
-      <if test="falseName != null" >
+      <if test="nickName != null" >
         false_name,
       </if>
       <if test="headPictureUrl != null" >
@@ -109,8 +109,8 @@
       <if test="openId != null" >
         #{openId,jdbcType=VARCHAR},
       </if>
-      <if test="falseName != null" >
-        #{falseName,jdbcType=VARCHAR},
+      <if test="nickName != null" >
+        #{nickName,jdbcType=VARCHAR},
       </if>
       <if test="headPictureUrl != null" >
         #{headPictureUrl,jdbcType=VARCHAR},
@@ -150,8 +150,8 @@
       <if test="openId != null" >
         open_id = #{openId,jdbcType=VARCHAR},
       </if>
-      <if test="falseName != null" >
-        false_name = #{falseName,jdbcType=VARCHAR},
+      <if test="nickName != null" >
+        false_name = #{nickName,jdbcType=VARCHAR},
       </if>
       <if test="headPictureUrl != null" >
         head_picture_url = #{headPictureUrl,jdbcType=VARCHAR},
@@ -189,7 +189,7 @@
   <update id="updateByPrimaryKey" parameterType="com.volunteer.volunteer.model.UserInformation" >
     update information
     set open_id = #{openId,jdbcType=VARCHAR},
-      false_name = #{falseName,jdbcType=VARCHAR},
+      false_name = #{nickName,jdbcType=VARCHAR},
       head_picture_url = #{headPictureUrl,jdbcType=VARCHAR},
       real_name = #{realName,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=CHAR},
