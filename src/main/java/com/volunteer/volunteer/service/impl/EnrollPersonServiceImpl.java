@@ -10,6 +10,7 @@ import com.volunteer.volunteer.service.EnrollPersonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
@@ -39,10 +40,10 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     }
 
     @Override
-    public boolean updateStatusByMainId(Integer mainId,Integer status){
+    public boolean updateStatusByMainId(Integer mainId, Integer status) {
         EnrollPerson enrollPerson = enrollPersonMapper.selectByPrimaryKey(mainId);
-        enrollPerson.setEnrollStatus(""+status);
-        return enrollPersonMapper.updateByPrimaryKeySelective(enrollPerson)>0;
+        enrollPerson.setEnrollStatus("" + status);
+        return enrollPersonMapper.updateByPrimaryKeySelective(enrollPerson) > 0;
     }
 
     @Override
@@ -92,7 +93,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
             } else {
                 throw new Exception("志愿和部门发生错误或对应关系错误!");
             }
-            return enrollPersonMapper.updateByPrimaryKeySelective(enrollPerson) > 0 && enrollPassMapper.updateByMainId(enrollPass)>0;
+            return enrollPersonMapper.updateByPrimaryKeySelective(enrollPerson) > 0 && enrollPassMapper.updateByMainId(enrollPass) > 0;
         } catch (Exception e) {
             e.printStackTrace();
             log.error("【数据库】更新失败!", e);
@@ -320,12 +321,12 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     /**
      * @Description: PC端:一面已面试人员
      * @Param: [department]
-     * @return: Map<String, List<Map<String,Object>>>
+     * @return: Map<String, List < Map < String, Object>>>
      */
     @Override
-    public Map<String, List<Map<String,Object>>> PcFirstInterviewed(String department) {
+    public Map<String, List<Map<String, Object>>> PcFirstInterviewed(String department) {
         try {
-            Map<String, List<Map<String,Object>>> res = new TreeMap<>();
+            Map<String, List<Map<String, Object>>> res = new TreeMap<>();
             res.put("A", enrollPersonMapper.PcFirstInterviewed(department, "A"));
             res.put("B", enrollPersonMapper.PcFirstInterviewed(department, "B"));
             res.put("C", enrollPersonMapper.PcFirstInterviewed(department, "C"));
@@ -338,13 +339,14 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
             return null;
         }
     }
+
     /**
      * @Description: PC端:一面已通过面试人员
      * @Param: [department]
-     * @return: Map<String, List<Map<String,Object>>>
+     * @return: Map<String, List < Map < String, Object>>>
      */
     @Override
-    public List<Map<String,Object>> firstInterviewPass(String department) {
+    public List<Map<String, Object>> firstInterviewPass(String department) {
         try {
             return enrollPersonMapper.PcFirstInterviewPass(department);
         } catch (Exception e) {
@@ -356,13 +358,13 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
 
 
     /**
-    * @Description: PC端:跨部人员
-    * @Param: [department]
-    * @return: List<EnrollPerson>
-    */
+     * @Description: PC端:跨部人员
+     * @Param: [department]
+     * @return: List<EnrollPerson>
+     */
     @Override
-    public List<Map<String,Object>> crossDepartment(String department){
-        try{
+    public List<Map<String, Object>> crossDepartment(String department) {
+        try {
             return enrollPersonMapper.crossDepartment(department);
         } catch (Exception e) {
             e.printStackTrace();
@@ -373,14 +375,14 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
 
 
     /**
-    * @Description:  PC端：二面待面试人员
-    * @Param: [department]
-    * @return: Map<String, List<Map<String,Object>>>
-    */
+     * @Description: PC端：二面待面试人员
+     * @Param: [department]
+     * @return: Map<String, List < Map < String, Object>>>
+     */
     @Override
-    public Map<String, List<Map<String,Object>>> PcWaitSecondInterviewed(String department){
+    public Map<String, List<Map<String, Object>>> PcWaitSecondInterviewed(String department) {
         try {
-            Map<String, List<Map<String,Object>>> res = new TreeMap<>();
+            Map<String, List<Map<String, Object>>> res = new TreeMap<>();
             res.put("A", enrollPersonMapper.PcWaitSecondInterviewed(department, "A"));
             res.put("B", enrollPersonMapper.PcWaitSecondInterviewed(department, "B"));
             res.put("C", enrollPersonMapper.PcWaitSecondInterviewed(department, "C"));
@@ -396,14 +398,14 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
 
 
     /**
-     * @Description:  PC端：二面已面试人员
+     * @Description: PC端：二面已面试人员
      * @Param: [department]
-     * @return: Map<String, List<Map<String,Object>>>
+     * @return: Map<String, List < Map < String, Object>>>
      */
     @Override
-    public Map<String, List<Map<String,Object>>> PcSecondInterviewed(String department){
+    public Map<String, List<Map<String, Object>>> PcSecondInterviewed(String department) {
         try {
-            Map<String, List<Map<String,Object>>> res = new TreeMap<>();
+            Map<String, List<Map<String, Object>>> res = new TreeMap<>();
             res.put("A", enrollPersonMapper.PcSecondInterviewed(department, "A"));
             res.put("B", enrollPersonMapper.PcSecondInterviewed(department, "B"));
             res.put("C", enrollPersonMapper.PcSecondInterviewed(department, "C"));
@@ -419,17 +421,17 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
 
 
     /**
-     * @Description:  PC端：跨部协调
+     * @Description: PC端：跨部协调
      * @Param: [department]
-     * @return: Map<String, List<Map<String,Object>>>
+     * @return: Map<String, List < Map < String, Object>>>
      */
     @Override
-    public boolean transferDepartment(int mainId,String department){
+    public boolean transferDepartment(int mainId, String department) {
         try {
             EnrollPerson enrollPerson = enrollPersonMapper.selectByPrimaryKey(mainId);
             enrollPerson.setEnrollStatus("501");
             enrollPerson.setFinalDepartment(department);
-            return enrollPersonMapper.updateByPrimaryKeySelective(enrollPerson)>0;
+            return enrollPersonMapper.updateByPrimaryKeySelective(enrollPerson) > 0;
         } catch (Exception e) {
             e.printStackTrace();
             log.error("【数据库】更新失败!", e);
@@ -458,7 +460,8 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
             user.setOrganization(enrollPerson.getOrganization());
             user.setDepartment(enrollPerson.getFinalDepartment());
             user.setPosition("部员");
-            userInformationMapper.updateByPrimaryKeySelective(user);
+
+            userInformationMapper.updateByPrimaryKey(user);
         }
     }
 
