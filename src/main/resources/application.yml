@@ -19,6 +19,7 @@ spring:
 wx:
   appid: wx07995d169ac8092e
   secret: 1cb93e42d6888bf81c61d0c3ab336696
+  templateId: uGqmWG6ARwG7ZuX0fNkRSZT8D5JFZM-g5F_uLbMTNdo
   url: https://api.weixin.qq.com/sns/jscode2session?appid=${wx.appid}&secret=${wx.secret}&grant_type=authorization_code&js_code=
 
 ---

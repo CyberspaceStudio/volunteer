@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.volunteer.volunteer.mapper.FormMssMapper" >
+  <resultMap id="BaseResultMap" type="com.volunteer.volunteer.model.FormMss" >
+    <id column="main_id" property="mainId" jdbcType="INTEGER" />
+    <result column="form_id" property="formId" jdbcType="VARCHAR" />
+    <result column="deadline" property="deadline" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    main_id, form_id, deadline
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from form
+    where main_id = #{mainId,jdbcType=INTEGER}
+  </select>
+  <select id="selectFormMssByDeadline" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from form
+    where (TO_DAYS(deadline)-TO_DAYS(NOW()))>=0;
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from form
+    where main_id = #{mainId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.volunteer.volunteer.model.FormMss" >
+    insert into form (main_id, form_id, deadline
+      )
+    values (#{mainId,jdbcType=INTEGER}, #{formId,jdbcType=VARCHAR}, #{deadline,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.volunteer.volunteer.model.FormMss" >
+    insert into form
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mainId != null" >
+        main_id,
+      </if>
+      <if test="formId != null" >
+        form_id,
+      </if>
+      <if test="deadline != null" >
+        deadline,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mainId != null" >
+        #{mainId,jdbcType=INTEGER},
+      </if>
+      <if test="formId != null" >
+        #{formId,jdbcType=VARCHAR},
+      </if>
+      <if test="deadline != null" >
+        #{deadline,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.volunteer.volunteer.model.FormMss" >
+    update form
+    <set >
+      <if test="formId != null" >
+        form_id = #{formId,jdbcType=VARCHAR},
+      </if>
+      <if test="deadline != null" >
+        deadline = #{deadline,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where main_id = #{mainId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.volunteer.volunteer.model.FormMss" >
+    update form
+    set form_id = #{formId,jdbcType=VARCHAR},
+      deadline = #{deadline,jdbcType=TIMESTAMP}
+    where main_id = #{mainId,jdbcType=INTEGER}
+  </update>
+</mapper>

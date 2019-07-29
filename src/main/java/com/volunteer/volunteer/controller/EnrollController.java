@@ -3,17 +3,19 @@ package com.volunteer.volunteer.controller;
 
 import com.volunteer.volunteer.enums.DepartmentEnum;
 import com.volunteer.volunteer.model.EnrollPerson;
+import com.volunteer.volunteer.model.FormMss;
 import com.volunteer.volunteer.model.UserInformation;
 import com.volunteer.volunteer.service.EnrollPassService;
 import com.volunteer.volunteer.service.EnrollPersonService;
+import com.volunteer.volunteer.service.FormMssService;
 import com.volunteer.volunteer.service.UserInformationService;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
-import java.util.Map;
-import java.util.TreeMap;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @description: 报名表控制类
@@ -35,6 +37,8 @@ public class EnrollController {
     @Resource
     private UserInformationService userInformationService;
 
+    @Resource
+    private FormMssService formMssService;
 
     /**
      * @Description: 报名
@@ -53,8 +57,10 @@ public class EnrollController {
             @NotNull @RequestParam("firstChoice") String firstChoice,
             @RequestParam("secondChoice") String secondChoice,
             @RequestParam("thirdChoice") String thirdChoice,
-            @RequestParam("introduction") String introduction
+            @RequestParam("introduction") String introduction,
+            @RequestParam("formId") String formId
     ) {
+        //报名表的存储
         EnrollPerson res = new EnrollPerson();
         res.setMainId(mainId);
         res.setRealName(realName);
@@ -69,28 +75,19 @@ public class EnrollController {
         res.setIntroduction(introduction.replace("\n","。"));
         res.setEnrollStatus("0");
 
-        /**
-         * 阉割版添加
-         */
+        //formId存储
+        FormMss formMss = new FormMss();
+        formMss.setMainId(mainId);
+        formMss.setFormId(formId);
+        Date date=new Date(); //取时间
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(calendar.DATE,7); //formId过期时间为七天
+        date=calendar.getTime();
+        formMss.setDeadline(date);
 
-       /* UserInformation user = new UserInformation();
-        user.setMainId(mainId);
-        user.setRealName(realName);
-        user.setSex(sex);
-        user.setTelNo(telNo);
-        user.setWechat(wechat);
-        user.setSchool(school);
-        user.setOrganization(organization);
-        user.setSchool(school);
-        user.setDepartment(firstChoice);
-        user.setPosition("1");*/
-
-        /**
-         * 阉割版添加部分结束
-         */
         try {
-            if (enrollPersonService.insert(res) && enrollPassService.insertMainId(mainId)) {
-
+            if (enrollPersonService.insert(res) && enrollPassService.insertMainId(mainId) && formMssService.saveForm(formMss)) {
                 return new UniversalResponseBody<>(0, "成功", res);
             } else {
                 return new UniversalResponseBody<>(-1, "失败", res);

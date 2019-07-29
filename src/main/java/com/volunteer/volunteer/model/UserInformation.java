@@ -25,7 +25,7 @@ public class UserInformation {
 
     private String registTime;
 
-    /**
+    /**暂时不用，以后记得规范
     * position 数字代表：
     * 11 正队长 12 副队长
     * 21 正部长 22 副部长
