@@ -16,8 +16,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import java.net.http.HttpResponse;
 
 /**
  * 本控制器用于控制用户登录的多种行为，通过重载方法来区分用户身份
@@ -54,18 +57,27 @@ public class LoginController {
      * @return: UniversalResponseBody
      */
     @RequestMapping(value = "/manager", method = RequestMethod.POST)
-    public UniversalResponseBody pcLogin(@NotNull @RequestParam("managerName") String managerName, @NotNull @RequestParam("managerPwd") String managerPwd, HttpServletRequest request) {
+    public UniversalResponseBody pcLogin(@RequestBody Manager loginData, HttpServletRequest request, HttpServletResponse response) {
+        //System.out.println(loginData);
+        //System.out.println(request.getHeader("token"));
+           //@NotNull @RequestParam("managerName") String managerName, @NotNull @RequestParam("managerPwd") String managerPwd, HttpServletRequest request) {
         try {
-            Manager manager = managerService.findManagerByName(managerName);
+            //Manager manager = managerService.findManagerByName(managerName);
+            Manager manager = managerService.findManagerByName(loginData.getManagerName());
             if (manager == null) {
                 return new UniversalResponseBody(-1,"User does not exist!");
-            } else if (!manager.getManagerPassword().equals(managerPwd)) {
+           // } else if (!manager.getManagerPassword().equals(managerPwd)) {
+            } else if (!manager.getManagerPassword().equals(loginData.getManagerPassword())) {
                 return new UniversalResponseBody(-1, "Wrong password!");
             } else {
                 String token = TokenUtil.getToken(manager.getManagerName());
-                request.getSession().setAttribute("managerName", manager.getManagerName());
-                request.getSession().setAttribute("department", manager.getDepartment());
-                return new UniversalResponseBody<>(0, "success", new TokenInfo<>(manager,token));
+                Cookie cookie=new Cookie("token",token);
+                cookie.setPath("/");
+                cookie.setMaxAge(60*60*24);
+                response.setContentType("text/html;charset=UTF-8");
+                response.addCookie(cookie);
+                response.addHeader("token",token);
+                return new UniversalResponseBody<>(0, "success", manager);
             }
         } catch (Exception e) {
             e.printStackTrace();
