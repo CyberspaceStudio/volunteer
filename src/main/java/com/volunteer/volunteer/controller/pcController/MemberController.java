@@ -115,14 +115,13 @@ public class MemberController {
      * @Param: [response]
      * @return: void
      */
-    //@UserLoginToken
+    @UserLoginToken
     @RequestMapping(value = "/export/waitInterview", method = RequestMethod.GET)
     public void exportInterview(HttpServletResponse response, HttpServletRequest request) throws IOException {
-        /*String token = request.getHeader("token");
+        String token = request.getHeader("token");
         String userName = TokenUtil.getAppUID(token);
-        String department = managerService.findManagerByName(userName).getDepartment();*/
-        String department = "网络技术工作室";
-
+        String department = managerService.findManagerByName(userName).getDepartment();
+        //String department = "网络技术工作室";
 
         List<Map<String, Object>> listMap = Object2Map.object2MapList(enrollPersonService.PcWaitFirstInterviewList(department));
 
