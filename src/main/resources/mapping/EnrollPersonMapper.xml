@@ -129,21 +129,121 @@
             or (second_choice = #{department,jdbcType=VARCHAR} and
                 (second_interview_score is null or second_interview_score = ''))
             or (third_choice = #{department,jdbcType=VARCHAR} and
-                (third_interview_score is null or third_interview_score = '')));
+                (third_interview_score is null or third_interview_score = '')))
+        order by main_id
+        limit #{pageNumber},10
+    </select>
+    <select id="PcWaitFirstInterviewNumber" resultType="java.lang.Integer">
+        select count(main_id)
+        from enroll
+        where (final_department is null or final_department = '')
+          and ((first_choice = #{department,jdbcType=VARCHAR} and
+                (first_interview_score is null or first_interview_score = ''))
+            or (second_choice = #{department,jdbcType=VARCHAR} and
+                (second_interview_score is null or second_interview_score = ''))
+            or (third_choice = #{department,jdbcType=VARCHAR} and
+                (third_interview_score is null or third_interview_score = '')))
     </select>
 
     <select id="PcFirstInterviewed" resultMap="PcFirstInterviewed">
-        select enroll.main_id,
+        SELECT enroll.main_id,
                enroll.real_name,
                enroll.sex,
                (
+                   CASE
+
+                       WHEN enroll.first_choice = #{department,jdbcType=VARCHAR} THEN
+                           enroll.first_interview_score
+                       WHEN enroll.second_choice = #{department,jdbcType=VARCHAR} THEN
+                           enroll.second_interview_score
+                       WHEN enroll.third_choice = #{department,jdbcType=VARCHAR} THEN
+                           enroll.third_interview_score
+                       END
+                   ) AS 'score',
+               (
+                   CASE
+
+                       WHEN enroll.first_choice = #{department,jdbcType=VARCHAR} THEN
+                           enroll.first_interview_impression
+                       WHEN enroll.second_choice = #{department,jdbcType=VARCHAR} THEN
+                           enroll.second_interview_impression
+                       WHEN enroll.third_choice = #{department,jdbcType=VARCHAR} THEN
+                           enroll.third_interview_impression
+                       END
+                   ) AS 'impression'
+        FROM enroll,
+             enroll_pass
+        WHERE (enroll_pass.main_id = enroll.main_id AND enroll.enroll_status = 501)
+          AND ((
+                       enroll.first_choice = #{department,jdbcType=VARCHAR}
+                       AND enroll_pass.first_pass = 1
+                   )
+            OR (enroll.second_choice = #{department,jdbcType=VARCHAR} AND enroll_pass.second_pass = 1)
+            OR (enroll.third_choice = #{department,jdbcType=VARCHAR} AND enroll_pass.third_pass = 1))
+        ORDER BY score
+    </select>
+
+    <select id="PcFirstInterviewedNumber" resultType="java.lang.Integer">
+        SELECT COUNT(enroll.main_id)
+        FROM enroll,
+             enroll_pass
+        WHERE (enroll_pass.main_id = enroll.main_id AND enroll.enroll_status = 501)
+          AND ((
+                       enroll.first_choice = #{department,jdbcType=VARCHAR}
+                       AND enroll_pass.first_pass = 1
+                   )
+            OR (enroll.second_choice = #{department,jdbcType=VARCHAR} AND enroll_pass.second_pass = 1)
+            OR (enroll.third_choice = #{department,jdbcType=VARCHAR} AND enroll_pass.third_pass = 1))
+    </select>
+
+
+    <select id="PcWaitSecondInterviewed" resultMap="PcWaitSecondInterviewed">
+        select main_id,
+               real_name,
+               sex,
+               tel_no,
+               wechat,
+               (
                    case
-                       when enroll.first_choice = #{department,jdbcType=VARCHAR} and
-                            enroll.first_interview_score = #{score,jdbcType=CHAR} then enroll.first_interview_score
-                       when enroll.second_choice = #{department,jdbcType=VARCHAR} and
-                            enroll.second_interview_score = #{score,jdbcType=CHAR} then enroll.second_interview_score
-                       when enroll.third_choice = #{department,jdbcType=VARCHAR} and
-                            enroll.third_interview_score = #{score,jdbcType=CHAR} then enroll.third_interview_score
+                       when first_choice = #{department,jdbcType=VARCHAR} and
+                            first_interview_score = #{score,jdbcType=CHAR} then first_interview_score
+                       when second_choice = #{department,jdbcType=VARCHAR} and
+                            second_interview_score = #{score,jdbcType=CHAR} then second_interview_score
+                       when third_choice = #{department,jdbcType=VARCHAR} and
+                            third_interview_score = #{score,jdbcType=CHAR} then third_interview_score
+                       end
+                   )
+                   as 'score'
+        from enroll
+        where (enroll_status = 503 or final_department = #{department,jdbcType=VARCHAR})
+          and (
+                (first_choice = #{department,jdbcType=VARCHAR} and first_interview_score = #{score,jdbcType=CHAR})
+                or (second_choice = #{department,jdbcType=VARCHAR} and second_interview_score = #{score,jdbcType=CHAR})
+                or (third_choice = #{department,jdbcType=VARCHAR} and third_interview_score = #{score,jdbcType=CHAR})
+            )
+        ORDER BY score
+        limit #{pageNumber},10
+    </select>
+    <select id="PcWaitSecondInterviewedNumber" resultType="java.lang.Integer">
+        select COUNT(main_id)
+        from enroll
+        where (enroll_status = 503 and final_department = #{department,jdbcType=VARCHAR})
+          and ((first_choice = #{department,jdbcType=VARCHAR} and first_interview_score = #{score,jdbcType=CHAR})
+            or (second_choice = #{department,jdbcType=VARCHAR} and second_interview_score = #{score,jdbcType=CHAR})
+            or (third_choice = #{department,jdbcType=VARCHAR} and third_interview_score = #{score,jdbcType=CHAR}));
+    </select>
+    <select id="PcSecondInterviewed" resultMap="PcFirstInterviewed">
+        select main_id,
+               real_name,
+               sex,
+               (
+                   case
+                       when first_choice = #{department,jdbcType=VARCHAR} and
+                            first_interview_score = #{score,jdbcType=CHAR} then first_interview_score
+                       when second_choice = #{department,jdbcType=VARCHAR} and
+                            second_interview_score = #{score,jdbcType=CHAR} then second_interview_score
+                       when third_choice = #{department,jdbcType=VARCHAR} and
+                            third_interview_score = #{score,jdbcType=CHAR} then third_interview_score
                        end
                    )
                    as 'score',
@@ -156,19 +256,90 @@
                        end
                    )
                    as 'impression'
-        from enroll,
-             enroll_pass
-        where (enroll_pass.main_id = enroll.main_id and enroll.enroll_status=501)
-          and ((enroll.first_choice = #{department,jdbcType=VARCHAR} and
-                enroll.first_interview_score = #{score,jdbcType=CHAR} and enroll_pass.first_pass = 1)
-            or (enroll.second_choice = #{department,jdbcType=VARCHAR} and
-                enroll.second_interview_score = #{score,jdbcType=CHAR} and enroll_pass.second_pass = 1)
-            or (enroll.third_choice = #{department,jdbcType=VARCHAR} and
-                enroll.third_interview_score = #{score,jdbcType=CHAR} and enroll_pass.third_pass = 1));
-
+        from enroll
+        where (enroll_status = 502 and final_department = #{department,jdbcType=VARCHAR})
+          and ((first_choice = #{department,jdbcType=VARCHAR} and first_interview_score = #{score,jdbcType=CHAR})
+            or (second_choice = #{department,jdbcType=VARCHAR} and second_interview_score = #{score,jdbcType=CHAR})
+            or (third_choice = #{department,jdbcType=VARCHAR} and third_interview_score = #{score,jdbcType=CHAR}))
+        ORDER BY score
+        limit #{pageNumber},10
     </select>
-
-
+    <select id="PcSecondInterviewedNumber" resultType="java.lang.Integer">
+        select COUNT(main_id)
+        from enroll
+        where (enroll_status = 502 and final_department = #{department,jdbcType=VARCHAR})
+          and ((first_choice = #{department,jdbcType=VARCHAR} and first_interview_score = #{score,jdbcType=CHAR})
+            or (second_choice = #{department,jdbcType=VARCHAR} and second_interview_score = #{score,jdbcType=CHAR})
+            or (third_choice = #{department,jdbcType=VARCHAR} and third_interview_score = #{score,jdbcType=CHAR}));
+    </select>
+    <select id="PcFirstInterviewPass" resultMap="PcFirstInterviewed">
+        SELECT enroll.main_id,
+               enroll.real_name,
+               enroll.sex,
+               enroll.tel_no,
+               enroll.wechat,
+               (
+                   CASE
+                       WHEN enroll.first_choice = #{department,jdbcType=VARCHAR} THEN
+                           enroll.first_interview_score
+                       WHEN enroll.second_choice = #{department,jdbcType=VARCHAR} THEN
+                           enroll.second_interview_score
+                       WHEN enroll.third_choice = #{department,jdbcType=VARCHAR} THEN
+                           enroll.third_interview_score
+                       END
+                   ) AS 'score',
+               (
+                   CASE
+                       WHEN enroll.first_choice = #{department,jdbcType=VARCHAR} THEN
+                           enroll.first_interview_impression
+                       WHEN enroll.second_choice = #{department,jdbcType=VARCHAR} THEN
+                           enroll.second_interview_impression
+                       WHEN enroll.third_choice = #{department,jdbcType=VARCHAR} THEN
+                           enroll.third_interview_impression
+                       END
+                   ) AS 'impression'
+        FROM enroll,
+             enroll_pass
+        WHERE enroll_pass.main_id = enroll.main_id
+          AND (
+                (enroll.first_choice = #{department,jdbcType=VARCHAR} AND enroll_pass.first_pass = 100)
+                OR (enroll.second_choice = #{department,jdbcType=VARCHAR} AND enroll_pass.second_pass = 100)
+                OR (enroll.third_choice = #{department,jdbcType=VARCHAR} AND enroll_pass.third_pass = 100)
+            )
+          AND (
+                (
+                            (enroll_pass.first_pass + enroll_pass.second_pass + enroll_pass.third_pass) != 200
+                        AND (enroll_pass.first_pass + enroll_pass.second_pass + enroll_pass.third_pass) != 201
+                        AND (enroll_pass.first_pass + enroll_pass.second_pass + enroll_pass.third_pass) != 700
+                        AND (enroll_pass.first_pass + enroll_pass.second_pass + enroll_pass.third_pass) != 300
+                        AND enroll.enroll_status = 501
+                    )
+                OR enroll.final_department = #{department,jdbcType=VARCHAR}
+            )
+        ORDER BY score
+        limit #{pageNumber},10
+    </select>
+    <select id="PcFirstInterviewPassNumber" resultType="java.lang.Integer">
+        SELECT COUNT(enroll.main_id)
+        FROM enroll,
+             enroll_pass
+        WHERE enroll_pass.main_id = enroll.main_id
+          AND (
+                (enroll.first_choice = #{department,jdbcType=VARCHAR} AND enroll_pass.first_pass = 100)
+                OR (enroll.second_choice = #{department,jdbcType=VARCHAR} AND enroll_pass.second_pass = 100)
+                OR (enroll.third_choice = #{department,jdbcType=VARCHAR} AND enroll_pass.third_pass = 100)
+            )
+          AND (
+                (
+                            (enroll_pass.first_pass + enroll_pass.second_pass + enroll_pass.third_pass) != 200
+                        AND (enroll_pass.first_pass + enroll_pass.second_pass + enroll_pass.third_pass) != 201
+                        AND (enroll_pass.first_pass + enroll_pass.second_pass + enroll_pass.third_pass) != 700
+                        AND (enroll_pass.first_pass + enroll_pass.second_pass + enroll_pass.third_pass) != 300
+                        AND enroll.enroll_status = 501
+                    )
+                OR enroll.final_department = #{department,jdbcType=VARCHAR}
+            )
+    </select>
     <select id="crossDepartment" resultMap="cross_department">
         select main_id,
                real_name,
@@ -186,109 +357,24 @@
                    )
                    as 'cross'
         from cross_department
-        where ((first_choice = #{department,jdbcType=VARCHAR} and first_pass = 100) or
-               (second_choice = #{department,jdbcType=VARCHAR} and second_pass = 100) or
-               (third_choice = #{department,jdbcType=VARCHAR} and third_pass = 100));
+        where (
+                      (first_choice = #{department,jdbcType=VARCHAR} and first_pass = 100) or
+                      (second_choice = #{department,jdbcType=VARCHAR} and second_pass = 100) or
+                      (third_choice = #{department,jdbcType=VARCHAR} and third_pass = 100)
+                  )
+        ORDER BY main_id
+        limit #{pageNumber},10
     </select>
-    <select id="PcWaitSecondInterviewed" resultMap="PcWaitSecondInterviewed">
-        select main_id,
-               real_name,
-               sex,
-               tel_no,
-               wechat,
-               (
-                   case
-                       when first_choice = #{department,jdbcType=VARCHAR} and
-                            first_interview_score = #{score,jdbcType=CHAR} then first_interview_score
-                       when second_choice = #{department,jdbcType=VARCHAR} and
-                            second_interview_score =#{score,jdbcType=CHAR} then second_interview_score
-                       when third_choice = #{department,jdbcType=VARCHAR} and
-                            third_interview_score = #{score,jdbcType=CHAR} then third_interview_score
-                       end
-                   )
-                   as 'score'
-        from enroll
-        where (enroll_status=503 and final_department=#{department,jdbcType=VARCHAR})
-          and ((first_choice=#{department,jdbcType=VARCHAR} and first_interview_score=#{score,jdbcType=CHAR})
-            or (second_choice=#{department,jdbcType=VARCHAR} and second_interview_score=#{score,jdbcType=CHAR})
-            or (third_choice=#{department,jdbcType=VARCHAR} and third_interview_score=#{score,jdbcType=CHAR}));
-
+    <select id="crossDepartmentNumber" resultType="java.lang.Integer">
+        select COUNT(main_id)
+        from cross_department
+        where (
+                      (first_choice = #{department,jdbcType=VARCHAR} and first_pass = 100) or
+                      (second_choice = #{department,jdbcType=VARCHAR} and second_pass = 100) or
+                      (third_choice = #{department,jdbcType=VARCHAR} and third_pass = 100)
+                  )
     </select>
-    <select id="PcSecondInterviewed" resultMap="PcFirstInterviewed">
-        select main_id,
-               real_name,
-               sex,
-               (
-                   case
-                       when first_choice = #{department,jdbcType=VARCHAR} and
-                            first_interview_score = #{score,jdbcType=CHAR} then first_interview_score
-                       when second_choice = #{department,jdbcType=VARCHAR} and
-                            second_interview_score =#{score,jdbcType=CHAR} then second_interview_score
-                       when third_choice = #{department,jdbcType=VARCHAR} and
-                            third_interview_score = #{score,jdbcType=CHAR} then third_interview_score
-                       end
-                   )
-                   as 'score',
-               (
-                   case
-                       when enroll.first_choice = #{department,jdbcType=VARCHAR} then enroll.first_interview_impression
-                       when enroll.second_choice = #{department,jdbcType=VARCHAR}
-                           then enroll.second_interview_impression
-                       when enroll.third_choice = #{department,jdbcType=VARCHAR} then enroll.third_interview_impression
-                       end
-                   )
-                   as 'impression'
-        from enroll
-        where (enroll_status=502 and final_department=#{department,jdbcType=VARCHAR})
-          and ((first_choice=#{department,jdbcType=VARCHAR} and first_interview_score=#{score,jdbcType=CHAR})
-            or (second_choice=#{department,jdbcType=VARCHAR} and second_interview_score=#{score,jdbcType=CHAR})
-            or (third_choice=#{department,jdbcType=VARCHAR} and third_interview_score=#{score,jdbcType=CHAR}));
-    </select>
-    <select id="PcFirstInterviewPass" resultMap="PcFirstInterviewed">
-    SELECT
-	enroll.main_id,
-	enroll.real_name,
-	enroll.sex,
-	(
-	CASE
 
-			WHEN enroll.first_choice = #{department,jdbcType=VARCHAR} THEN
-			enroll.first_interview_score
-			WHEN enroll.second_choice =#{department,jdbcType=VARCHAR} THEN
-			enroll.second_interview_score
-			WHEN enroll.third_choice = #{department,jdbcType=VARCHAR} THEN
-			enroll.third_interview_score
-		END
-		) AS 'score',
-		(
-		CASE
-
-				WHEN enroll.first_choice = #{department,jdbcType=VARCHAR} THEN
-				enroll.first_interview_impression
-				WHEN enroll.second_choice = #{department,jdbcType=VARCHAR} THEN
-				enroll.second_interview_impression
-				WHEN enroll.third_choice = #{department,jdbcType=VARCHAR} THEN
-				enroll.third_interview_impression
-			END
-			) AS 'impression'
-		FROM
-			enroll,
-			enroll_pass
-		WHERE
-
-			enroll_pass.main_id = enroll.main_id
-			AND ( enroll.first_choice = #{department,jdbcType=VARCHAR} OR enroll.second_choice = #{department,jdbcType=VARCHAR} OR enroll.third_choice = #{department,jdbcType=VARCHAR} )
-			AND (
-				(
-					( enroll_pass.first_pass + enroll_pass.second_pass + enroll_pass.third_pass ) != 200
-					AND ( enroll_pass.first_pass + enroll_pass.second_pass + enroll_pass.third_pass ) != 201
-					AND ( enroll_pass.first_pass + enroll_pass.second_pass + enroll_pass.third_pass ) != 700
-					AND ( enroll_pass.first_pass + enroll_pass.second_pass + enroll_pass.third_pass ) != 300
-					AND enroll.enroll_status = 501
-				)
-			OR enroll.final_department = #{department,jdbcType=VARCHAR}
-	);
-    </select>
 
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

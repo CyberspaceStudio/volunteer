@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -307,10 +308,13 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
      * @return: List<Map < String, Object>>
      */
     @Override
-    public List<Map<String, Object>> pcWaitFirstInterview(String department) {
-
+    public Map<String, Object> pcWaitFirstInterview(String department, int pageNumber) {
+        Map<String, Object> res = new HashMap<>();
         try {
-            return enrollPersonMapper.PcWaitFirstInterview(department);
+            pageNumber--;
+            res.put("data", enrollPersonMapper.PcWaitFirstInterview(department, pageNumber * 10));
+            res.put("total", enrollPersonMapper.PcWaitFirstInterviewNumber(department));
+            return res;
         } catch (Exception e) {
             e.printStackTrace();
             log.error("【数据库】查询失败!", e);
@@ -321,17 +325,13 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     /**
      * @Description: PC端:一面已面试人员
      * @Param: [department]
-     * @return: Map<String, List < Map < String, Object>>>
+     * @return: Map < String, Object>
      */
     @Override
-    public Map<String, List<Map<String, Object>>> PcFirstInterviewed(String department) {
+    public Map<String, Object> PcFirstInterviewed(String department) {
+        Map<String, Object> res = new HashMap<>();
         try {
-            Map<String, List<Map<String, Object>>> res = new TreeMap<>();
-            res.put("A", enrollPersonMapper.PcFirstInterviewed(department, "A"));
-            res.put("B", enrollPersonMapper.PcFirstInterviewed(department, "B"));
-            res.put("C", enrollPersonMapper.PcFirstInterviewed(department, "C"));
-            res.put("D", enrollPersonMapper.PcFirstInterviewed(department, "D"));
-            res.put("E", enrollPersonMapper.PcFirstInterviewed(department, "E"));
+            res.put("data", enrollPersonMapper.PcFirstInterviewed(department));
             return res;
         } catch (Exception e) {
             e.printStackTrace();
@@ -343,12 +343,16 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     /**
      * @Description: PC端:一面已通过面试人员
      * @Param: [department]
-     * @return: Map<String, List < Map < String, Object>>>
+     * @return: Map < String, Object>
      */
     @Override
-    public List<Map<String, Object>> firstInterviewPass(String department) {
+    public Map<String, Object> firstInterviewPass(String department, int pageNumber) {
+        Map<String, Object> res = new HashMap<>();
         try {
-            return enrollPersonMapper.PcFirstInterviewPass(department);
+            pageNumber--;
+            res.put("data", enrollPersonMapper.PcFirstInterviewPass(department, pageNumber * 10));
+            res.put("total", enrollPersonMapper.PcFirstInterviewPassNumber(department));
+            return res;
         } catch (Exception e) {
             e.printStackTrace();
             log.error("【数据库】查询失败!", e);
@@ -360,12 +364,17 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     /**
      * @Description: PC端:跨部人员
      * @Param: [department]
-     * @return: List<EnrollPerson>
+     * @return: Map<String, Object>
      */
     @Override
-    public List<Map<String, Object>> crossDepartment(String department) {
+    public Map<String, Object> crossDepartment(String department, int pageNumber) {
+        Map<String, Object> res = new HashMap<>();
         try {
-            return enrollPersonMapper.crossDepartment(department);
+            pageNumber--;
+            res.put("data", enrollPersonMapper.crossDepartment(department, pageNumber * 10));
+            res.put("total", enrollPersonMapper.crossDepartmentNumber(department));
+            return res;
+            //return enrollPersonMapper.crossDepartment(department);
         } catch (Exception e) {
             e.printStackTrace();
             log.error("【数据库】查询失败!", e);
@@ -380,14 +389,12 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
      * @return: Map<String, List < Map < String, Object>>>
      */
     @Override
-    public Map<String, List<Map<String, Object>>> PcWaitSecondInterviewed(String department) {
+    public Map<String, Object> PcWaitSecondInterviewed(String department, int pageNumber) {
+        Map<String, Object> res = new HashMap<>();
         try {
-            Map<String, List<Map<String, Object>>> res = new TreeMap<>();
-            res.put("A", enrollPersonMapper.PcWaitSecondInterviewed(department, "A"));
-            res.put("B", enrollPersonMapper.PcWaitSecondInterviewed(department, "B"));
-            res.put("C", enrollPersonMapper.PcWaitSecondInterviewed(department, "C"));
-            res.put("D", enrollPersonMapper.PcWaitSecondInterviewed(department, "D"));
-            res.put("E", enrollPersonMapper.PcWaitSecondInterviewed(department, "E"));
+            pageNumber--;
+            res.put("data", enrollPersonMapper.PcWaitSecondInterviewed(department, pageNumber * 10));
+            res.put("total", enrollPersonMapper.PcWaitSecondInterviewedNumber(department));
             return res;
         } catch (Exception e) {
             e.printStackTrace();
@@ -403,14 +410,12 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
      * @return: Map<String, List < Map < String, Object>>>
      */
     @Override
-    public Map<String, List<Map<String, Object>>> PcSecondInterviewed(String department) {
+    public Map<String, Object> PcSecondInterviewed(String department, int pageNumber) {
+        Map<String, Object> res = new HashMap<>();
         try {
-            Map<String, List<Map<String, Object>>> res = new TreeMap<>();
-            res.put("A", enrollPersonMapper.PcSecondInterviewed(department, "A"));
-            res.put("B", enrollPersonMapper.PcSecondInterviewed(department, "B"));
-            res.put("C", enrollPersonMapper.PcSecondInterviewed(department, "C"));
-            res.put("D", enrollPersonMapper.PcSecondInterviewed(department, "D"));
-            res.put("E", enrollPersonMapper.PcSecondInterviewed(department, "E"));
+            pageNumber--;
+            res.put("data", enrollPersonMapper.PcSecondInterviewed(department, pageNumber * 10));
+            res.put("total", enrollPersonMapper.PcSecondInterviewedNumber(department));
             return res;
         } catch (Exception e) {
             e.printStackTrace();

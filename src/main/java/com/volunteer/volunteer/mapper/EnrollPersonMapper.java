@@ -41,16 +41,27 @@ public interface EnrollPersonMapper {
 
     int departmentEnrollByWoman(String department);
 
-    List<Map<String,Object>> PcWaitFirstInterview(String department);
+    List<Map<String, Object>> PcWaitFirstInterview(String department, int pageNumber);
 
-    List<Map<String,Object>> PcFirstInterviewed(String department,String score);
+    int PcWaitFirstInterviewNumber(String department);
 
-    List<Map<String,Object>> PcFirstInterviewPass(String department);
+    List<Map<String, Object>> PcFirstInterviewed(String department);
 
-    List<Map<String,Object>> crossDepartment(String department);
+    int PcFirstInterviewedNumber(String department);
 
-    List<Map<String,Object>> PcWaitSecondInterviewed(String department,String score);
+    List<Map<String, Object>> PcFirstInterviewPass(String department, int pageNumber);
 
-    List<Map<String,Object>> PcSecondInterviewed(String department,String score);
+    int PcFirstInterviewPassNumber(String department);
 
+    List<Map<String, Object>> crossDepartment(String department, int pageNumber);
+
+    int crossDepartmentNumber(String department);
+
+    List<Map<String, Object>> PcWaitSecondInterviewed(String department, int pageNumber);
+
+    int PcWaitSecondInterviewedNumber(String department);
+
+    List<Map<String, Object>> PcSecondInterviewed(String department, int pageNumber);
+
+    int PcSecondInterviewedNumber(String department);
 }

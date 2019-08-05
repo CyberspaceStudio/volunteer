@@ -1,4 +1,4 @@
-package com.volunteer.volunteer.controller;
+package com.volunteer.volunteer.controller.wxController;
 
 import com.volunteer.volunteer.model.MessageForShow;
 import com.volunteer.volunteer.service.MessageForShowService;

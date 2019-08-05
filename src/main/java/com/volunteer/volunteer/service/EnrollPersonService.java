@@ -40,16 +40,17 @@ public interface EnrollPersonService {
 
     Map<String, Integer> oneDepartmentEnrollData(String department);
 
-    List<Map<String,Object>> pcWaitFirstInterview(String department);
+    Map<String,Object> pcWaitFirstInterview(String department,int pageNumber);
 
-    Map<String, List<Map<String,Object>>> PcFirstInterviewed(String department);
+    //Map<String, Object> PcFirstInterviewed(String department,int pageNumber);
+    Map<String, Object> PcFirstInterviewed(String department);
 
-    List<Map<String,Object>> firstInterviewPass(String department);
+    Map<String,Object> firstInterviewPass(String department,int pageNumber);
 
-    Map<String, List<Map<String,Object>>> PcWaitSecondInterviewed(String department);
+    Map<String,Object> PcWaitSecondInterviewed(String department,int pageNumber);
 
-    List<Map<String,Object>> crossDepartment(String department);
+    Map<String,Object> crossDepartment(String department,int pageNumber);
 
-    Map<String, List<Map<String,Object>>> PcSecondInterviewed(String department);
+    Map<String,Object> PcSecondInterviewed(String department,int pageNumber);
 
 }

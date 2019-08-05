@@ -58,26 +58,26 @@ public class LoginController {
      */
     @RequestMapping(value = "/manager", method = RequestMethod.POST)
     public UniversalResponseBody pcLogin(@RequestBody Manager loginData, HttpServletRequest request, HttpServletResponse response) {
-        //System.out.println(loginData);
-        //System.out.println(request.getHeader("token"));
-           //@NotNull @RequestParam("managerName") String managerName, @NotNull @RequestParam("managerPwd") String managerPwd, HttpServletRequest request) {
         try {
-            //Manager manager = managerService.findManagerByName(managerName);
             Manager manager = managerService.findManagerByName(loginData.getManagerName());
             if (manager == null) {
                 return new UniversalResponseBody(-1,"User does not exist!");
-           // } else if (!manager.getManagerPassword().equals(managerPwd)) {
+
             } else if (!manager.getManagerPassword().equals(loginData.getManagerPassword())) {
                 return new UniversalResponseBody(-1, "Wrong password!");
             } else {
                 String token = TokenUtil.getToken(manager.getManagerName());
-                Cookie cookie=new Cookie("token",token);
+
+                //cookie无法 传递
+                /*Cookie cookie=new Cookie("set-cookie",token);
                 cookie.setPath("/");
                 cookie.setMaxAge(60*60*24);
-                response.setContentType("text/html;charset=UTF-8");
-                response.addCookie(cookie);
+                response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+                response.addHeader("Access-Control-Allow-Credentials", "true");
+                response.addCookie(cookie);*/
+
                 response.addHeader("token",token);
-                return new UniversalResponseBody<>(0, "success", manager);
+                return new UniversalResponseBody<>(0, "success", new TokenInfo<>(manager,token));
             }
         } catch (Exception e) {
             e.printStackTrace();

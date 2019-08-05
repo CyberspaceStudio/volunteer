@@ -29,23 +29,23 @@ public class EnrollPassServiceImpl implements EnrollPassService {
     private EnrollPersonMapper enrollPersonMapper;
 
     /**
-    * @Description: 报名第一次插入信息，mainId插入
-    * @Param: [mainId]
-    * @return: boolean
-    */
+     * @Description: 报名第一次插入信息，mainId插入
+     * @Param: [mainId]
+     * @return: boolean
+     */
     @Override
-    public boolean insertMainId(Integer mainId){
-        return enrollPassMapper.insertMainId(mainId)>0;
+    public boolean insertMainId(Integer mainId) {
+        return enrollPassMapper.insertMainId(mainId) > 0;
     }
 
     /**
-    * @Description: 是否通过 更新操作
-    * @Param: [enrollPass]
-    * @return: boolean
-    */
+     * @Description: 是否通过 更新操作
+     * @Param: [enrollPass]
+     * @return: boolean
+     */
     @Override
-    public boolean PassOrNot(EnrollPass enrollPass){
-        return enrollPassMapper.updateByMainId(enrollPass)>0;
+    public boolean PassOrNot(EnrollPass enrollPass) {
+        return enrollPassMapper.updateByMainId(enrollPass) > 0;
     }
 
 
@@ -55,8 +55,9 @@ public class EnrollPassServiceImpl implements EnrollPassService {
      * @return: void
      * @atention: 如果传入的参数 statusNum 为0 此时不进行 EnrollPerson 的更新
      */
+
     @Transactional
-    public void ManyPassOrNot(int[] mainIds,String department,Integer passNum,Integer statusNum) throws Exception{
+    public void ManyPassOrNot(int[] mainIds, String department, Integer passNum, Integer statusNum) throws Exception {
         for (int mainId : mainIds) {
             if (statusNum != 0) {
                 EnrollPass enrollPass = enrollPassMapper.selectByMainId(mainId);
@@ -75,7 +76,7 @@ public class EnrollPassServiceImpl implements EnrollPassService {
                 }
                 enrollPassMapper.updateByMainId(enrollPass);
                 enrollPersonMapper.updateByPrimaryKeySelective(enrollPerson);
-            }else{
+            } else {
                 EnrollPass enrollPass = enrollPassMapper.selectByMainId(mainId);
                 EnrollPerson enrollPerson = enrollPersonMapper.selectByPrimaryKey(mainId);
                 if (department.equals(enrollPerson.getFirstChoice())) {
@@ -92,13 +93,18 @@ public class EnrollPassServiceImpl implements EnrollPassService {
         }
     }
 
+    /**
+     * @Description: 多数据通用更新操作
+     * @Date: 10:13 2019/8/5
+     * @Param: [mainId, department]
+     * @return: void
+     */
     @Transactional
-    public void ManyUpdateFinalDepartment(int[] mainIds, String  department) throws Exception{
+    public void ManyUpdateFinalDepartment(int[] mainIds, String department) throws Exception {
         for (int mainId : mainIds) {
             EnrollPerson enrollPerson = enrollPersonMapper.selectByPrimaryKey(mainId);
             enrollPerson.setFinalDepartment(department);
             enrollPersonMapper.updateByPrimaryKeySelective(enrollPerson);
         }
     }
-
 }

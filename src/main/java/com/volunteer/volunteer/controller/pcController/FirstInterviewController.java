@@ -1,4 +1,4 @@
-package com.volunteer.volunteer.controller;
+package com.volunteer.volunteer.controller.pcController;
 
 import com.volunteer.volunteer.annotation.UserLoginToken;
 import com.volunteer.volunteer.enums.DepartmentEnum;
@@ -7,12 +7,15 @@ import com.volunteer.volunteer.service.EnrollPersonService;
 import com.volunteer.volunteer.service.ManagerService;
 import com.volunteer.volunteer.util.TokenUtil;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
+import io.lettuce.core.dynamic.annotation.Param;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,13 +40,15 @@ public class FirstInterviewController {
      * @return: UniversalResponseBody
      */
     @UserLoginToken
-    @RequestMapping(value = "/without",method = RequestMethod.GET)
-    public UniversalResponseBody PcWaitFirstInterview(HttpServletRequest httpServletRequest) {
+    @RequestMapping(value = "/without/{page}", method = RequestMethod.GET)
+    public UniversalResponseBody PcWaitFirstInterview(@PathVariable("page") int page, HttpServletRequest httpServletRequest) {
         String token = httpServletRequest.getHeader("token");
+
         String userName = TokenUtil.getAppUID(token);
         String department = managerService.findManagerByName(userName).getDepartment();
 
-        List<Map<String, Object>> res = enrollPersonService.pcWaitFirstInterview(department);
+        Map<String, Object> res = enrollPersonService.pcWaitFirstInterview(department, page);
+
         if (res != null) {
             return new UniversalResponseBody<>(0, "success", res);
         } else {
@@ -57,13 +62,13 @@ public class FirstInterviewController {
      * @return: UniversalResponseBody
      */
     @UserLoginToken
-    @RequestMapping(value = "/done",method = RequestMethod.GET)
-    public UniversalResponseBody PcFirstInterviewed(HttpServletRequest httpServletRequest) {
+    @RequestMapping(value = "/done", method = RequestMethod.GET)
+    public UniversalResponseBody PcFirstInterviewed( HttpServletRequest httpServletRequest) {
         String token = httpServletRequest.getHeader("token");
         String userName = TokenUtil.getAppUID(token);
         String department = managerService.findManagerByName(userName).getDepartment();
         //log.info(department);
-        Map<String, List<Map<String, Object>>> res = enrollPersonService.PcFirstInterviewed(department);
+        Map<String, Object> res = enrollPersonService.PcFirstInterviewed(department);
         if (res != null) {
             return new UniversalResponseBody<>(0, "success", res);
         } else {
@@ -77,12 +82,11 @@ public class FirstInterviewController {
      * @return: UniversalResponseBody
      */
     @UserLoginToken
-    @RequestMapping(value = "/PASS",method = RequestMethod.POST)
-    public UniversalResponseBody passFirstInterview(@RequestParam("mainIds") int[] mainIds,HttpServletRequest httpServletRequest) {
+    @RequestMapping(value = "/PASS", method = RequestMethod.POST)
+    public UniversalResponseBody passFirstInterview(@RequestParam("mainIds") int[] mainIds, HttpServletRequest httpServletRequest, HttpServletResponse response) {
         String token = httpServletRequest.getHeader("token");
         String userName = TokenUtil.getAppUID(token);
         String department = managerService.findManagerByName(userName).getDepartment();
-
         //statusNum, passNum 为0 此时不会进行更新
         try {
             enrollPassService.ManyPassOrNot(mainIds, department, 100, 501);
@@ -99,7 +103,7 @@ public class FirstInterviewController {
      * @return: UniversalResponseBody
      */
     @UserLoginToken
-    @RequestMapping(value = "/OUT",method = RequestMethod.POST)
+    @RequestMapping(value = "/OUT", method = RequestMethod.POST)
     public UniversalResponseBody notPass(@RequestParam("mainIds") int[] mainIds, HttpServletRequest httpServletRequest) {
         String token = httpServletRequest.getHeader("token");
         String userName = TokenUtil.getAppUID(token);
@@ -121,13 +125,13 @@ public class FirstInterviewController {
      * @return: UniversalResponseBody
      */
     @UserLoginToken
-    @RequestMapping(value = "/interviewed",method = RequestMethod.GET)
-    public UniversalResponseBody firstInterviewPass(HttpServletRequest httpServletRequest) {
+    @RequestMapping(value = "/interviewed/{page}", method = RequestMethod.GET)
+    public UniversalResponseBody firstInterviewPass(@PathVariable("page") int page, HttpServletRequest httpServletRequest) {
         String token = httpServletRequest.getHeader("token");
         String userName = TokenUtil.getAppUID(token);
         String department = managerService.findManagerByName(userName).getDepartment();
 
-        List<Map<String, Object>> res = enrollPersonService.firstInterviewPass(department);
+        Map<String, Object> res = enrollPersonService.firstInterviewPass(department, page);
         if (res != null) {
             return new UniversalResponseBody<>(0, "success", res);
         } else {
@@ -142,7 +146,7 @@ public class FirstInterviewController {
      * @return: UniversalResponseBody
      */
     @UserLoginToken
-    @RequestMapping(value = "/second/ADMIT",method = RequestMethod.POST)
+    @RequestMapping(value = "/second/ADMIT", method = RequestMethod.POST)
     public UniversalResponseBody firstPass(@RequestParam("mainIds") int[] mainIds, HttpServletRequest httpServletRequest) {
         String token = httpServletRequest.getHeader("token");
         String userName = TokenUtil.getAppUID(token);
@@ -165,15 +169,15 @@ public class FirstInterviewController {
      * @return: UniversalResponseBody
      */
     @UserLoginToken
-    @RequestMapping(value = "/member/ADMIT",method = RequestMethod.POST)
-    public UniversalResponseBody admitMember(@RequestParam("mainIds") int[] mainIds,HttpServletRequest httpServletRequest) {
+    @RequestMapping(value = "/member/ADMIT", method = RequestMethod.POST)
+    public UniversalResponseBody admitMember(@RequestParam("mainIds") int[] mainIds, HttpServletRequest httpServletRequest) {
         String token = httpServletRequest.getHeader("token");
         String userName = TokenUtil.getAppUID(token);
         String department = managerService.findManagerByName(userName).getDepartment();
 
         //passNum、statusNum为0代表不更新此数字
         try {
-            enrollPassService.ManyPassOrNot(mainIds,department, 0, 505);
+            enrollPassService.ManyPassOrNot(mainIds, department, 0, 505);
             enrollPassService.ManyUpdateFinalDepartment(mainIds, department);
             enrollPersonService.saveManyInformation(mainIds);
             return new UniversalResponseBody(0, "success");
@@ -189,13 +193,13 @@ public class FirstInterviewController {
      * @return: UniversalResponseBody
      */
     @UserLoginToken
-    @RequestMapping(value = "/cross",method = RequestMethod.GET)
-    public UniversalResponseBody crossDepartment(HttpServletRequest httpServletRequest) {
+    @RequestMapping(value = "/cross/{page}", method = RequestMethod.GET)
+    public UniversalResponseBody crossDepartment(@PathVariable("page") int page, HttpServletRequest httpServletRequest) {
         String token = httpServletRequest.getHeader("token");
         String userName = TokenUtil.getAppUID(token);
         String department = managerService.findManagerByName(userName).getDepartment();
 
-        List<Map<String, Object>> res = enrollPersonService.crossDepartment(department);
+        Map<String, Object> res = enrollPersonService.crossDepartment(department, page);
         if (res != null) {
             return new UniversalResponseBody<>(0, "success", res);
         } else {
@@ -209,13 +213,14 @@ public class FirstInterviewController {
      * @return: UniversalResponseBody
      */
     @UserLoginToken
-    @RequestMapping(value = "/transfer",method = RequestMethod.POST)
-    public UniversalResponseBody transferDepartment(@RequestParam("mainId") int mainId, HttpServletRequest httpServletRequest) {
+    @RequestMapping(value = "/transfer/{mainId}", method = RequestMethod.POST)
+    public UniversalResponseBody transferDepartment(@PathVariable("mainId") int mainId, HttpServletRequest httpServletRequest) {
+
         String token = httpServletRequest.getHeader("token");
         String userName = TokenUtil.getAppUID(token);
         String department = managerService.findManagerByName(userName).getDepartment();
 
-        if (enrollPersonService.transferDepartment(mainId,department)) {
+        if (enrollPersonService.transferDepartment(mainId, department)) {
             return new UniversalResponseBody(0, "success");
         } else {
             return new UniversalResponseBody(-1, "failed");

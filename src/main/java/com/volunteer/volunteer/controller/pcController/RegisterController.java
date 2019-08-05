@@ -1,4 +1,4 @@
-package com.volunteer.volunteer.controller;
+package com.volunteer.volunteer.controller.pcController;
 
 import com.volunteer.volunteer.model.Manager;
 import com.volunteer.volunteer.model.SuperManager;

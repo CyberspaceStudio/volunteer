@@ -90,7 +90,7 @@ public class TokenUtil {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET)).build();
             jwt = verifier.verify(token);
         } catch (Exception e) {
-            throw new RuntimeException("Token is illegal");
+            throw new RuntimeException("Token is illegal or expired");
         }
         return jwt.getClaims();
     }
@@ -105,7 +105,7 @@ public class TokenUtil {
         Map<String, Claim> claims = verifyToken(token);
         Claim user_id_claim = claims.get("user_id");
         if (null == user_id_claim || StringUtils.isEmpty(user_id_claim.asString())) {
-            throw new RuntimeException("Token is illegal");
+            throw new RuntimeException("Token is illegal or expired");
         }
         return user_id_claim.asString();
     }
