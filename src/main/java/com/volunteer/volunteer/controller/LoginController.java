@@ -57,7 +57,7 @@ public class LoginController {
      * @return: UniversalResponseBody
      */
     @RequestMapping(value = "/manager", method = RequestMethod.POST)
-    public UniversalResponseBody pcLogin(@RequestBody Manager loginData, HttpServletRequest request, HttpServletResponse response) {
+    public UniversalResponseBody pcLogin(Manager loginData, HttpServletRequest request, HttpServletResponse response) {
         try {
             Manager manager = managerService.findManagerByName(loginData.getManagerName());
             if (manager == null) {

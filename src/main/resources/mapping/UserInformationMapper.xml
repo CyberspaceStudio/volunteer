@@ -36,7 +36,7 @@
       select
       <include refid="Base_Column_List" />
       from information
-      where department = #{department,jdbcType=VARCHAR} and position='部员'
+      where department = #{department,jdbcType=VARCHAR} and position=1
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

@@ -42,15 +42,18 @@ public interface EnrollPersonService {
 
     Map<String,Object> pcWaitFirstInterview(String department,int pageNumber);
 
+    //用于导出待面试名单
+    List<EnrollPerson> PcWaitFirstInterviewList(String department);
+
     //Map<String, Object> PcFirstInterviewed(String department,int pageNumber);
     Map<String, Object> PcFirstInterviewed(String department);
 
-    Map<String,Object> firstInterviewPass(String department,int pageNumber);
+    Map<String,Object> firstInterviewPass(String department);
 
     Map<String,Object> PcWaitSecondInterviewed(String department,int pageNumber);
 
     Map<String,Object> crossDepartment(String department,int pageNumber);
 
-    Map<String,Object> PcSecondInterviewed(String department,int pageNumber);
+    Map<String,Object> PcSecondInterviewed(String department);
 
 }

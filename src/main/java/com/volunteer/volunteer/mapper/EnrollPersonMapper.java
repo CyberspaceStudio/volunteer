@@ -43,13 +43,16 @@ public interface EnrollPersonMapper {
 
     List<Map<String, Object>> PcWaitFirstInterview(String department, int pageNumber);
 
+    //用于导出面试名单
+    List<EnrollPerson> PcWaitFirstInterviewList(String department);
+
     int PcWaitFirstInterviewNumber(String department);
 
     List<Map<String, Object>> PcFirstInterviewed(String department);
 
     int PcFirstInterviewedNumber(String department);
 
-    List<Map<String, Object>> PcFirstInterviewPass(String department, int pageNumber);
+    List<Map<String, Object>> PcFirstInterviewPass(String department);
 
     int PcFirstInterviewPassNumber(String department);
 
@@ -61,7 +64,7 @@ public interface EnrollPersonMapper {
 
     int PcWaitSecondInterviewedNumber(String department);
 
-    List<Map<String, Object>> PcSecondInterviewed(String department, int pageNumber);
+    List<Map<String, Object>> PcSecondInterviewed(String department);
 
     int PcSecondInterviewedNumber(String department);
 }

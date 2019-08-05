@@ -322,6 +322,18 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
         }
     }
 
+
+    /**
+     * @Description: 用于导出待面试名单
+     * @Date:        16:02 2019/8/5
+     * @Param:       [department]
+     * @return:      java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     */
+    public List<EnrollPerson> PcWaitFirstInterviewList(String department){
+        return enrollPersonMapper.PcWaitFirstInterviewList(department);
+    }
+
+
     /**
      * @Description: PC端:一面已面试人员
      * @Param: [department]
@@ -332,6 +344,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
         Map<String, Object> res = new HashMap<>();
         try {
             res.put("data", enrollPersonMapper.PcFirstInterviewed(department));
+            res.put("total", enrollPersonMapper.PcFirstInterviewedNumber(department));
             return res;
         } catch (Exception e) {
             e.printStackTrace();
@@ -346,11 +359,10 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
      * @return: Map < String, Object>
      */
     @Override
-    public Map<String, Object> firstInterviewPass(String department, int pageNumber) {
+    public Map<String, Object> firstInterviewPass(String department) {
         Map<String, Object> res = new HashMap<>();
         try {
-            pageNumber--;
-            res.put("data", enrollPersonMapper.PcFirstInterviewPass(department, pageNumber * 10));
+            res.put("data", enrollPersonMapper.PcFirstInterviewPass(department));
             res.put("total", enrollPersonMapper.PcFirstInterviewPassNumber(department));
             return res;
         } catch (Exception e) {
@@ -393,6 +405,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
         Map<String, Object> res = new HashMap<>();
         try {
             pageNumber--;
+            //res.put("data","test");
             res.put("data", enrollPersonMapper.PcWaitSecondInterviewed(department, pageNumber * 10));
             res.put("total", enrollPersonMapper.PcWaitSecondInterviewedNumber(department));
             return res;
@@ -407,14 +420,13 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     /**
      * @Description: PC端：二面已面试人员
      * @Param: [department]
-     * @return: Map<String, List < Map < String, Object>>>
+     * @return: Map < String, Object>
      */
     @Override
-    public Map<String, Object> PcSecondInterviewed(String department, int pageNumber) {
+    public Map<String, Object> PcSecondInterviewed(String department) {
         Map<String, Object> res = new HashMap<>();
         try {
-            pageNumber--;
-            res.put("data", enrollPersonMapper.PcSecondInterviewed(department, pageNumber * 10));
+            res.put("data", enrollPersonMapper.PcSecondInterviewed(department));
             res.put("total", enrollPersonMapper.PcSecondInterviewedNumber(department));
             return res;
         } catch (Exception e) {
@@ -464,7 +476,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
             user.setSchool(enrollPerson.getSchool());
             user.setOrganization(enrollPerson.getOrganization());
             user.setDepartment(enrollPerson.getFinalDepartment());
-            user.setPosition("部员");
+            user.setPosition("1");
 
             userInformationMapper.updateByPrimaryKey(user);
         }

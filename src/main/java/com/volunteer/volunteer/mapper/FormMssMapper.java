@@ -3,8 +3,10 @@ package com.volunteer.volunteer.mapper;
 import com.volunteer.volunteer.model.FormMss;
 
 import java.util.List;
+import java.util.Map;
 
 public interface FormMssMapper {
+
     int deleteByPrimaryKey(Integer mainId);
 
     int insert(FormMss record);
@@ -17,5 +19,6 @@ public interface FormMssMapper {
 
     int updateByPrimaryKey(FormMss record);
 
-    List<FormMss> selectFormMssByDeadline();
+    List<Map<String, Object>> selectFormMssByDeadline();
+
 }

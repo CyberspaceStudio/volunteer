@@ -3,16 +3,23 @@ package com.volunteer.volunteer.service;
 import com.volunteer.volunteer.dto.AccessToken;
 import com.volunteer.volunteer.dto.TemplateData;
 import com.volunteer.volunteer.dto.WxMssDto;
+import com.volunteer.volunteer.mapper.FormMssMapper;
+import com.volunteer.volunteer.model.FormMss;
+import com.volunteer.volunteer.model.UserInformation;
 import com.volunteer.volunteer.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,10 +46,17 @@ public class WxPushService {
     @Value("${wx.templateId}")
     private String TEMPLATEID;
 
+    @Resource
+    private FormMssService formMssService;
+
+    @Resource
+    private UserInformationService userInformationService;
+
+
     /**
      * 微信小程序推送单个用户
      */
-    public String pushOneUser(String appId, String formId) throws IOException {
+    public String pushOneUser(String openid, String formId) throws IOException {
 
 
         //获取access_token
@@ -52,7 +66,7 @@ public class WxPushService {
 
         //拼接推送的模版
         WxMssDto wxMssDto = new WxMssDto();
-        wxMssDto.setTouser(appId);//用户openid
+        wxMssDto.setTouser(openid);//用户openid
         wxMssDto.setTemplateId(TEMPLATEID);//模版id
         wxMssDto.setFormId(formId);//formid
 
@@ -84,6 +98,21 @@ public class WxPushService {
         log.info("小程序推送结果={}", responseEntity.getBody());
         return responseEntity.getBody();
     }
+
+    /**
+     * 微信小程序推送多个用户
+     */
+    @Transactional
+    public void pushManyUser() throws Exception{
+        List<Map<String, Object>> results = formMssService.findFormMssByDeadline();
+        for (Map<String, Object> res : results){
+            int mainId = (int)res.get("main_id");
+            UserInformation user = userInformationService.findById(mainId);
+            FormMss formMss = formMssService.findFormMssByMainId(mainId);
+            pushOneUser(user.getOpenId(),formMss.getFormId());
+        }
+    }
+
 
     /**
      * 获取access_token

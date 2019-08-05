@@ -101,12 +101,32 @@ public class MemberController {
     @RequestMapping(value = "/export/attendance", method = RequestMethod.GET)
     public void exportAttendance(HttpServletResponse response, HttpServletRequest request) throws IOException {
         String token = request.getHeader("token");
-        // log.info(token);
         String userName = TokenUtil.getAppUID(token);
-        //log.info(userName);
         String department = managerService.findManagerByName(userName).getDepartment();
+
+        //String department = "网络技术工作室";
         List<Map<String, Object>> listMap = Object2Map.object2MapList(userInformationService.findMemberByDepartment(department));
         ExcelUtil.templateExportExcel(
                 ResourceUtils.getFile("classpath:tempExcel") + "/attendance.xls", listMap, department + "考勤.xls", response);
+    }
+
+    /**
+     * @Description: 导出待面试名单
+     * @Param: [response]
+     * @return: void
+     */
+    //@UserLoginToken
+    @RequestMapping(value = "/export/waitInterview", method = RequestMethod.GET)
+    public void exportInterview(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        /*String token = request.getHeader("token");
+        String userName = TokenUtil.getAppUID(token);
+        String department = managerService.findManagerByName(userName).getDepartment();*/
+        String department = "网络技术工作室";
+
+
+        List<Map<String, Object>> listMap = Object2Map.object2MapList(enrollPersonService.PcWaitFirstInterviewList(department));
+
+        ExcelUtil.templateExportExcel(
+                ResourceUtils.getFile("classpath:tempExcel") + "/waitInterview.xls", listMap, department + "待面试名单.xls", response);
     }
 }

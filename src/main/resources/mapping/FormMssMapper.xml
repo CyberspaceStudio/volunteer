@@ -6,6 +6,13 @@
     <result column="form_id" property="formId" jdbcType="VARCHAR" />
     <result column="deadline" property="deadline" jdbcType="TIMESTAMP" />
   </resultMap>
+<!--  <resultMap id="FormMssByDeadline" type="java.util.Map">
+    <id column="main_id" property="mainId" jdbcType="INTEGER"/>
+    <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+    <result column="sex" property="sex" jdbcType="CHAR"/>
+    <result column="score" property="score" jdbcType="CHAR"/>
+    <result column="impression" property="impression" jdbcType="VARCHAR"/>
+  </resultMap>-->
   <sql id="Base_Column_List" >
     main_id, form_id, deadline
   </sql>
@@ -15,12 +22,13 @@
     from form
     where main_id = #{mainId,jdbcType=INTEGER}
   </select>
-  <select id="selectFormMssByDeadline" resultMap="BaseResultMap">
+  <select id="selectFormMssByDeadline" resultType="java.util.Map">
     select
-    <include refid="Base_Column_List" />
+      main_id
     from form
-    where (TO_DAYS(deadline)-TO_DAYS(NOW()))>=0;
+    where deadline-NOW()>=0;
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from form
     where main_id = #{mainId,jdbcType=INTEGER}

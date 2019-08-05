@@ -3,6 +3,7 @@ package com.volunteer.volunteer.service;
 import com.volunteer.volunteer.model.FormMss;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ：Maolin
@@ -12,7 +13,13 @@ import java.util.List;
  * @version: 1.0
  */
 public interface FormMssService {
+
     boolean saveForm(FormMss formMss);
-    List<FormMss> findFormMssByDeadline();
+
+    List<Map<String, Object>> findFormMssByDeadline();
+
     boolean updateForm(FormMss formMss);
+
+    FormMss findFormMssByMainId(int mainId);
+
 }

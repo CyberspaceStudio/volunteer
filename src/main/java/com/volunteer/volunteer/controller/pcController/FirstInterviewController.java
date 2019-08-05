@@ -125,13 +125,13 @@ public class FirstInterviewController {
      * @return: UniversalResponseBody
      */
     @UserLoginToken
-    @RequestMapping(value = "/interviewed/{page}", method = RequestMethod.GET)
-    public UniversalResponseBody firstInterviewPass(@PathVariable("page") int page, HttpServletRequest httpServletRequest) {
+    @RequestMapping(value = "/interviewed", method = RequestMethod.GET)
+    public UniversalResponseBody firstInterviewPass(HttpServletRequest httpServletRequest) {
         String token = httpServletRequest.getHeader("token");
         String userName = TokenUtil.getAppUID(token);
         String department = managerService.findManagerByName(userName).getDepartment();
 
-        Map<String, Object> res = enrollPersonService.firstInterviewPass(department, page);
+        Map<String, Object> res = enrollPersonService.firstInterviewPass(department);
         if (res != null) {
             return new UniversalResponseBody<>(0, "success", res);
         } else {

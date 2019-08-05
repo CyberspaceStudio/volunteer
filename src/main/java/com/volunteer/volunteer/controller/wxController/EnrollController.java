@@ -88,13 +88,13 @@ public class EnrollController {
 
         try {
             if (enrollPersonService.insert(res) && enrollPassService.insertMainId(mainId) && formMssService.saveForm(formMss)) {
-                return new UniversalResponseBody<>(0, "成功", res);
+                return new UniversalResponseBody<>(0, "success", res);
             } else {
-                return new UniversalResponseBody<>(-1, "失败", res);
+                return new UniversalResponseBody<>(-1, "failed", res);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return new UniversalResponseBody<>(-1, "失败", null);
+            return new UniversalResponseBody<>(-1, "failed", null);
         }
     }
 
@@ -110,9 +110,9 @@ public class EnrollController {
 
         if (total >= 0) {
             res.put("totalNumber", total);
-            return new UniversalResponseBody<>(0, "成功", res);
+            return new UniversalResponseBody<>(0, "success", res);
         } else
-            return new UniversalResponseBody<>(-1, "失败", null);
+            return new UniversalResponseBody<>(-1, "failed", null);
     }
 
 

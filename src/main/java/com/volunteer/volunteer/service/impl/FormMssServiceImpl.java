@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ：Maolin
@@ -31,8 +32,8 @@ public class FormMssServiceImpl implements FormMssService {
         return formMssMapper.updateByPrimaryKey(formMss)>0;
     }
 
-    public List<FormMss> findFormMssByDeadline(){
-        List<FormMss> res = formMssMapper.selectFormMssByDeadline();
+    public List<Map<String, Object>> findFormMssByDeadline(){
+        List<Map<String, Object>> res = formMssMapper.selectFormMssByDeadline();
         try{
             if ( res != null){
                 return res;
@@ -45,5 +46,9 @@ public class FormMssServiceImpl implements FormMssService {
             log.error("【form表】查询失败！");
             return null;
         }
+    }
+
+    public FormMss findFormMssByMainId(int mainId){
+        return formMssMapper.selectByPrimaryKey(mainId);
     }
 }

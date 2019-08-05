@@ -59,7 +59,7 @@ public class EnrollPassServiceImpl implements EnrollPassService {
     @Transactional
     public void ManyPassOrNot(int[] mainIds, String department, Integer passNum, Integer statusNum) throws Exception {
         for (int mainId : mainIds) {
-            if (statusNum != 0) {
+            if (statusNum != 0 && passNum != 0) {
                 EnrollPass enrollPass = enrollPassMapper.selectByMainId(mainId);
                 EnrollPerson enrollPerson = enrollPersonMapper.selectByPrimaryKey(mainId);
                 if (department.equals(enrollPerson.getFirstChoice())) {
@@ -76,7 +76,7 @@ public class EnrollPassServiceImpl implements EnrollPassService {
                 }
                 enrollPassMapper.updateByMainId(enrollPass);
                 enrollPersonMapper.updateByPrimaryKeySelective(enrollPerson);
-            } else {
+            } else if (passNum != 0){
                 EnrollPass enrollPass = enrollPassMapper.selectByMainId(mainId);
                 EnrollPerson enrollPerson = enrollPersonMapper.selectByPrimaryKey(mainId);
                 if (department.equals(enrollPerson.getFirstChoice())) {
@@ -89,6 +89,19 @@ public class EnrollPassServiceImpl implements EnrollPassService {
                     throw new SQLException("查询出错");
                 }
                 enrollPassMapper.updateByMainId(enrollPass);
+            }else {
+                EnrollPass enrollPass = enrollPassMapper.selectByMainId(mainId);
+                EnrollPerson enrollPerson = enrollPersonMapper.selectByPrimaryKey(mainId);
+                if (department.equals(enrollPerson.getFirstChoice())) {
+                    enrollPerson.setEnrollStatus("" + statusNum);
+                } else if (department.equals(enrollPerson.getSecondChoice())) {
+                    enrollPerson.setEnrollStatus("" + statusNum);
+                } else if (department.equals(enrollPerson.getThirdChoice())) {
+                    enrollPerson.setEnrollStatus("" + statusNum);
+                } else {
+                    throw new SQLException("查询出错");
+                }
+                enrollPersonMapper.updateByPrimaryKeySelective(enrollPerson);
             }
         }
     }
