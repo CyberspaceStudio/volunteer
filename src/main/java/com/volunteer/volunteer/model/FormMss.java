@@ -5,7 +5,7 @@ import java.util.Date;
 public class FormMss {
     private Integer mainId;
 
-    private String formId;
+    private String form_id;
 
     private Date deadline;
 
@@ -17,12 +17,12 @@ public class FormMss {
         this.mainId = mainId;
     }
 
-    public String getFormId() {
-        return formId;
+    public String getForm_id() {
+        return form_id;
     }
 
-    public void setFormId(String formId) {
-        this.formId = formId == null ? null : formId.trim();
+    public void setForm_id(String form_id) {
+        this.form_id = form_id == null ? null : form_id.trim();
     }
 
     public Date getDeadline() {
@@ -32,4 +32,5 @@ public class FormMss {
     public void setDeadline(Date deadline) {
         this.deadline = deadline;
     }
+
 }

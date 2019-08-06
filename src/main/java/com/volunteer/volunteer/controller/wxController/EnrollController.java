@@ -4,7 +4,6 @@ package com.volunteer.volunteer.controller.wxController;
 import com.volunteer.volunteer.enums.DepartmentEnum;
 import com.volunteer.volunteer.model.EnrollPerson;
 import com.volunteer.volunteer.model.FormMss;
-import com.volunteer.volunteer.model.UserInformation;
 import com.volunteer.volunteer.service.EnrollPassService;
 import com.volunteer.volunteer.service.EnrollPersonService;
 import com.volunteer.volunteer.service.FormMssService;
@@ -12,9 +11,9 @@ import com.volunteer.volunteer.service.UserInformationService;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -72,18 +71,19 @@ public class EnrollController {
         res.setFirstChoice(firstChoice);
         res.setSecondChoice(secondChoice);
         res.setThirdChoice(thirdChoice);
-        res.setIntroduction(introduction.replace("\n","。"));
+        res.setIntroduction(introduction.replace("\n", "。"));
         res.setEnrollStatus("0");
 
+        //System.out.println(res.toString());
         //formId存储
         FormMss formMss = new FormMss();
         formMss.setMainId(mainId);
-        formMss.setFormId(formId);
-        Date date=new Date(); //取时间
+        formMss.setForm_id(formId);
+        Date date = new Date(); //取时间
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
-        calendar.add(calendar.DATE,7); //formId过期时间为七天
-        date=calendar.getTime();
+        calendar.add(calendar.DATE, 7); //formId过期时间为七天
+        date = calendar.getTime();
         formMss.setDeadline(date);
 
         try {
@@ -130,9 +130,9 @@ public class EnrollController {
         if (res1 != null && res2 != null) {
             res.put("enrollNumber", res1);
             res.put("crossNumber", res2);
-            return new UniversalResponseBody<>(0, "成功", res);
+            return new UniversalResponseBody<>(0, "success", res);
         } else
-            return new UniversalResponseBody<>(-1, "失败", null);
+            return new UniversalResponseBody<>(-1, "failed", null);
     }
 
     /**
@@ -150,9 +150,9 @@ public class EnrollController {
         if (res1 != null && res2 != null) {
             res.putAll(res1);
             res.putAll(res2);
-            return new UniversalResponseBody<>(0, "成功", res);
+            return new UniversalResponseBody<>(0, "success", res);
         } else
-            return new UniversalResponseBody(-1, "失败");
+            return new UniversalResponseBody(-1, "failed");
     }
 
 
@@ -165,9 +165,9 @@ public class EnrollController {
     public UniversalResponseBody<Map<String, Integer>> interviewData() {
         Map<String, Integer> res = enrollPersonService.interviewData();
         if (res != null) {
-            return new UniversalResponseBody<>(0, "成功", res);
+            return new UniversalResponseBody<>(0, "success", res);
         } else
-            return new UniversalResponseBody<>(-1, "失败", null);
+            return new UniversalResponseBody<>(-1, "failed", null);
     }
 
     /**
@@ -184,9 +184,9 @@ public class EnrollController {
             res.put("interviewedNumber", res1);
             res.put("noInterviewNumber", res2);
 
-            return new UniversalResponseBody<>(0, "成功", res);
+            return new UniversalResponseBody<>(0, "success", res);
         } else
-            return new UniversalResponseBody<>(-1, "失败", null);
+            return new UniversalResponseBody<>(-1, "failed", null);
     }
 
 
@@ -200,9 +200,9 @@ public class EnrollController {
         String department = DepartmentEnum.getDepartment(departmentCode);
         Map<String, Integer> res = enrollPersonService.oneDepartmentInterviewData(department);
         if (res != null) {
-            return new UniversalResponseBody<>(0, "成功", res);
+            return new UniversalResponseBody<>(0, "success", res);
         } else
-            return new UniversalResponseBody<>(-1, "失败", null);
+            return new UniversalResponseBody<>(-1, "failed", null);
     }
 
 
@@ -216,9 +216,9 @@ public class EnrollController {
         String department = DepartmentEnum.getDepartment(departmentCode);
         Map<String, Integer> res = enrollPersonService.secondDepartmentInterviewData(department);
         if (res != null) {
-            return new UniversalResponseBody<>(0, "成功", res);
+            return new UniversalResponseBody<>(0, "success", res);
         } else
-            return new UniversalResponseBody<>(-1, "失败", null);
+            return new UniversalResponseBody<>(-1, "failed", null);
     }
 
     /**
@@ -230,7 +230,7 @@ public class EnrollController {
     public UniversalResponseBody<EnrollPerson> checkResume(Integer mainId) {
         EnrollPerson res = enrollPersonService.findByMainId(mainId);
         if (res != null) {
-            return new UniversalResponseBody<>(0, "成功", res);
+            return new UniversalResponseBody<>(0, "success", res);
         } else
             return new UniversalResponseBody<>(-1, "未报名或数据错误", null);
     }
@@ -249,9 +249,9 @@ public class EnrollController {
             @RequestParam("impression") String impression) {
         String department = DepartmentEnum.getDepartment(departmentCode);
         if (enrollPersonService.updateScoreAndImpression(mainId, department, score, impression)) {
-            return new UniversalResponseBody(0, "成功");
+            return new UniversalResponseBody(0, "success");
         } else
-            return new UniversalResponseBody(-1, "失败");
+            return new UniversalResponseBody(-1, "failed");
     }
 
 
@@ -262,14 +262,14 @@ public class EnrollController {
      */
     @PostMapping(value = "/interview/second/presence")
     @ResponseBody
-    public UniversalResponseBody secondInterviewPresence(@RequestParam("mainId") int mainId){
-        try{
-            if (enrollPersonService.updateStatusByMainId(mainId,502)) {
-                return new UniversalResponseBody(0, "成功");
-            }else return new UniversalResponseBody(-1,"失败");
-        }catch (Exception e){
+    public UniversalResponseBody secondInterviewPresence(@RequestParam("mainId") int mainId) {
+        try {
+            if (enrollPersonService.updateStatusByMainId(mainId, 502)) {
+                return new UniversalResponseBody(0, "success");
+            } else return new UniversalResponseBody(-1, "failed");
+        } catch (Exception e) {
             e.printStackTrace();
-            return new UniversalResponseBody(-1,"失败");
+            return new UniversalResponseBody(-1, "failed");
         }
     }
 }

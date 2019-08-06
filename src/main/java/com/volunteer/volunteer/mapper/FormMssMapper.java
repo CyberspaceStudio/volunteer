@@ -7,13 +7,13 @@ import java.util.Map;
 
 public interface FormMssMapper {
 
-    int deleteByPrimaryKey(Integer mainId);
+    int deleteByPrimaryKey(int mainId);
 
     int insert(FormMss record);
 
     int insertSelective(FormMss record);
 
-    FormMss selectByPrimaryKey(Integer mainId);
+    FormMss selectByPrimaryKey(int mainId);
 
     int updateByPrimaryKeySelective(FormMss record);
 

@@ -35,7 +35,7 @@ public class DepartmentController {
         if (departmentService.insertNewDepartment(department)){
             return new UniversalResponseBody(0,"成功");
         }else{
-            return new UniversalResponseBody(1,"失败");
+            return new UniversalResponseBody(-1,"failed");
         }
     }
 }

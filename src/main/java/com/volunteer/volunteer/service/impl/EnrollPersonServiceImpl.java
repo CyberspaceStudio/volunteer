@@ -127,7 +127,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     @Override
     public Map<String, Integer> departmentEnrollTotal() {
         Map<String, Integer> res = new TreeMap<>();
-        String[] departments = new String[]{"秘书处", "网络技术工作室", "交流部", "支教部", "项目部", "宣传部", "环保部", "培训部", "活动部", "红十字会"};
+        String[] departments = new String[]{"统事部", "网络技术工作室", "交流部", "支教部", "项目部", "宣传部", "环保部", "培训部", "活动部", "红十字会"};
 
         try {
             for (String department : departments) {
@@ -149,7 +149,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     @Override
     public Map<String, Integer> crossDepartmentTotal() {
         Map<String, Integer> res = new TreeMap<>();
-        String[] departments = new String[]{"秘书处", "网络技术工作室", "交流部", "支教部", "项目部", "宣传部", "环保部", "培训部", "活动部", "红十字会"};
+        String[] departments = new String[]{"统事部", "网络技术工作室", "交流部", "支教部", "项目部", "宣传部", "环保部", "培训部", "活动部", "红十字会"};
         try {
             for (String department : departments) {
                 res.put(department, enrollPersonMapper.crossDepartmentTotal(department));
@@ -229,7 +229,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     @Override
     public Map<String, Integer> departmentInterviewData() {
         Map<String, Integer> res = new TreeMap<>();
-        String[] departments = new String[]{"秘书处", "网络技术工作室", "交流部", "支教部", "项目部", "宣传部", "环保部", "培训部", "活动部", "红十字会"};
+        String[] departments = new String[]{"统事部", "网络技术工作室", "交流部", "支教部", "项目部", "宣传部", "环保部", "培训部", "活动部", "红十字会"};
         try {
             for (String department : departments) {
                 res.put(department, enrollPersonMapper.departmentInterviewData(department));
@@ -270,7 +270,7 @@ public class EnrollPersonServiceImpl implements EnrollPersonService {
     @Override
     public Map<String, Integer> notDepartmentInterviewData() {
         Map<String, Integer> res = new TreeMap<>();
-        String[] departments = new String[]{"秘书处", "网络技术工作室", "交流部", "支教部", "项目部", "宣传部", "环保部", "培训部", "活动部", "红十字会"};
+        String[] departments = new String[]{"统事部", "网络技术工作室", "交流部", "支教部", "项目部", "宣传部", "环保部", "培训部", "活动部", "红十字会"};
         try {
             for (String department : departments) {
                 res.put(department, enrollPersonMapper.notDepartmentInterviewData(department));

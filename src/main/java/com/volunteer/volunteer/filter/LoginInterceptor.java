@@ -28,7 +28,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         }else {
             log.info("日志信息：访问拦截。提交的session为" + session);
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write("{\"errCode\":-1,\"msg\":\"失败\"}");
+            response.getWriter().write("{\"errCode\":-1,\"msg\":\"failed\"}");
             return false;
         }
     }

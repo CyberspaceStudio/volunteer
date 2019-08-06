@@ -6,6 +6,7 @@ import com.volunteer.volunteer.util.ToolSupport.CacheResponseBody;
 import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: MaoLin
@@ -33,4 +34,6 @@ public interface UserInformationService {
     boolean update(UserInformation user);
 
     List<UserInformation> findMemberByDepartment(String department);
+
+    Map<String, Object> findMemberByPageAndDepartment(String department, int page);
 }

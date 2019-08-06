@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -120,7 +122,22 @@ public class UserInformationServiceImpl implements UserInformationService {
     }
 
     @Override
-    public List<UserInformation> findMemberByDepartment(String department) {
+    public List<UserInformation> findMemberByDepartment(String department){
         return userInformationMapper.findMembers(department);
+    }
+
+    @Override
+    public Map<String, Object> findMemberByPageAndDepartment(String department, int page){
+        Map<String, Object> res = new HashMap<>();
+        try {
+            page--;
+            res.put("data", userInformationMapper.findMembersByPage(department, page * 10));
+            res.put("total", userInformationMapper.findMembersNumber(department));
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("【数据库】查询失败!", e);
+            return null;
+        }
     }
 }

@@ -38,8 +38,22 @@
       from information
       where department = #{department,jdbcType=VARCHAR} and position=1
     </select>
+  <select id="findMembersByPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from information
+    where department = #{department,jdbcType=VARCHAR} and position=1
+    order by main_id
+    limit #{page},10
+  </select>
+  <select id="findMembersNumber" resultType="java.lang.Integer">
+    select
+    COUNT(main_id)
+    from information
+    where department = #{department,jdbcType=VARCHAR} and position=1
+  </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from information
     where main_id = #{mainId,jdbcType=INTEGER}
   </delete>

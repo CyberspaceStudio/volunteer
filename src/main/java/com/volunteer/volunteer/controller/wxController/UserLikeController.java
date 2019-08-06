@@ -51,7 +51,7 @@ public class UserLikeController {
     public UniversalResponseBody getNewLikeNumber(String lastQueryTime,int mainId){
         int res = likeStrategy.getNewLikeNumber(lastQueryTime,mainId);
         if(res == 0){
-            return new UniversalResponseBody(1,"成功");
+            return new UniversalResponseBody(1,"failed");
         }
         return new UniversalResponseBody<>(0,"成功",res);
     }

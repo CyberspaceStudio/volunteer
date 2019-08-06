@@ -14,13 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
-import java.net.http.HttpResponse;
 
 /**
  * 本控制器用于控制用户登录的多种行为，通过重载方法来区分用户身份
@@ -47,7 +44,7 @@ public class LoginController {
         } catch (Exception e) {
             log.error(" 【微信登录】登录失败", e);
             e.printStackTrace();
-            return new CacheResponseBody(-1,"失败");
+            return new CacheResponseBody(-1,"failed");
         }
     }
 

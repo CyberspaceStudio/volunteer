@@ -3,7 +3,7 @@
 <mapper namespace="com.volunteer.volunteer.mapper.FormMssMapper" >
   <resultMap id="BaseResultMap" type="com.volunteer.volunteer.model.FormMss" >
     <id column="main_id" property="mainId" jdbcType="INTEGER" />
-    <result column="form_id" property="formId" jdbcType="VARCHAR" />
+    <result column="form_id" property="form_id" jdbcType="VARCHAR" />
     <result column="deadline" property="deadline" jdbcType="TIMESTAMP" />
   </resultMap>
 <!--  <resultMap id="FormMssByDeadline" type="java.util.Map">
@@ -36,7 +36,7 @@
   <insert id="insert" parameterType="com.volunteer.volunteer.model.FormMss" >
     insert into form (main_id, form_id, deadline
       )
-    values (#{mainId,jdbcType=INTEGER}, #{formId,jdbcType=VARCHAR}, #{deadline,jdbcType=TIMESTAMP}
+    values (#{mainId,jdbcType=INTEGER}, #{form_id,jdbcType=VARCHAR}, #{deadline,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.volunteer.volunteer.model.FormMss" >
@@ -45,7 +45,7 @@
       <if test="mainId != null" >
         main_id,
       </if>
-      <if test="formId != null" >
+      <if test="form_id != null" >
         form_id,
       </if>
       <if test="deadline != null" >
@@ -56,8 +56,8 @@
       <if test="mainId != null" >
         #{mainId,jdbcType=INTEGER},
       </if>
-      <if test="formId != null" >
-        #{formId,jdbcType=VARCHAR},
+      <if test="form_id != null" >
+        #{form_id,jdbcType=VARCHAR},
       </if>
       <if test="deadline != null" >
         #{deadline,jdbcType=TIMESTAMP},
@@ -67,8 +67,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.volunteer.volunteer.model.FormMss" >
     update form
     <set >
-      <if test="formId != null" >
-        form_id = #{formId,jdbcType=VARCHAR},
+      <if test="form_id != null" >
+        form_id = #{form_id,jdbcType=VARCHAR},
       </if>
       <if test="deadline != null" >
         deadline = #{deadline,jdbcType=TIMESTAMP},
@@ -78,7 +78,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.volunteer.volunteer.model.FormMss" >
     update form
-    set form_id = #{formId,jdbcType=VARCHAR},
+    set form_id = #{form_id,jdbcType=VARCHAR},
       deadline = #{deadline,jdbcType=TIMESTAMP}
     where main_id = #{mainId,jdbcType=INTEGER}
   </update>

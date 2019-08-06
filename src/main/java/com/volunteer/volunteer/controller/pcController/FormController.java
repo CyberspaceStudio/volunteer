@@ -8,6 +8,7 @@ import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -27,9 +28,14 @@ public class FormController {
 
     @UserLoginToken
     @RequestMapping(value = "/send", method = RequestMethod.GET)
-    public UniversalResponseBody sendTemplateMessage() {
+    public UniversalResponseBody sendTemplateMessage(
+            @RequestParam("time") String time,
+            @RequestParam("place") String place,
+            @RequestParam("remarks") String remarks
+    ) {
         try {
-            wxPushService.pushManyUser();
+            wxPushService.pushManyUser(time, place, remarks);
+            log.info(time+" "+place+" "+remarks);
             return new UniversalResponseBody(0, "success");
         } catch (Exception e) {
             e.printStackTrace();
@@ -37,5 +43,4 @@ public class FormController {
             return new UniversalResponseBody(-1, "failed");
         }
     }
-
 }

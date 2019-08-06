@@ -28,7 +28,7 @@ public class InvitationController {
     public UniversalResponseBody invitationCode(InvitationCode invitationCode){
         String code = invitationCodeService.insertInvitationCode(invitationCode);
         if(code.equals("error")){
-            return new UniversalResponseBody(1,"失败");
+            return new UniversalResponseBody(1,"failed");
         }else {
             return new UniversalResponseBody<>(0,"成功",code);
         }
@@ -38,7 +38,7 @@ public class InvitationController {
     public UniversalResponseBody checkInvitationCode(String invitationCode){
         InvitationCode res = invitationCodeService.checkInvitationCode(invitationCode);
         if(res == null){
-            return new UniversalResponseBody<>(-1,"成功","Not exist");
+            return new UniversalResponseBody<>(-1,"failed","Not exist");
         }else{
             return new UniversalResponseBody<>(0,"成功",res);
         }

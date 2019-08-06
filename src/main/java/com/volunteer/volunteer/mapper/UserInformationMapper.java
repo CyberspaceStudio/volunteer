@@ -23,4 +23,8 @@ public interface UserInformationMapper {
     int updateByPrimaryKey(UserInformation record);
 
     List<UserInformation> findMembers(String department);
+
+    List<UserInformation> findMembersByPage(String department,int page);
+
+    int findMembersNumber(String department);
 }

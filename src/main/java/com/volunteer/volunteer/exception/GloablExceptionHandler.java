@@ -21,6 +21,10 @@ public class GloablExceptionHandler {
         if (msg == null || msg.equals("")) {
             msg = "Server error !";
         }
-        return new UniversalResponseBody(-1,msg);
+        if (msg.contains("【Token】")) {
+            return new UniversalResponseBody(600, msg);
+        } else {
+            return new UniversalResponseBody(-1, msg);
+        }
     }
 }

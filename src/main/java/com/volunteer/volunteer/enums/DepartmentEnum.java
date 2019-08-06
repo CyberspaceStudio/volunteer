@@ -3,7 +3,7 @@ package com.volunteer.volunteer.enums;
 public enum DepartmentEnum {
     //GZS("工作室")改为GZS("网络技术工作室")
     GZS("网络技术工作室"),HBB("环保部"),HSZH("红十字会"),JLB("交流部"),PXB("培训部"),
-    ZJB("支教部"),XCB("宣传部"),XMB("项目部"),HDB("活动部"),MSC("秘书处"),JCC("决策层");
+    ZJB("支教部"),XCB("宣传部"),XMB("项目部"),HDB("活动部"),MSC("统事部"),JCC("决策层");
 
     private String department;
 
