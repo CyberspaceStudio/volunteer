@@ -227,12 +227,12 @@ public class EnrollController {
      * @return: UniversalResponseBody<EnrollPerson>
      */
     @PostMapping(value = "/interview/first/department/resume")
-    public UniversalResponseBody<EnrollPerson> checkResume(Integer mainId) {
+    public UniversalResponseBody<EnrollPerson> checkResume(@RequestParam("mainId") Integer mainId) {
         EnrollPerson res = enrollPersonService.findByMainId(mainId);
         if (res != null) {
             return new UniversalResponseBody<>(0, "success", res);
         } else
-            return new UniversalResponseBody<>(-1, "未报名或数据错误", null);
+            return new UniversalResponseBody<>(-1, "failed", null);
     }
 
 

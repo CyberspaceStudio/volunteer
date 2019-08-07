@@ -87,7 +87,8 @@ public class MemberController {
 
         String department = DepartmentEnum.getDepartment(departmentCode);
         List<Map<String, Object>> listMap = Object2Map.object2MapList(userInformationService.findMemberByDepartment(department));
-        ExcelUtil.templateExportExcel(ResourceUtils.getFile("classpath:tempExcel") + "/member.xls", listMap, department + "部员名单.xls", response);
+        ExcelUtil.templateExportExcel(
+                "/root/download/volunteerData/tempExcel" + "/member.xls", listMap, department + "部员名单.xls", response);
 
     }
 
@@ -107,7 +108,7 @@ public class MemberController {
         String department = DepartmentEnum.getDepartment(departmentCode);
         List<Map<String, Object>> listMap = Object2Map.object2MapList(userInformationService.findMemberByDepartment(department));
         ExcelUtil.templateExportExcel(
-                ResourceUtils.getFile("classpath:tempExcel") + "/attendance.xls", listMap, department + "考勤.xls", response);
+                "/root/download/volunteerData/tempExcel" +  "/attendance.xls", listMap, department + "考勤.xls", response);
     }
 
     /**
@@ -125,7 +126,7 @@ public class MemberController {
         String department = DepartmentEnum.getDepartment(departmentCode);
         List<Map<String, Object>> listMap = Object2Map.object2MapList(enrollPersonService.PcWaitFirstInterviewList(department));
 
-        ExcelUtil.templateExportExcel(
-                ResourceUtils.getFile("classpath:tempExcel") + "/waitInterview.xls", listMap, department + "待面试名单.xls", response);
+        //ExcelUtil.templateExportExcel(ResourceUtils.getFile("classpath:tempExcel") + "/waitInterview.xls", listMap, department + "待面试名单.xls", response);
+        ExcelUtil.templateExportExcel("/root/download/volunteerData/tempExcel" + "/waitInterview.xls", listMap, department + "待面试名单.xls", response);
     }
 }

@@ -16,11 +16,13 @@ spring:
   profiles:
     active: dev
 
-
+  #wx07995d169ac8092e
+  #1cb93e42d6888bf81c61d0c3ab336696
+  #uGqmWG6ARwG7ZuX0fNkRSbT9_ZfsZqzFMNA4FlOb2hw
 wx:
-  appid: wx07995d169ac8092e
-  secret: 1cb93e42d6888bf81c61d0c3ab336696
-  templateId: uGqmWG6ARwG7ZuX0fNkRSbT9_ZfsZqzFMNA4FlOb2hw
+  appid: wx6b1087ac6340c5cb
+  secret: ec0d1ed1535a4cf2db49a3256735bf05
+  templateId: NzdskvpEt8f-7TAYkBsK67dvMAIr_B7etSfENdLYdsQ
   url: https://api.weixin.qq.com/sns/jscode2session?appid=${wx.appid}&secret=${wx.secret}&grant_type=authorization_code&js_code=
 
 ---
@@ -36,6 +38,10 @@ spring:
     multipart:
       enabled: true
       max-file-size: 5MB
+
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,classpath:/templates/
+
 
   #Redis缓存设置
   redis:
@@ -88,6 +94,9 @@ spring:
     multipart:
       enabled: true
       max-file-size: 5MB
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,classpath:/templates/
+
 
   #Redis缓存设置
   redis:

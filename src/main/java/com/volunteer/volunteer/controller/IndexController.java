@@ -25,4 +25,9 @@ public class IndexController {
     public UniversalResponseBody getOthersInformation(@RequestParam("mainId")int mainId){
         return new UniversalResponseBody<>(0,"成功",userInformationService.findById(mainId));
     }
+
+    @GetMapping("/")
+    public String index(){
+        return "/index.html";
+    }
 }
