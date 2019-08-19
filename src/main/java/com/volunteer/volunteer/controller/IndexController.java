@@ -2,32 +2,40 @@ package com.volunteer.volunteer.controller;
 
 import com.volunteer.volunteer.service.UserInformationService;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
-@RestController
-@RequestMapping("/index")
+@Controller
 public class IndexController {
     @Resource
     private UserInformationService userInformationService;
 
-    @GetMapping("/myInfo")
+    @RequestMapping(value = "/index/myInfo",method = RequestMethod.GET)
+    @ResponseBody
     public UniversalResponseBody getMyInformation(@RequestParam("mainId") int mainId){
 
         return new UniversalResponseBody<>(0,"成功",userInformationService.findById(mainId));
     }
 
-    @GetMapping("/othersInfo")
+    @RequestMapping(value = "/index/othersInfo",method = RequestMethod.GET)
+    @ResponseBody
     public UniversalResponseBody getOthersInformation(@RequestParam("mainId")int mainId){
         return new UniversalResponseBody<>(0,"成功",userInformationService.findById(mainId));
     }
 
-    @GetMapping("/")
+/*
+
+    @RequestMapping("/volunteer/index")
     public String index(){
         return "/index.html";
     }
+
+    @RequestMapping("/volunteer")
+    public String volunteer(){
+        return "/index.html";
+    }
+*/
+
 }

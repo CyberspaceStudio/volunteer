@@ -1,6 +1,6 @@
 package com.volunteer.volunteer.controller;
 
-import com.volunteer.volunteer.annotation.UserLoginToken;
+import com.vdurmont.emoji.EmojiParser;
 import com.volunteer.volunteer.dto.TokenInfo;
 import com.volunteer.volunteer.dto.WxInfo;
 import com.volunteer.volunteer.model.Manager;
@@ -93,4 +93,12 @@ public class LoginController {
         }
     }
 
+
+
+    @GetMapping("/test")
+    public UniversalResponseBody test(@RequestParam("test") String em){
+        String str = EmojiParser.parseToHtmlDecimal(em);
+        String yuan = EmojiParser.parseToUnicode(str);
+        return new UniversalResponseBody<>(0,"success","改变后："+str+"  还原后："+yuan);
+    }
 }

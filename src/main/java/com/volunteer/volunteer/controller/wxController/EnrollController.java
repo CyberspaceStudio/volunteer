@@ -8,6 +8,7 @@ import com.volunteer.volunteer.service.EnrollPassService;
 import com.volunteer.volunteer.service.EnrollPersonService;
 import com.volunteer.volunteer.service.FormMssService;
 import com.volunteer.volunteer.service.UserInformationService;
+import com.volunteer.volunteer.util.EmojiCharacterUtil;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -56,9 +57,12 @@ public class EnrollController {
             @NotNull @RequestParam("firstChoice") String firstChoice,
             @RequestParam("secondChoice") String secondChoice,
             @RequestParam("thirdChoice") String thirdChoice,
-            @RequestParam("introduction") String introduction,
+            @RequestParam("introduction") String intro,
             @RequestParam("formId") String formId
     ) {
+        //表情包处理
+        String introduction = EmojiCharacterUtil.escape(intro);
+
         //报名表的存储
         EnrollPerson res = new EnrollPerson();
         res.setMainId(mainId);
@@ -230,6 +234,8 @@ public class EnrollController {
     public UniversalResponseBody<EnrollPerson> checkResume(@RequestParam("mainId") Integer mainId) {
         EnrollPerson res = enrollPersonService.findByMainId(mainId);
         if (res != null) {
+            //表情包转换
+            res.setIntroduction(EmojiCharacterUtil.reverse(res.getIntroduction()));
             return new UniversalResponseBody<>(0, "success", res);
         } else
             return new UniversalResponseBody<>(-1, "failed", null);
