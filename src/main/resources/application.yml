@@ -16,13 +16,11 @@ spring:
   profiles:
     active: dev
 
-  #wx07995d169ac8092e
-  #1cb93e42d6888bf81c61d0c3ab336696
-  #uGqmWG6ARwG7ZuX0fNkRSbT9_ZfsZqzFMNA4FlOb2hw
+  
 wx:
-  appid: wx6b1087ac6340c5cb
-  secret: ec0d1ed1535a4cf2db49a3256735bf05
-  templateId: NzdskvpEt8f-7TAYkBsK67dvMAIr_B7etSfENdLYdsQ
+  appid: 
+  secret: 
+  templateId: 
   url: https://api.weixin.qq.com/sns/jscode2session?appid=${wx.appid}&secret=${wx.secret}&grant_type=authorization_code&js_code=
 
 ---
@@ -89,7 +87,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/volunteer_test?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT
     username: root
-    password: Zmlnb&Zylnb666
+    password: 
   servlet:
     multipart:
       enabled: true
