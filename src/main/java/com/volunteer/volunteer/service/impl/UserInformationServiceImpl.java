@@ -47,12 +47,11 @@ public class UserInformationServiceImpl implements UserInformationService {
     public CacheResponseBody<UserInformation> userLoginWechat(WxInfo loginData) throws Exception {
         ResponseBodySovler wechatResponseBody = weChatUtil.getWechatResponseBody(loginData.getCode());
         UserInformation findResult = userInformationMapper.selectByOpenId(wechatResponseBody.getOpenid());
-        findResult.setFalseName(EmojiCharacterUtil.reverse(findResult.getFalseName()));
 
         if (findResult == null) {
             UserInformation res = new UserInformation();
             res.setOpenId(wechatResponseBody.getOpenid());
-            res.setFalseName(loginData.getFalseName());
+            res.setFalseName(EmojiCharacterUtil.escape(loginData.getFalseName()));
             res.setHeadPictureUrl(loginData.getHeadPictureUrl());
             //暂定 0 为游客，1 为部员 2是部长
             res.setPosition("0");
@@ -67,6 +66,7 @@ public class UserInformationServiceImpl implements UserInformationService {
                 return new CacheResponseBody<>(1, wechatResponseBody.getSession_key(), null);
             }
         }
+        findResult.setFalseName(EmojiCharacterUtil.reverse(findResult.getFalseName()));
         return new CacheResponseBody<>(0, wechatResponseBody.getSession_key(), findResult);
     }
 

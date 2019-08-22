@@ -40,7 +40,6 @@ public class LoginController {
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     public CacheResponseBody login(@NotNull WxInfo loginData) {
         try {
-            loginData.setFalseName(EmojiCharacterUtil.escape(loginData.getFalseName()));
             return userInformationService.userLoginWechat(loginData);
         } catch (Exception e) {
             log.error(" 【微信登录】登录失败", e);
