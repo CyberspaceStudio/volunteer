@@ -4,6 +4,7 @@ import com.volunteer.volunteer.dto.WxInfo;
 import com.volunteer.volunteer.mapper.UserInformationMapper;
 import com.volunteer.volunteer.model.UserInformation;
 import com.volunteer.volunteer.service.UserInformationService;
+import com.volunteer.volunteer.util.EmojiCharacterUtil;
 import com.volunteer.volunteer.util.ToolSupport.CacheResponseBody;
 import com.volunteer.volunteer.util.ToolSupport.ResponseBodySovler;
 import com.volunteer.volunteer.util.WeChatUtil;
@@ -46,6 +47,7 @@ public class UserInformationServiceImpl implements UserInformationService {
     public CacheResponseBody<UserInformation> userLoginWechat(WxInfo loginData) throws Exception {
         ResponseBodySovler wechatResponseBody = weChatUtil.getWechatResponseBody(loginData.getCode());
         UserInformation findResult = userInformationMapper.selectByOpenId(wechatResponseBody.getOpenid());
+        findResult.setFalseName(EmojiCharacterUtil.reverse(findResult.getFalseName()));
 
         if (findResult == null) {
             UserInformation res = new UserInformation();
@@ -57,8 +59,9 @@ public class UserInformationServiceImpl implements UserInformationService {
             log.info("【微信登录】用户第一次使用，进行注册！");
 
             if (userInformationMapper.insert(res) != 0) {
-                return new CacheResponseBody<>(0, wechatResponseBody.getSession_key(), userInformationMapper.selectByOpenId(wechatResponseBody.getOpenid()));
-
+                UserInformation user = userInformationMapper.selectByOpenId(wechatResponseBody.getOpenid());
+                user.setFalseName(EmojiCharacterUtil.reverse(user.getFalseName()));
+                return new CacheResponseBody<>(0, wechatResponseBody.getSession_key(), user);
             } else {
                 log.error("【数据库操作】插入失败！");
                 return new CacheResponseBody<>(1, wechatResponseBody.getSession_key(), null);
@@ -67,39 +70,30 @@ public class UserInformationServiceImpl implements UserInformationService {
         return new CacheResponseBody<>(0, wechatResponseBody.getSession_key(), findResult);
     }
 
-    /**
-     * PC端登录，还未实现
-     * 可用SpringSecurity实现登录验证
-     */
-    @Override
-    public UserInformation userLogin(UserInformation user) {
-        return null;
-    }
-
-    @Override
-    public boolean save(UserInformation user) {
-        return userInformationMapper.insertSelective(user) != 0;
-    }
 
     @Override
     public UserInformation findById(int mainId) {
-        return userInformationMapper.selectByPrimaryKey(mainId);
+        UserInformation user = userInformationMapper.selectByPrimaryKey(mainId);
+        user.setFalseName(EmojiCharacterUtil.reverse(user.getFalseName()));
+        return user;
     }
 
     @Override
     public UserInformation findByOpenId(String openId) {
-        return userInformationMapper.selectByOpenId(openId);
+        UserInformation user = userInformationMapper.selectByOpenId(openId);
+        user.setFalseName(EmojiCharacterUtil.reverse(user.getRealName()));
+        return user;
     }
 
     @Override
     public boolean updateDropOut(int mainId) {
         UserInformation user = userInformationMapper.selectByPrimaryKey(mainId);
         user.setDepartment("");
-        user.setPosition("游客");
-        try{
+        user.setPosition("0");
+        try {
             userInformationMapper.updateByPrimaryKey(user);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             log.error("【数据库】更新失败");
             return false;
@@ -122,12 +116,12 @@ public class UserInformationServiceImpl implements UserInformationService {
     }
 
     @Override
-    public List<UserInformation> findMemberByDepartment(String department){
+    public List<UserInformation> findMemberByDepartment(String department) {
         return userInformationMapper.findMembers(department);
     }
 
     @Override
-    public Map<String, Object> findMemberByPageAndDepartment(String department, int page){
+    public Map<String, Object> findMemberByPageAndDepartment(String department, int page) {
         Map<String, Object> res = new HashMap<>();
         try {
             page--;
