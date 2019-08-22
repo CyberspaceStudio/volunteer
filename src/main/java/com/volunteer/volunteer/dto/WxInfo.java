@@ -1,5 +1,6 @@
 package com.volunteer.volunteer.dto;
 
+
 import java.io.Serializable;
 
 /**
@@ -64,15 +65,5 @@ public class WxInfo implements Serializable {
 
     public void setSession_key(String session_key) {
         this.session_key = session_key;
-    }
-
-    @Override
-    public String toString() {
-        return "WxInfo{" +
-                "code='" + code + '\'' +
-                ", headPictureUrl='" + headPictureUrl + '\'' +
-                ", falseName='" + falseName + '\'' +
-                ", session_key='" + session_key + '\'' +
-                '}';
     }
 }

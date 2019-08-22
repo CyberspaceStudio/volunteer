@@ -68,7 +68,7 @@ spring:
   #设置开启热部署
   devtools:
     restart:
-      enabled: true
+      enabled: false
       additional-paths: src/main/java #重启目录
       exclude: WEB-INF/**
   freemarker:
