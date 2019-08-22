@@ -17,10 +17,6 @@ public interface UserInformationService {
 
     CacheResponseBody<UserInformation> userLoginWechat(WxInfo loginData) throws Exception;
 
-    UserInformation userLogin(UserInformation user);
-
-    boolean save(UserInformation user);
-
     UserInformation findById(int mainId);
 
     UserInformation findByOpenId(String openId);

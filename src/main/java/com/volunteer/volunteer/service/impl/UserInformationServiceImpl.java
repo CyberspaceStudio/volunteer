@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
-
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +57,6 @@ public class UserInformationServiceImpl implements UserInformationService {
 
             if (userInformationMapper.insert(res) != 0) {
                 return new CacheResponseBody<>(0, wechatResponseBody.getSession_key(), userInformationMapper.selectByOpenId(wechatResponseBody.getOpenid()));
-
             } else {
                 log.error("【数据库操作】插入失败！");
                 return new CacheResponseBody<>(1, wechatResponseBody.getSession_key(), null);
@@ -67,19 +65,6 @@ public class UserInformationServiceImpl implements UserInformationService {
         return new CacheResponseBody<>(0, wechatResponseBody.getSession_key(), findResult);
     }
 
-    /**
-     * PC端登录，还未实现
-     * 可用SpringSecurity实现登录验证
-     */
-    @Override
-    public UserInformation userLogin(UserInformation user) {
-        return null;
-    }
-
-    @Override
-    public boolean save(UserInformation user) {
-        return userInformationMapper.insertSelective(user) != 0;
-    }
 
     @Override
     public UserInformation findById(int mainId) {
@@ -95,11 +80,11 @@ public class UserInformationServiceImpl implements UserInformationService {
     public boolean updateDropOut(int mainId) {
         UserInformation user = userInformationMapper.selectByPrimaryKey(mainId);
         user.setDepartment("");
-        user.setPosition("游客");
-        try{
+        user.setPosition("0");
+        try {
             userInformationMapper.updateByPrimaryKey(user);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             log.error("【数据库】更新失败");
             return false;
@@ -122,12 +107,12 @@ public class UserInformationServiceImpl implements UserInformationService {
     }
 
     @Override
-    public List<UserInformation> findMemberByDepartment(String department){
+    public List<UserInformation> findMemberByDepartment(String department) {
         return userInformationMapper.findMembers(department);
     }
 
     @Override
-    public Map<String, Object> findMemberByPageAndDepartment(String department, int page){
+    public Map<String, Object> findMemberByPageAndDepartment(String department, int page) {
         Map<String, Object> res = new HashMap<>();
         try {
             page--;

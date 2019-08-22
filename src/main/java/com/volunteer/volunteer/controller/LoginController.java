@@ -1,11 +1,11 @@
 package com.volunteer.volunteer.controller;
 
-import com.vdurmont.emoji.EmojiParser;
 import com.volunteer.volunteer.dto.TokenInfo;
 import com.volunteer.volunteer.dto.WxInfo;
 import com.volunteer.volunteer.model.Manager;
 import com.volunteer.volunteer.service.ManagerService;
 import com.volunteer.volunteer.service.UserInformationService;
+import com.volunteer.volunteer.util.EmojiCharacterUtil;
 import com.volunteer.volunteer.util.TokenUtil;
 import com.volunteer.volunteer.util.ToolSupport.CacheResponseBody;
 import com.volunteer.volunteer.util.ToolSupport.UniversalResponseBody;
@@ -40,6 +40,7 @@ public class LoginController {
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     public CacheResponseBody login(@NotNull WxInfo loginData) {
         try {
+            loginData.setFalseName(EmojiCharacterUtil.filter(loginData.getFalseName()));
             return userInformationService.userLoginWechat(loginData);
         } catch (Exception e) {
             log.error(" 【微信登录】登录失败", e);
@@ -97,8 +98,6 @@ public class LoginController {
 
     @GetMapping("/test")
     public UniversalResponseBody test(@RequestParam("test") String em){
-        String str = EmojiParser.parseToHtmlDecimal(em);
-        String yuan = EmojiParser.parseToUnicode(str);
-        return new UniversalResponseBody<>(0,"success","改变后："+str+"  还原后："+yuan);
+        return new UniversalResponseBody<>(0,"success",EmojiCharacterUtil.filter(em));
     }
 }
