@@ -71,8 +71,8 @@ public class RedisConfig implements Serializable {
 
     private Map<String, RedisCacheConfiguration> getRedisCacheConfigurationMap() {
         Map<String, RedisCacheConfiguration> redisCacheConfigurationMap = new HashMap<>();
-        //userCache进行过期时间配置 24小时
-        redisCacheConfigurationMap.put("userCache", this.getRedisCacheConfigurationWithTtl( 24 * 60 * 60));
+        //userCache进行过期时间配置 24小时*7
+        redisCacheConfigurationMap.put("userCache", this.getRedisCacheConfigurationWithTtl( 24 * 60 * 60 * 7));
         return redisCacheConfigurationMap;
     }
 
