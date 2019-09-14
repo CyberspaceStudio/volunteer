@@ -182,7 +182,7 @@ public class EmojiCharacterUtil {
         for (int index = firCodeIndex; index <= lstCodeIndex;) {
             int codepoint = src.codePointAt(index);
             if (!isEmojiCharacter(codepoint)) {
-                System.err.println("codepoint:" + Integer.toHexString(codepoint));
+                //System.err.println("codepoint:" + Integer.toHexString(codepoint));
                 sb.append((char) codepoint);
             }
             index += ((Character.isSupplementaryCodePoint(codepoint)) ? 2 : 1);

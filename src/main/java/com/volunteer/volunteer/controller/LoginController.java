@@ -90,7 +90,7 @@ public class LoginController {
             return new UniversalResponseBody(0,"success");
         }else {
             log.info("日志信息：访问拦截。提交的session过期" + session);
-            return new UniversalResponseBody(102,"failed");
+            return new UniversalResponseBody(102,"expired");
         }
     }
 

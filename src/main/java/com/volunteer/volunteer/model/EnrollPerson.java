@@ -1,5 +1,8 @@
 package com.volunteer.volunteer.model;
 
+import lombok.ToString;
+
+@ToString
 public class EnrollPerson {
     private Integer mainId;
 

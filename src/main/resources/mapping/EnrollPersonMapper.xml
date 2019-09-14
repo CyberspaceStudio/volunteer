@@ -394,6 +394,18 @@
                   )
     </select>
 
+    <select id="findEnrollPersonByDepartment" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from enroll
+        where (final_department is null or final_department = '')
+        and enroll_status=0
+        and (first_choice = #{department,jdbcType=VARCHAR}
+        or second_choice = #{department,jdbcType=VARCHAR}
+        or third_choice = #{department,jdbcType=VARCHAR} )
+
+    </select>
+
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete

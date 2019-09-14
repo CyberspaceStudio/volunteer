@@ -16,9 +16,14 @@ spring:
   profiles:
     active: dev
 
-  #wx07995d169ac8092e
-  #1cb93e42d6888bf81c61d0c3ab336696
-  #uGqmWG6ARwG7ZuX0fNkRSbT9_ZfsZqzFMNA4FlOb2hw
+aliyun:
+  templateCode: SMS_174022636
+  signName: 西电青年志愿者总队
+  accessKeyId: LTAI4FtHHhFxRXNGn8EGCY4r
+  accessKeySecret: VZEiKwqQnYtvK9up6FdUOolgeRdLbx
+
+
+
 wx:
   appid: wx6b1087ac6340c5cb
   secret: ec0d1ed1535a4cf2db49a3256735bf05
@@ -31,7 +36,7 @@ spring:
   profiles: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/volunteer_test?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT
+    url: jdbc:mysql://localhost:3306/volunteer_test?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT
     username: root
     password: 168168
   servlet:
@@ -87,7 +92,7 @@ spring:
   profiles: relase
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/volunteer_test?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT
+    url: jdbc:mysql://localhost:3306/volunteer_test?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT
     username: root
     password: Zmlnb&Zylnb666
   servlet:

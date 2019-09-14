@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface EnrollPersonMapper {
+
     int deleteByPrimaryKey(Integer mainId);
 
     int insert(EnrollPerson record);
@@ -65,6 +66,8 @@ public interface EnrollPersonMapper {
     int PcWaitSecondInterviewedNumber(String department);
 
     List<Map<String, Object>> PcSecondInterviewed(String department);
+
+    List<EnrollPerson> findEnrollPersonByDepartment(String department);
 
     int PcSecondInterviewedNumber(String department);
 }

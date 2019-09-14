@@ -113,7 +113,7 @@ public class WxPushService {
             FormMss formMss = formMssService.findFormMssByMainId(mainId);
             String departments = enrollPerson.getFirstChoice()+" "+enrollPerson.getSecondChoice()+" "+enrollPerson.getThirdChoice();
 
-            log.info(departments+" "+time+" "+place+" "+remarks);
+            //log.info(departments+" "+time+" "+place+" "+remarks);
 
             pushOneUser(user.getOpenId(), formMss.getForm_id(), enrollPerson.getRealName(), departments,time, place, remarks);
         }

@@ -78,7 +78,7 @@ public class FirstInterviewController {
 
     /**
      * @Description: PC端：一面情况：已面试人员：通过按钮
-     * @Param: [mainIds[], request]
+     *      * @Param: [mainIds[], request]
      * @return: UniversalResponseBody
      */
     @UserLoginToken

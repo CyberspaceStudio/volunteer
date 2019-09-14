@@ -32,10 +32,4 @@ public class WeChatUtil {
         return responseBodySovler;
     }
 
-    public String test() {
-        //WeChatUtil weChatUtil = new WeChatUtil();
-        return WECHAT_OPENID_URL;
-    }
-
-
 }
